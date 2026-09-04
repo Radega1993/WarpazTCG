@@ -1,0 +1,17 @@
+{
+    "name": "Warpaz.Content",
+    "rootNamespace": "Warpaz.Content",
+    "references": [
+        "Warpaz.Domain",
+        "Newtonsoft.Json"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}

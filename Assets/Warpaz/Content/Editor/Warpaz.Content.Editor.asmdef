@@ -1,0 +1,19 @@
+{
+    "name": "Warpaz.Content.Editor",
+    "rootNamespace": "Warpaz.Content.Editor",
+    "references": [
+        "Warpaz.Content",
+        "Warpaz.Domain"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

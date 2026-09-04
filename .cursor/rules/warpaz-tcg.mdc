@@ -1,0 +1,44 @@
+---
+description: WARPAZ TCG architecture, determinism, and card-data constraints
+alwaysApply: true
+---
+
+# WARPAZ TCG
+
+Stack: Unity **6000.3.20f1** + C#. Do not upgrade the editor without a new ADR.
+
+## Layers
+
+- **Domain**: pure C#. No `UnityEngine`, scenes, GameObjects, animation, or input.
+- **Application**: use cases (session, replay, bot). No visual decisions.
+- **Content**: card definitions, `RuleConfig`, importers, validators.
+- **Infrastructure**: JSON/CSV, filesystem, logs, paths.
+- **Presentation**: scenes, MonoBehaviours, UI, animation. Renders `GameState` and sends `Command`s.
+
+```csharp
+// BAD — UI decides legality
+if (card.CostPa <= player.Pa) Play(card);
+
+// GOOD — engine decides; UI only submits
+session.Submit(Command.Play(actorId, state.EventIndex, instanceId));
+```
+
+## State
+
+- Mutate state only through `Command`s. Observable results only through `GameEvent`s.
+- UI never decides if an action is legal. Rejected commands must not mutate `GameState`.
+- No randomness without a recorded seed. No `UnityEngine.Random` in Domain.
+
+## Cards
+
+- Identify cards only by `cardId`. Names are never keys.
+- WZ1-001 … WZ1-120 are immutable. Effects are declarative and reusable.
+- Exception handlers register by `cardId`. Never one MonoBehaviour per card.
+
+## Out of scope
+
+No Locations, Missions, backend, network, accounts, or economy. Dice exist only as an explicit card effect.
+
+## Quality
+
+Every feature needs tests. Do not ignore compile errors. Do not start the next slice while the console has red errors.

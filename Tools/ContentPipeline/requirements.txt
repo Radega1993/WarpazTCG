@@ -1,0 +1,8 @@
+# Content pipeline (development only)
+#
+# The exporter uses the CPython standard library. Do not add runtime Unity
+# packages for XLSX. Pin the interpreter, not pip wheels.
+#
+# python>=3.10,<4
+# Tested: CPython 3.12
+python>=3.10

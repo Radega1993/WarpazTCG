@@ -1,0 +1,26 @@
+{
+    "name": "Warpaz.Tests.EditMode",
+    "rootNamespace": "Warpaz.Tests.EditMode",
+    "references": [
+        "Warpaz.Domain",
+        "Warpaz.Application",
+        "Warpaz.Content",
+        "Warpaz.Infrastructure"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false,
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ]
+}

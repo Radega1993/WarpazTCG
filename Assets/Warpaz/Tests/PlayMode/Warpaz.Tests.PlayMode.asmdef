@@ -1,0 +1,25 @@
+{
+    "name": "Warpaz.Tests.PlayMode",
+    "rootNamespace": "Warpaz.Tests.PlayMode",
+    "references": [
+        "Warpaz.Presentation",
+        "Warpaz.Domain",
+        "Warpaz.Application",
+        "Warpaz.Content",
+        "Warpaz.Infrastructure"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false,
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ]
+}

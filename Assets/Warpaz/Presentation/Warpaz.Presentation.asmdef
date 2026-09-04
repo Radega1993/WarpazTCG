@@ -1,0 +1,22 @@
+{
+    "name": "Warpaz.Presentation",
+    "rootNamespace": "Warpaz.Presentation",
+    "references": [
+        "Warpaz.Domain",
+        "Warpaz.Application",
+        "Warpaz.Content",
+        "Warpaz.Infrastructure",
+        "UnityEngine.UI",
+        "Unity.TextMeshPro",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,22 @@
+{
+  "contentVersion": "WZ1-v0.1",
+  "ruleVersion": "0.1.0",
+  "seed": 42,
+  "player0HeroId": "WZ1-001",
+  "player0ClassId": "WZ1-012",
+  "player1HeroId": "WZ1-002",
+  "player1ClassId": "WZ1-013",
+  "mulliganCommands": [
+    { "playerId": 0, "decision": "KeepHand" },
+    { "playerId": 1, "decision": "KeepHand" }
+  ],
+  "endTurnCount": 5,
+  "expectedFinalHash": "64dd38329bc1485db3a05380afc4f5d52d1adcc5aacfde72b49c78abca081ff4",
+  "expectedPhaseSequence": [
+    "MulliganP0", "MulliganP1", "Main",
+    "Main", "Main", "Main", "Main", "Main"
+  ],
+  "expectedPaMaxByTurn": [1, 1, 2, 2, 3, 3],
+  "expectedHandSizeAfterBothMulligans": 6,
+  "expectedDeckSizeAfterBothMulligans": 34
+}

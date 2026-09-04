@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "0.1",
+  "ruleVersion": "0.1.0",
+  "contentVersion": "0.1.0",
+  "setId": "WZ1",
+  "expectedCardCount": 120,
+  "initialHandSize": 5,
+  "initialResolution": 5,
+  "deckSize": 40,
+  "maxCopiesPerCard": 3,
+  "initialPaMax": 0,
+  "paIncreasePerTurn": 1,
+  "paLimit": 8,
+  "ascensionRequiredPaMax": 5,
+  "ascensionCost": 2,
+  "maximumEquipmentPerCharacter": 1,
+  "freeReorganizationsPerTurn": 1,
+  "handLimit": null,
+  "failedDrawResolutionLoss": 1,
+  "maximumEventsPerTurn": 256,
+  "maximumDecisionsPerTurn": 64
+}

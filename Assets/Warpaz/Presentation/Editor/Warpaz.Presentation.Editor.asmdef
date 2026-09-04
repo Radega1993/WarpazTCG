@@ -1,0 +1,21 @@
+{
+    "name": "Warpaz.Presentation.Editor",
+    "rootNamespace": "Warpaz.Presentation.Editor",
+    "references": [
+        "Warpaz.Presentation",
+        "UnityEngine.UI",
+        "Unity.TextMeshPro",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

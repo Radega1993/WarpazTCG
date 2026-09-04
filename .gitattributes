@@ -1,0 +1,64 @@
+* text=auto eol=lf
+
+*.cs text diff=csharp
+*.shader text
+*.cginc text
+*.hlsl text
+*.compute text
+*.json text
+*.asmdef text
+*.asmref text
+*.md text
+*.csv text
+*.xml text
+*.yaml text
+*.yml text
+*.txt text
+*.gitignore text
+*.gitattributes text
+
+*.csproj text eol=crlf
+*.sln text eol=crlf
+*.slnx text
+
+*.meta text
+*.unity text
+*.prefab text
+*.asset text
+*.controller text
+*.anim text
+*.overrideController text
+*.physicMaterial text
+*.physicsMaterial2D text
+*.inputactions text
+*.scenetemplate text
+
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.gif binary
+*.tga binary
+*.tif binary
+*.tiff binary
+*.psd binary
+*.ai binary
+*.exr binary
+*.hdr binary
+*.mp3 binary
+*.ogg binary
+*.wav binary
+*.aif binary
+*.aiff binary
+*.ttf binary
+*.otf binary
+*.dll binary
+*.so binary
+*.dylib binary
+*.exe binary
+*.pdf binary
+*.docx binary
+*.xlsx binary
+*.zip binary
+*.7z binary
+*.gz binary
+*.unitypackage binary

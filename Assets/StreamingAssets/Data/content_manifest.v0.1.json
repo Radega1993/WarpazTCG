@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "0.1",
+  "contentVersion": "WZ1-v0.1",
+  "setId": "WZ1",
+  "expectedCardCount": 120,
+  "firstCardId": "WZ1-001",
+  "lastCardId": "WZ1-120",
+  "identityCount": 17,
+  "heroCount": 11,
+  "classCount": 6,
+  "mainDeckCardCount": 103,
+  "catalogFile": "cards_wz1.v0.1.json",
+  "sourceWorkbook": "Docs/Source/warpaz_tcg_base_set_wz1_v0_1.xlsx",
+  "sheet": "Cartas",
+  "catalogSha256": "12c7ffece2850f50cf8682909ff024b41935219d82c5254d68d93145be135029",
+  "typeCounts": {
+    "Personaje": 60,
+    "Acción": 20,
+    "Equipo": 13,
+    "Héroe": 11,
+    "Reacción": 10,
+    "Clase": 6
+  }
+}

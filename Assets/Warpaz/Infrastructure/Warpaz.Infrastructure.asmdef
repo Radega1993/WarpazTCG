@@ -1,0 +1,17 @@
+{
+    "name": "Warpaz.Infrastructure",
+    "rootNamespace": "Warpaz.Infrastructure",
+    "references": [
+        "Warpaz.Domain",
+        "Warpaz.Application"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}
