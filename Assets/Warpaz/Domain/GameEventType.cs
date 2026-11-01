@@ -22,6 +22,18 @@ namespace Warpaz.Domain
         InitialHandDrawn = 16,
         PreparationCompleted = 17,
         DrawFailed = 18,
-        ActivePlayerChanged = 19
+        ActivePlayerChanged = 19,
+        PaSpent = 20,
+        CharacterPlayed = 21,
+        CharacterReplaced = 22,
+        CharacterExhausted = 23,
+        CharacterReadied = 24,
+        RecentApplied = 25,
+        RecentRemoved = 26,
+        AttackDeclared = 27,
+        AttackIntercepted = 28,
+        InterceptionDeclined = 29,
+        CombatResolved = 30,
+        CharacterKnockedOut = 31
     }
 }

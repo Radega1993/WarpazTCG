@@ -63,10 +63,8 @@ namespace Warpaz.Tests.PlayMode
 
         private static GameSession GetSession(BattleCompositionRoot root)
         {
-            var field = typeof(BattleCompositionRoot)
-                .GetField("_session", BindingFlags.NonPublic | BindingFlags.Instance);
-            Assert.IsNotNull(field, "BattleCompositionRoot._session field not found via reflection");
-            var session = (GameSession)field.GetValue(root);
+            Assert.IsNotNull(root, "BattleCompositionRoot is null");
+            var session = root.Session;
             Assert.IsNotNull(session, "GameSession is null");
             return session;
         }

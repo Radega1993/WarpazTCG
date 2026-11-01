@@ -11,7 +11,7 @@ namespace Warpaz.Application
     {
         public static IReadOnlyList<LegalAction> For(GameState state)
         {
-            return LegalActions.For(state);
+            return LegalActions.For(state, null);
         }
 
         public static IReadOnlyList<LegalAction> For(GameSession session)
@@ -21,7 +21,7 @@ namespace Warpaz.Application
                 return Array.Empty<LegalAction>();
             }
 
-            return LegalActions.For(session.State);
+            return LegalActions.For(session.State, session.Catalog);
         }
     }
 }

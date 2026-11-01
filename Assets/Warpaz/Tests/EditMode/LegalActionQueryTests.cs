@@ -33,17 +33,28 @@ namespace Warpaz.Tests.EditMode
         }
 
         [Test]
-        public void Main_OnlyActivePlayerCanEndTurn()
+        public void Main_ActivePlayerCanEndTurn_AndMayPlayCharacters()
         {
             var session = PlayToMain();
             var active = session.State.ActivePlayerId;
             var actions = session.LegalActions();
 
-            Assert.AreEqual(1, actions.Count);
+            Assert.GreaterOrEqual(actions.Count, 1);
             Assert.AreEqual(CommandType.EndTurn, actions[0].Type);
             Assert.AreEqual(active, actions[0].ActorId);
             Assert.IsFalse(actions[0].HasMulliganDecision);
             Assert.AreEqual(0, CountEndTurn(actions, active.Opponent));
+
+            var playCount = 0;
+            for (var i = 0; i < actions.Count; i++)
+            {
+                if (actions[i].Type == CommandType.Play && actions[i].ActorId == active)
+                {
+                    playCount++;
+                }
+            }
+
+            Assert.Greater(playCount, 0, "With PA and Characters in hand, Main should list Play actions.");
         }
 
         [Test]

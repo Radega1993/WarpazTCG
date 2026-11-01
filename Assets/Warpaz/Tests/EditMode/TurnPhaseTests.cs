@@ -200,7 +200,7 @@ namespace Warpaz.Tests.EditMode
 
             var unsupported = engine.Submit(
                 state,
-                Command.Unsupported("bad4", state.ActivePlayerId, CommandType.Attack, state.EventIndex));
+                Command.Unsupported("bad4", state.ActivePlayerId, CommandType.Equip, state.EventIndex));
             Assert.IsFalse(unsupported.Accepted);
             Assert.AreEqual(CommandRejectionCode.CommandNotSupported, unsupported.Code);
         }

@@ -6,6 +6,7 @@ namespace Warpaz.Domain
         None = 0,
         ChooseTargets = 1,
         ChooseOption = 2,
-        OrderTriggers = 3
+        OrderTriggers = 3,
+        ChooseInterceptor = 4
     }
 }

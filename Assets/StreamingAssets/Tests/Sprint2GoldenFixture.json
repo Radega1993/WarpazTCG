@@ -1,0 +1,18 @@
+{
+  "name": "Sprint2GoldenFixture",
+  "seed": 4202,
+  "contentVersion": "WZ0-combat",
+  "ruleVersion": "0.1.0",
+  "sequence": [
+    "CreateMatch",
+    "ConfirmMulligan KeepHand P0",
+    "ConfirmMulligan KeepHand P1",
+    "Place Strong Vanguard actor",
+    "Place Weak Vanguard defender",
+    "Attack Strong vs Weak",
+    "Pass turns until actor Main (ready)",
+    "AttackHero",
+    "ReorganizeMove Strong to Rearguard 0"
+  ],
+  "expectedFinalHash": "6c9020d410a7a93884d3f44947af431968516d2cc8c9740c3ca13d7f77312b6c"
+}

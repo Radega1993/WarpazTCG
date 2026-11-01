@@ -45,7 +45,7 @@ namespace Warpaz.Content
                     1,
                     "Common",
                     false,
-                    "Vanguardia",
+                    "Cualquiera",
                     Array.Empty<string>(),
                     string.Empty,
                     string.Empty,

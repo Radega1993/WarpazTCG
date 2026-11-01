@@ -20,6 +20,7 @@ namespace Warpaz.Presentation
             _keepButton = FindButton("KeepHandButton");
             _replaceButton = FindButton("ReplaceHandButton");
             _onlyOnce = FindText("OnlyOnceText");
+            LayoutPanel();
         }
 
         public void Bind(System.Action<MulliganDecision> onConfirm)
@@ -42,10 +43,12 @@ namespace Warpaz.Presentation
         public void Render(IReadOnlyList<LegalAction> legalActions, PlayerId prioritySeat, bool busy, bool passOverlayVisible)
         {
             gameObject.SetActive(true);
+            LayoutPanel();
 
             if (_onlyOnce != null)
             {
                 _onlyOnce.text = "Solo puede hacerse una vez.";
+                ConfigureLabel(_onlyOnce);
             }
 
             var canKeep = false;
@@ -80,12 +83,98 @@ namespace Warpaz.Presentation
             }
         }
 
-        // Testability: read-only getter for PlayMode tests.
         internal bool KeepHandInteractable => _keepButton != null && _keepButton.interactable;
 
         public void Hide()
         {
             gameObject.SetActive(false);
+        }
+
+        private void LayoutPanel()
+        {
+            var host = transform as RectTransform;
+            if (host != null)
+            {
+                // Centered modal card, not full-screen white.
+                host.anchorMin = new Vector2(0.32f, 0.35f);
+                host.anchorMax = new Vector2(0.68f, 0.65f);
+                host.offsetMin = Vector2.zero;
+                host.offsetMax = Vector2.zero;
+            }
+
+            var bg = GetComponent<Image>();
+            if (bg == null)
+            {
+                bg = gameObject.AddComponent<Image>();
+            }
+
+            bg.color = new Color(0.12f, 0.12f, 0.14f, 0.92f);
+            bg.raycastTarget = true;
+
+            PlaceButton(_keepButton, 0.08f, 0.38f, 0.48f, 0.72f, "Keep");
+            PlaceButton(_replaceButton, 0.52f, 0.38f, 0.92f, 0.72f, "Replace");
+            if (_onlyOnce != null)
+            {
+                var rt = _onlyOnce.rectTransform;
+                rt.anchorMin = new Vector2(0.08f, 0.08f);
+                rt.anchorMax = new Vector2(0.92f, 0.32f);
+                rt.offsetMin = Vector2.zero;
+                rt.offsetMax = Vector2.zero;
+                ConfigureLabel(_onlyOnce);
+            }
+        }
+
+        private static void PlaceButton(Button button, float x0, float y0, float x1, float y1, string labelText)
+        {
+            if (button == null)
+            {
+                return;
+            }
+
+            var rt = button.transform as RectTransform;
+            if (rt == null)
+            {
+                return;
+            }
+
+            rt.anchorMin = new Vector2(x0, y0);
+            rt.anchorMax = new Vector2(x1, y1);
+            rt.offsetMin = Vector2.zero;
+            rt.offsetMax = Vector2.zero;
+
+            var img = button.GetComponent<Image>();
+            if (img != null)
+            {
+                img.color = new Color(0.35f, 0.32f, 0.28f, 1f);
+            }
+
+            var label = button.GetComponentInChildren<TMP_Text>(true);
+            if (label != null)
+            {
+                if (string.IsNullOrEmpty(label.text) || label.text.Length < 2)
+                {
+                    label.text = labelText;
+                }
+
+                ConfigureLabel(label);
+                label.alignment = TextAlignmentOptions.Center;
+            }
+        }
+
+        private static void ConfigureLabel(TMP_Text text)
+        {
+            if (text == null)
+            {
+                return;
+            }
+
+            text.raycastTarget = false;
+            text.enableAutoSizing = true;
+            text.fontSizeMin = 14f;
+            text.fontSizeMax = 28f;
+            text.textWrappingMode = TextWrappingModes.NoWrap;
+            text.overflowMode = TextOverflowModes.Ellipsis;
+            text.color = BattleUiColors.CardText;
         }
 
         private Button FindButton(string relativePath)

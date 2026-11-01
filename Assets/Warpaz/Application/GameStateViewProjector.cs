@@ -75,7 +75,43 @@ namespace Warpaz.Application
                 player.DeckInstanceIds.Count,
                 player.HandInstanceIds.Count,
                 visibleHand,
-                CardsFrom(state, player.DiscardInstanceIds));
+                CardsFrom(state, player.DiscardInstanceIds),
+                BoardFrom(state, player));
+        }
+
+        private static IReadOnlyList<BoardSlotView> BoardFrom(GameState state, PlayerState player)
+        {
+            var slots = new List<BoardSlotView>(player.BoardSlots.Count);
+            for (var i = 0; i < player.BoardSlots.Count; i++)
+            {
+                var slot = player.BoardSlots[i];
+                CardView occupant = null;
+                var ready = ReadyState.Ready;
+                var recent = false;
+                if (!slot.Occupant.IsNone && state.TryGetCard(slot.Occupant, out var card))
+                {
+                    occupant = new CardView(card.InstanceId, card.DefinitionId);
+                    ready = card.ReadyState;
+                    recent = HasStatus(card, StatusType.Recent);
+                }
+
+                slots.Add(new BoardSlotView(slot.Row, slot.Index, occupant, ready, recent));
+            }
+
+            return slots;
+        }
+
+        private static bool HasStatus(CardInstance card, StatusType status)
+        {
+            for (var i = 0; i < card.Statuses.Count; i++)
+            {
+                if (card.Statuses[i] == status)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static IReadOnlyList<CardView> CardsFrom(GameState state, IReadOnlyList<CardInstanceId> ids)

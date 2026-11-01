@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using Warpaz.Application;
 using Warpaz.Content;
@@ -25,6 +24,9 @@ namespace Warpaz.Presentation
         private bool _busy;
         private string _rejectionReason;
 
+        private CardInstanceId _selectedHandId = CardInstanceId.None;
+        private CardInstanceId _selectedBoardId = CardInstanceId.None;
+
         private PlayerAreaView _playerArea;
         private HandView _handView;
         private MatchStatusView _statusView;
@@ -33,6 +35,9 @@ namespace Warpaz.Presentation
         private PassDeviceOverlay _passOverlay;
         private BattleControlsView _controls;
         private BoardSlotsView _boardSlots;
+        private OpponentHandView _opponentHand;
+        private PileStripView _localPiles;
+        private PileStripView _opponentPiles;
 
         public BattlePresenter(
             GameSession session,
@@ -56,7 +61,10 @@ namespace Warpaz.Presentation
             EventLogView eventLog,
             PassDeviceOverlay passOverlay,
             BattleControlsView controls,
-            BoardSlotsView boardSlots)
+            BoardSlotsView boardSlots,
+            OpponentHandView opponentHand = null,
+            PileStripView localPiles = null,
+            PileStripView opponentPiles = null)
         {
             _playerArea = playerArea;
             _handView = handView;
@@ -66,6 +74,9 @@ namespace Warpaz.Presentation
             _passOverlay = passOverlay;
             _controls = controls;
             _boardSlots = boardSlots;
+            _opponentHand = opponentHand;
+            _localPiles = localPiles;
+            _opponentPiles = opponentPiles;
 
             if (_mulliganPanel != null)
             {
@@ -74,12 +85,27 @@ namespace Warpaz.Presentation
 
             if (_controls != null)
             {
-                _controls.Bind(OnEndTurn);
+                _controls.Bind(OnPrimaryControl, OnDeclineInterception);
             }
 
             if (_passOverlay != null)
             {
                 _passOverlay.Bind(OnPassDeviceConfirmed);
+            }
+
+            if (_handView != null)
+            {
+                _handView.Bind(OnHandCardClicked);
+            }
+
+            if (_boardSlots != null)
+            {
+                _boardSlots.Bind(OnBoardSlotClicked);
+            }
+
+            if (_playerArea != null)
+            {
+                _playerArea.BindRivalHero(OnRivalHeroClicked);
             }
         }
 
@@ -95,6 +121,7 @@ namespace Warpaz.Presentation
             _handRevealed = true;
             _passOverlayVisible = false;
             _rejectionReason = string.Empty;
+            ClearSelection();
 
             Render();
         }
@@ -116,20 +143,146 @@ namespace Warpaz.Presentation
 
             var view = BuildView();
             var state = _session.State;
+            var interactive = CanInteract();
 
-            _boardSlots?.Render(_debugVisibility);
+            _boardSlots?.Render(
+                view,
+                _prioritySeat,
+                _catalog,
+                interactive,
+                _selectedBoardId,
+                CollectLegalBoardTargets());
             _playerArea?.Render(view, state.ActivePlayerId, _prioritySeat, _catalog, _player0Name, _player1Name);
-            _statusView?.Render(view, state.ActivePlayerId, _prioritySeat, _rejectionReason);
+            _statusView?.Render(view, state.ActivePlayerId, _prioritySeat, StatusMessage());
             _eventLog?.Render(view.Events, _rejectionReason);
 
             _passOverlayVisible = _passOverlayVisible && _handRevealed == false;
             _passOverlay?.Render(_passOverlayVisible, _pendingPrioritySeat, _player0Name, _player1Name);
 
             var showHand = _handRevealed && !_passOverlayVisible;
-            _handView?.Render(view, showHand, _catalog);
+            _handView?.Render(
+                view,
+                showHand,
+                _catalog,
+                interactive && state.Phase == MatchPhase.Main,
+                _selectedHandId,
+                CollectPlayableHandIds());
+
+            RenderSideChrome(view);
 
             RenderMulliganPanel();
             RenderControls();
+        }
+
+        private void RenderSideChrome(MatchView view)
+        {
+            var priority = _prioritySeat == PlayerId.Player0 ? view.Player0 : view.Player1;
+            var rival = _prioritySeat == PlayerId.Player0 ? view.Player1 : view.Player0;
+
+            _opponentHand?.Render(rival.HandCount);
+            _localPiles?.Render(priority.DeckCount, priority.Discard.Count);
+            _opponentPiles?.Render(rival.DeckCount, rival.Discard.Count);
+        }
+
+        private List<CardInstanceId> CollectPlayableHandIds()
+        {
+            var result = new List<CardInstanceId>();
+            if (_session.State == null || _session.State.Phase != MatchPhase.Main)
+            {
+                return result;
+            }
+
+            var actions = LegalActionQuery.For(_session);
+            for (var i = 0; i < actions.Count; i++)
+            {
+                var a = actions[i];
+                if (a.ActorId != _prioritySeat)
+                {
+                    continue;
+                }
+
+                if (a.Type == CommandType.Play && !a.PrimaryInstanceId.IsNone)
+                {
+                    result.Add(a.PrimaryInstanceId);
+                }
+            }
+
+            return result;
+        }
+
+        private string StatusMessage()
+        {
+            if (!string.IsNullOrEmpty(_rejectionReason))
+            {
+                return _rejectionReason;
+            }
+
+            if (_session.State != null && _session.State.Phase == MatchPhase.PendingChoice)
+            {
+                return "Intercepción: elige interceptor o Declinar";
+            }
+
+            if (!_selectedHandId.IsNone)
+            {
+                return "Selecciona casilla (o unidad a sustituir)";
+            }
+
+            if (!_selectedBoardId.IsNone)
+            {
+                return "Selecciona objetivo, casilla vacía u otra unidad (reorg)";
+            }
+
+            return string.Empty;
+        }
+
+        private List<CardInstanceId> CollectLegalBoardTargets()
+        {
+            var result = new List<CardInstanceId>();
+            if (_session.State == null)
+            {
+                return result;
+            }
+
+            var actions = LegalActionQuery.For(_session);
+            for (var i = 0; i < actions.Count; i++)
+            {
+                var a = actions[i];
+                if (a.ActorId != _prioritySeat)
+                {
+                    continue;
+                }
+
+                if (!_selectedBoardId.IsNone)
+                {
+                    if (a.Type == CommandType.Attack &&
+                        a.PrimaryInstanceId == _selectedBoardId &&
+                        !a.TargetsHero &&
+                        !a.SecondaryInstanceId.IsNone)
+                    {
+                        result.Add(a.SecondaryInstanceId);
+                    }
+                    else if (a.Type == CommandType.Reorganize &&
+                             a.HasReorganizeMode &&
+                             a.ReorganizeMode == ReorganizeMode.SwapRows &&
+                             a.PrimaryInstanceId == _selectedBoardId &&
+                             !a.SecondaryInstanceId.IsNone)
+                    {
+                        result.Add(a.SecondaryInstanceId);
+                    }
+                }
+
+                if (a.Type == CommandType.ChooseTargets && !a.PrimaryInstanceId.IsNone)
+                {
+                    result.Add(a.PrimaryInstanceId);
+                }
+            }
+
+            return result;
+        }
+
+        private bool CanInteract()
+        {
+            return !_busy && !_passOverlayVisible && _handRevealed && _session.State != null;
         }
 
         private void RenderMulliganPanel()
@@ -143,7 +296,7 @@ namespace Warpaz.Presentation
             var show = state.Phase == MatchPhase.MulliganP0 || state.Phase == MatchPhase.MulliganP1;
             if (show)
             {
-                var actions = LegalActionQuery.For(state);
+                var actions = LegalActionQuery.For(_session);
                 _mulliganPanel.Render(actions, _prioritySeat, _busy && show, _passOverlayVisible);
             }
             else
@@ -159,17 +312,36 @@ namespace Warpaz.Presentation
                 return;
             }
 
-            if (_session.State.Phase != MatchPhase.Main)
+            var state = _session.State;
+            if (state.Phase == MatchPhase.PendingChoice)
+            {
+                var canDecline = false;
+                var actions = LegalActionQuery.For(_session);
+                for (var i = 0; i < actions.Count; i++)
+                {
+                    var a = actions[i];
+                    if (a.Type == CommandType.PassPriority && a.ActorId == _prioritySeat)
+                    {
+                        canDecline = true;
+                        break;
+                    }
+                }
+
+                _controls.RenderIntercept(canDecline, _busy, _passOverlayVisible);
+                return;
+            }
+
+            if (state.Phase != MatchPhase.Main)
             {
                 _controls.Hide();
                 return;
             }
 
-            var actions = LegalActionQuery.For(_session.State);
+            var mainActions = LegalActionQuery.For(_session);
             var canEnd = false;
-            for (var i = 0; i < actions.Count; i++)
+            for (var i = 0; i < mainActions.Count; i++)
             {
-                var a = actions[i];
+                var a = mainActions[i];
                 if (a.Type == CommandType.EndTurn && a.ActorId == _prioritySeat)
                 {
                     canEnd = true;
@@ -180,6 +352,163 @@ namespace Warpaz.Presentation
             _controls.Render(canEnd, _busy, _passOverlayVisible);
         }
 
+        private void OnHandCardClicked(CardInstanceId instanceId)
+        {
+            if (!CanInteract() || _session.State.Phase != MatchPhase.Main)
+            {
+                return;
+            }
+
+            if (_selectedHandId == instanceId)
+            {
+                ClearSelection();
+            }
+            else
+            {
+                _selectedHandId = instanceId;
+                _selectedBoardId = CardInstanceId.None;
+            }
+
+            _rejectionReason = string.Empty;
+            Render();
+        }
+
+        private void OnBoardSlotClicked(PlayerId ownerId, int domainSlotIndex)
+        {
+            if (!CanInteract())
+            {
+                return;
+            }
+
+            var state = _session.State;
+            if (state.Phase == MatchPhase.PendingChoice)
+            {
+                TryChooseInterceptor(ownerId, domainSlotIndex);
+                return;
+            }
+
+            if (state.Phase != MatchPhase.Main)
+            {
+                return;
+            }
+
+            var slot = ResolveSlot(ownerId, domainSlotIndex);
+            if (!slot.HasValue)
+            {
+                return;
+            }
+
+            var boardSlot = slot.Value;
+            var isOwn = ownerId == _prioritySeat;
+
+            if (!_selectedHandId.IsNone && isOwn)
+            {
+                if (boardSlot.Occupant.IsNone)
+                {
+                    TrySubmit(() => _session.Play(
+                        _prioritySeat, _selectedHandId, boardSlot.Row, boardSlot.Index));
+                }
+                else
+                {
+                    TrySubmit(() => _session.PlayReplace(
+                        _prioritySeat, _selectedHandId, boardSlot.Occupant));
+                }
+
+                return;
+            }
+
+            if (!_selectedBoardId.IsNone)
+            {
+                if (!isOwn)
+                {
+                    if (!boardSlot.Occupant.IsNone)
+                    {
+                        TrySubmit(() => _session.Attack(
+                            _prioritySeat, _selectedBoardId, boardSlot.Occupant));
+                    }
+
+                    return;
+                }
+
+                if (boardSlot.Occupant.IsNone)
+                {
+                    TrySubmit(() => _session.ReorganizeMove(
+                        _prioritySeat, _selectedBoardId, boardSlot.Row, boardSlot.Index));
+                    return;
+                }
+
+                if (boardSlot.Occupant == _selectedBoardId)
+                {
+                    ClearSelection();
+                    Render();
+                    return;
+                }
+
+                TrySubmit(() => _session.ReorganizeSwap(
+                    _prioritySeat, _selectedBoardId, boardSlot.Occupant));
+                return;
+            }
+
+            if (isOwn && !boardSlot.Occupant.IsNone)
+            {
+                _selectedBoardId = boardSlot.Occupant;
+                _selectedHandId = CardInstanceId.None;
+                _rejectionReason = string.Empty;
+                Render();
+            }
+        }
+
+        private void OnRivalHeroClicked()
+        {
+            if (!CanInteract() || _session.State.Phase != MatchPhase.Main)
+            {
+                return;
+            }
+
+            if (_selectedBoardId.IsNone)
+            {
+                _rejectionReason = "Selecciona atacante primero";
+                Render();
+                return;
+            }
+
+            TrySubmit(() => _session.AttackHero(_prioritySeat, _selectedBoardId));
+        }
+
+        private void TryChooseInterceptor(PlayerId ownerId, int domainSlotIndex)
+        {
+            var slot = ResolveSlot(ownerId, domainSlotIndex);
+            if (!slot.HasValue || slot.Value.Occupant.IsNone)
+            {
+                return;
+            }
+
+            var interceptorId = slot.Value.Occupant;
+            var actions = LegalActionQuery.For(_session);
+            for (var i = 0; i < actions.Count; i++)
+            {
+                var a = actions[i];
+                if (a.Type == CommandType.ChooseTargets &&
+                    a.ActorId == _prioritySeat &&
+                    a.PrimaryInstanceId == interceptorId)
+                {
+                    TrySubmit(() => _session.ChooseInterceptor(_prioritySeat, interceptorId));
+                    return;
+                }
+            }
+        }
+
+        private BoardSlot? ResolveSlot(PlayerId ownerId, int domainSlotIndex)
+        {
+            var player = _session.State.GetPlayer(ownerId);
+            if (domainSlotIndex < 0 || domainSlotIndex >= player.BoardSlots.Count)
+            {
+                return null;
+            }
+
+            return player.BoardSlots[domainSlotIndex];
+        }
+
         private void OnConfirmMulligan(MulliganDecision decision)
         {
             if (_busy || _session.State == null)
@@ -187,43 +516,43 @@ namespace Warpaz.Presentation
                 return;
             }
 
-            _busy = true;
-            _rejectionReason = string.Empty;
-            _priorityBeforeCommand = _session.State.PriorityPlayerId;
-
-            var result = _session.ConfirmMulligan(_priorityBeforeCommand, decision);
-            _busy = false;
-
-            if (!result.Accepted)
-            {
-                _rejectionReason = result.RejectionReason;
-                Render();
-                return;
-            }
-
-            var afterPriority = _session.State.PriorityPlayerId;
-            if (afterPriority != _priorityBeforeCommand)
-            {
-                _handRevealed = false;
-                _pendingPrioritySeat = afterPriority;
-                _passOverlayVisible = true;
-            }
-
-            Render();
+            ClearSelection();
+            TrySubmit(() => _session.ConfirmMulligan(_session.State.PriorityPlayerId, decision));
         }
 
-        private void OnEndTurn()
+        private void OnPrimaryControl()
         {
             if (_busy || _session.State == null)
             {
                 return;
             }
 
+            if (_session.State.Phase == MatchPhase.PendingChoice)
+            {
+                return;
+            }
+
+            ClearSelection();
+            TrySubmit(() => _session.EndTurn(_session.State.PriorityPlayerId));
+        }
+
+        private void OnDeclineInterception()
+        {
+            if (_busy || _session.State == null || _session.State.Phase != MatchPhase.PendingChoice)
+            {
+                return;
+            }
+
+            TrySubmit(() => _session.DeclineInterception(_session.State.PriorityPlayerId));
+        }
+
+        private void TrySubmit(System.Func<CommandResult> submit)
+        {
             _busy = true;
             _rejectionReason = string.Empty;
             _priorityBeforeCommand = _session.State.PriorityPlayerId;
 
-            var result = _session.EndTurn(_priorityBeforeCommand);
+            var result = submit();
             _busy = false;
 
             if (!result.Accepted)
@@ -232,6 +561,8 @@ namespace Warpaz.Presentation
                 Render();
                 return;
             }
+
+            ClearSelection();
 
             var afterPriority = _session.State.PriorityPlayerId;
             if (afterPriority != _priorityBeforeCommand)
@@ -250,7 +581,14 @@ namespace Warpaz.Presentation
             _viewerSeatIndex = _pendingPrioritySeat.Index;
             _handRevealed = true;
             _rejectionReason = string.Empty;
+            ClearSelection();
             Render();
+        }
+
+        private void ClearSelection()
+        {
+            _selectedHandId = CardInstanceId.None;
+            _selectedBoardId = CardInstanceId.None;
         }
     }
 }

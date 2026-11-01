@@ -5,8 +5,12 @@ using Warpaz.Domain;
 
 namespace Warpaz.Presentation
 {
+    /// <summary>
+    /// Isolated OnGUI table for SampleScene only. Disabled by default so Battle grey table stays the product path.
+    /// </summary>
     public sealed class MatchDebugHud : MonoBehaviour
     {
+        [SerializeField] private bool enableDebugHud;
         [SerializeField] private ulong seed = 1;
 
         private GameSession _session;
@@ -16,6 +20,12 @@ namespace Warpaz.Presentation
 
         private void Start()
         {
+            if (!enableDebugHud)
+            {
+                enabled = false;
+                return;
+            }
+
             BeginMatch();
         }
 

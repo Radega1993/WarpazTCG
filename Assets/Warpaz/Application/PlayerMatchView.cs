@@ -5,6 +5,7 @@ namespace Warpaz.Application
 {
     /// <summary>
     /// Per-player slice of a match view. Opponent hands expose count only.
+    /// Board slots are always visible (public information).
     /// </summary>
     public sealed class PlayerMatchView
     {
@@ -18,7 +19,8 @@ namespace Warpaz.Application
             int deckCount,
             int handCount,
             IReadOnlyList<CardView> visibleHand,
-            IReadOnlyList<CardView> discard)
+            IReadOnlyList<CardView> discard,
+            IReadOnlyList<BoardSlotView> boardSlots)
         {
             PlayerId = playerId;
             HeroId = heroId;
@@ -30,6 +32,7 @@ namespace Warpaz.Application
             HandCount = handCount;
             VisibleHand = visibleHand;
             Discard = discard;
+            BoardSlots = boardSlots;
         }
 
         public PlayerId PlayerId { get; }
@@ -51,5 +54,7 @@ namespace Warpaz.Application
         public IReadOnlyList<CardView> VisibleHand { get; }
 
         public IReadOnlyList<CardView> Discard { get; }
+
+        public IReadOnlyList<BoardSlotView> BoardSlots { get; }
     }
 }

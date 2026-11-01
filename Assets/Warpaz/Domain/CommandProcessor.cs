@@ -14,7 +14,12 @@ namespace Warpaz.Domain
             {
                 new CreateMatchHandler(catalog),
                 new ConfirmMulliganHandler(),
-                new EndTurnHandler()
+                new EndTurnHandler(),
+                new PlayCharacterHandler(catalog),
+                new ReorganizeHandler(),
+                new AttackHandler(catalog),
+                new ChooseInterceptorHandler(catalog),
+                new DeclineInterceptionHandler(catalog)
             };
         }
 

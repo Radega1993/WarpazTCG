@@ -28,10 +28,19 @@ namespace Warpaz.Presentation
                 _toggleButton.onClick.AddListener(Toggle);
             }
 
+            // Dev log hidden during normal play; lives under ValidationOrDebugLayer.
+            _collapsed = true;
             if (_root != null)
             {
-                _root.SetActive(!_collapsed);
+                _root.SetActive(false);
             }
+
+            if (_toggleText != null)
+            {
+                _toggleText.text = "Mostrar log";
+            }
+
+            gameObject.SetActive(false);
         }
 
         private void Toggle()

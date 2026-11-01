@@ -63,6 +63,37 @@ namespace Warpaz.Domain
 
         private static void RunPreparation(GameState state)
         {
+            var player = state.GetPlayer(state.ActivePlayerId);
+            for (var i = 0; i < player.BoardSlots.Count; i++)
+            {
+                var slot = player.BoardSlots[i];
+                if (!slot.IsOccupied)
+                {
+                    continue;
+                }
+
+                var card = state.Cards[slot.Occupant];
+                if (card.ReadyState == ReadyState.Exhausted)
+                {
+                    EngineActions.Ready(state, card);
+                }
+            }
+
+            for (var i = 0; i < player.BoardSlots.Count; i++)
+            {
+                var slot = player.BoardSlots[i];
+                if (!slot.IsOccupied)
+                {
+                    continue;
+                }
+
+                var card = state.Cards[slot.Occupant];
+                if (CombatPolicies.HasRecent(card))
+                {
+                    EngineActions.RemoveRecent(state, card);
+                }
+            }
+
             state.Emit(GameEventType.PreparationCompleted, state.ActivePlayerId, string.Empty);
             EngineActions.SetPhase(state, MatchPhase.Pa);
         }
@@ -121,7 +152,7 @@ namespace Warpaz.Domain
             BeginTurn(state, state.ActivePlayerId.Opponent);
         }
 
-        private static void TryEndMatch(GameState state, PlayerId winner, MatchEndCause cause)
+        internal static void TryEndMatch(GameState state, PlayerId winner, MatchEndCause cause)
         {
             state.Result = MatchResult.Ended(winner, cause);
             state.Emit(GameEventType.MatchEnded, Command.HostActorId, state.Result.ToString());

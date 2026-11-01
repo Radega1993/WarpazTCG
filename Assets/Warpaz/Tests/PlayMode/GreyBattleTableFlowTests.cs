@@ -1,5 +1,5 @@
 using System;
-using System.Reflection;
+using System.Collections;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -77,10 +77,7 @@ namespace Warpaz.Tests.PlayMode
             var battleRoot = UnityEngine.Object.FindFirstObjectByType<BattleCompositionRoot>();
             Assert.IsNotNull(battleRoot, "BattleCompositionRoot not found");
 
-            var sessionField = typeof(BattleCompositionRoot).GetField("_session", BindingFlags.NonPublic | BindingFlags.Instance);
-            Assert.IsNotNull(sessionField, "BattleCompositionRoot._session field not found");
-
-            var session = (GameSession)sessionField.GetValue(battleRoot);
+            var session = battleRoot.Session;
             Assert.IsNotNull(session, "GameSession is null");
 
             var overlays = UnityEngine.Object.FindObjectsByType<PassDeviceOverlay>(FindObjectsInactive.Include, FindObjectsSortMode.None);

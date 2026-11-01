@@ -14,7 +14,15 @@ namespace Warpaz.Domain
             CommandType type,
             int expectedEventIndex,
             MatchSetup matchSetup,
-            MulliganDecision decision)
+            MulliganDecision decision,
+            CardInstanceId primaryInstanceId,
+            CardInstanceId secondaryInstanceId,
+            BoardRow targetRow,
+            int targetSlotIndex,
+            bool hasBoardSlotTarget,
+            bool targetsHero,
+            ReorganizeMode reorganizeMode,
+            bool hasReorganizeMode)
         {
             CommandId = commandId;
             ActorId = actorId;
@@ -22,6 +30,14 @@ namespace Warpaz.Domain
             ExpectedEventIndex = expectedEventIndex;
             MatchSetup = matchSetup;
             Decision = decision;
+            PrimaryInstanceId = primaryInstanceId;
+            SecondaryInstanceId = secondaryInstanceId;
+            TargetRow = targetRow;
+            TargetSlotIndex = targetSlotIndex;
+            HasBoardSlotTarget = hasBoardSlotTarget;
+            TargetsHero = targetsHero;
+            ReorganizeMode = reorganizeMode;
+            HasReorganizeMode = hasReorganizeMode;
         }
 
         public CommandId CommandId { get; }
@@ -38,9 +54,39 @@ namespace Warpaz.Domain
 
         public bool KeepHand => Decision == MulliganDecision.KeepHand;
 
+        public CardInstanceId PrimaryInstanceId { get; }
+
+        public CardInstanceId SecondaryInstanceId { get; }
+
+        public BoardRow TargetRow { get; }
+
+        public int TargetSlotIndex { get; }
+
+        public bool HasBoardSlotTarget { get; }
+
+        public bool TargetsHero { get; }
+
+        public ReorganizeMode ReorganizeMode { get; }
+
+        public bool HasReorganizeMode { get; }
+
         public static Command CreateMatch(CommandId commandId, MatchSetup setup)
         {
-            return new Command(commandId, HostActorId, CommandType.CreateMatch, 0, setup, MulliganDecision.KeepHand);
+            return new Command(
+                commandId,
+                HostActorId,
+                CommandType.CreateMatch,
+                0,
+                setup,
+                MulliganDecision.KeepHand,
+                CardInstanceId.None,
+                CardInstanceId.None,
+                default,
+                0,
+                false,
+                false,
+                default,
+                false);
         }
 
         public static Command CreateMatch(string commandId, MatchSetup setup)
@@ -60,7 +106,15 @@ namespace Warpaz.Domain
                 CommandType.ConfirmMulligan,
                 expectedEventIndex,
                 null,
-                decision);
+                decision,
+                CardInstanceId.None,
+                CardInstanceId.None,
+                default,
+                0,
+                false,
+                false,
+                default,
+                false);
         }
 
         public static Command ConfirmMulligan(
@@ -92,7 +146,21 @@ namespace Warpaz.Domain
 
         public static Command EndTurn(CommandId commandId, PlayerId actorId, int expectedEventIndex)
         {
-            return new Command(commandId, actorId, CommandType.EndTurn, expectedEventIndex, null, MulliganDecision.KeepHand);
+            return new Command(
+                commandId,
+                actorId,
+                CommandType.EndTurn,
+                expectedEventIndex,
+                null,
+                MulliganDecision.KeepHand,
+                CardInstanceId.None,
+                CardInstanceId.None,
+                default,
+                0,
+                false,
+                false,
+                default,
+                false);
         }
 
         public static Command EndTurn(string commandId, PlayerId actorId, int expectedEventIndex)
@@ -105,13 +173,320 @@ namespace Warpaz.Domain
             return EndTurn(CommandId.Parse(commandId), PlayerId.FromIndex(actorId), expectedEventIndex);
         }
 
+        public static Command Play(
+            CommandId commandId,
+            PlayerId actorId,
+            int expectedEventIndex,
+            CardInstanceId instanceId,
+            BoardRow targetRow,
+            int targetSlotIndex)
+        {
+            return new Command(
+                commandId,
+                actorId,
+                CommandType.Play,
+                expectedEventIndex,
+                null,
+                MulliganDecision.KeepHand,
+                instanceId,
+                CardInstanceId.None,
+                targetRow,
+                targetSlotIndex,
+                true,
+                false,
+                default,
+                false);
+        }
+
+        public static Command Play(
+            string commandId,
+            PlayerId actorId,
+            int expectedEventIndex,
+            CardInstanceId instanceId,
+            BoardRow targetRow,
+            int targetSlotIndex)
+        {
+            return Play(CommandId.Parse(commandId), actorId, expectedEventIndex, instanceId, targetRow, targetSlotIndex);
+        }
+
+        public static Command PlayReplace(
+            CommandId commandId,
+            PlayerId actorId,
+            int expectedEventIndex,
+            CardInstanceId instanceId,
+            CardInstanceId replaceInstanceId)
+        {
+            return new Command(
+                commandId,
+                actorId,
+                CommandType.Play,
+                expectedEventIndex,
+                null,
+                MulliganDecision.KeepHand,
+                instanceId,
+                replaceInstanceId,
+                default,
+                0,
+                false,
+                false,
+                default,
+                false);
+        }
+
+        public static Command PlayReplace(
+            string commandId,
+            PlayerId actorId,
+            int expectedEventIndex,
+            CardInstanceId instanceId,
+            CardInstanceId replaceInstanceId)
+        {
+            return PlayReplace(
+                CommandId.Parse(commandId),
+                actorId,
+                expectedEventIndex,
+                instanceId,
+                replaceInstanceId);
+        }
+
+        public static Command Attack(
+            CommandId commandId,
+            PlayerId actorId,
+            int expectedEventIndex,
+            CardInstanceId attackerId,
+            CardInstanceId targetCharacterId)
+        {
+            return new Command(
+                commandId,
+                actorId,
+                CommandType.Attack,
+                expectedEventIndex,
+                null,
+                MulliganDecision.KeepHand,
+                attackerId,
+                targetCharacterId,
+                default,
+                0,
+                false,
+                false,
+                default,
+                false);
+        }
+
+        public static Command Attack(
+            string commandId,
+            PlayerId actorId,
+            int expectedEventIndex,
+            CardInstanceId attackerId,
+            CardInstanceId targetCharacterId)
+        {
+            return Attack(
+                CommandId.Parse(commandId),
+                actorId,
+                expectedEventIndex,
+                attackerId,
+                targetCharacterId);
+        }
+
+        public static Command AttackHero(
+            CommandId commandId,
+            PlayerId actorId,
+            int expectedEventIndex,
+            CardInstanceId attackerId)
+        {
+            return new Command(
+                commandId,
+                actorId,
+                CommandType.Attack,
+                expectedEventIndex,
+                null,
+                MulliganDecision.KeepHand,
+                attackerId,
+                CardInstanceId.None,
+                default,
+                0,
+                false,
+                true,
+                default,
+                false);
+        }
+
+        public static Command AttackHero(
+            string commandId,
+            PlayerId actorId,
+            int expectedEventIndex,
+            CardInstanceId attackerId)
+        {
+            return AttackHero(CommandId.Parse(commandId), actorId, expectedEventIndex, attackerId);
+        }
+
+        public static Command ReorganizeMove(
+            CommandId commandId,
+            PlayerId actorId,
+            int expectedEventIndex,
+            CardInstanceId instanceId,
+            BoardRow targetRow,
+            int targetSlotIndex)
+        {
+            return new Command(
+                commandId,
+                actorId,
+                CommandType.Reorganize,
+                expectedEventIndex,
+                null,
+                MulliganDecision.KeepHand,
+                instanceId,
+                CardInstanceId.None,
+                targetRow,
+                targetSlotIndex,
+                true,
+                false,
+                ReorganizeMode.MoveToEmptyOtherRow,
+                true);
+        }
+
+        public static Command ReorganizeMove(
+            string commandId,
+            PlayerId actorId,
+            int expectedEventIndex,
+            CardInstanceId instanceId,
+            BoardRow targetRow,
+            int targetSlotIndex)
+        {
+            return ReorganizeMove(
+                CommandId.Parse(commandId),
+                actorId,
+                expectedEventIndex,
+                instanceId,
+                targetRow,
+                targetSlotIndex);
+        }
+
+        public static Command ReorganizeSwap(
+            CommandId commandId,
+            PlayerId actorId,
+            int expectedEventIndex,
+            CardInstanceId firstInstanceId,
+            CardInstanceId secondInstanceId)
+        {
+            return new Command(
+                commandId,
+                actorId,
+                CommandType.Reorganize,
+                expectedEventIndex,
+                null,
+                MulliganDecision.KeepHand,
+                firstInstanceId,
+                secondInstanceId,
+                default,
+                0,
+                false,
+                false,
+                ReorganizeMode.SwapRows,
+                true);
+        }
+
+        public static Command ReorganizeSwap(
+            string commandId,
+            PlayerId actorId,
+            int expectedEventIndex,
+            CardInstanceId firstInstanceId,
+            CardInstanceId secondInstanceId)
+        {
+            return ReorganizeSwap(
+                CommandId.Parse(commandId),
+                actorId,
+                expectedEventIndex,
+                firstInstanceId,
+                secondInstanceId);
+        }
+
+        public static Command ChooseInterceptor(
+            CommandId commandId,
+            PlayerId actorId,
+            int expectedEventIndex,
+            CardInstanceId interceptorId)
+        {
+            return new Command(
+                commandId,
+                actorId,
+                CommandType.ChooseTargets,
+                expectedEventIndex,
+                null,
+                MulliganDecision.KeepHand,
+                interceptorId,
+                CardInstanceId.None,
+                default,
+                0,
+                false,
+                false,
+                default,
+                false);
+        }
+
+        public static Command ChooseInterceptor(
+            string commandId,
+            PlayerId actorId,
+            int expectedEventIndex,
+            CardInstanceId interceptorId)
+        {
+            return ChooseInterceptor(
+                CommandId.Parse(commandId),
+                actorId,
+                expectedEventIndex,
+                interceptorId);
+        }
+
+        public static Command DeclineInterception(
+            CommandId commandId,
+            PlayerId actorId,
+            int expectedEventIndex)
+        {
+            return new Command(
+                commandId,
+                actorId,
+                CommandType.PassPriority,
+                expectedEventIndex,
+                null,
+                MulliganDecision.KeepHand,
+                CardInstanceId.None,
+                CardInstanceId.None,
+                default,
+                0,
+                false,
+                false,
+                default,
+                false);
+        }
+
+        public static Command DeclineInterception(
+            string commandId,
+            PlayerId actorId,
+            int expectedEventIndex)
+        {
+            return DeclineInterception(CommandId.Parse(commandId), actorId, expectedEventIndex);
+        }
+
         public static Command Unsupported(
             CommandId commandId,
             PlayerId actorId,
             CommandType type,
             int expectedEventIndex)
         {
-            return new Command(commandId, actorId, type, expectedEventIndex, null, MulliganDecision.KeepHand);
+            return new Command(
+                commandId,
+                actorId,
+                type,
+                expectedEventIndex,
+                null,
+                MulliganDecision.KeepHand,
+                CardInstanceId.None,
+                CardInstanceId.None,
+                default,
+                0,
+                false,
+                false,
+                default,
+                false);
         }
 
         public static Command Unsupported(string commandId, PlayerId actorId, CommandType type, int expectedEventIndex)

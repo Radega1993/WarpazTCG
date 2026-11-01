@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Warpaz.Application;
 using Warpaz.Domain;
 
@@ -13,27 +14,23 @@ namespace Warpaz.Presentation
         private TMP_Text _hash;
         private TMP_Text _rejection;
 
+        private RectTransform _phaseZone;
+        private RectTransform _priorityZone;
+        private RectTransform _messageZone;
+
         private void Awake()
         {
-            var container = transform as RectTransform;
-            if (container != null)
-            {
-                container.anchoredPosition = new Vector2(0, 140f);
-            }
+            Cache();
+            LayoutCenter();
+        }
 
-            _turn = Find("TurnText");
-            _phase = Find("PhaseText");
-            _active = Find("ActivePlayerText");
-            _hash = Find("HashText");
-            _rejection = Find("RejectionText");
-
-            var startY = 0f;
-            var stepY = -24f;
-            Set(_turn, 0, startY + stepY * 0);
-            Set(_phase, 0, startY + stepY * 1);
-            Set(_active, 0, startY + stepY * 2);
-            Set(_hash, 0, startY + stepY * 3);
-            Set(_rejection, 0, startY + stepY * 4);
+        public void AssignCenterZones(RectTransform phase, RectTransform priority, RectTransform message)
+        {
+            _phaseZone = phase;
+            _priorityZone = priority;
+            _messageZone = message;
+            Cache();
+            LayoutCenter();
         }
 
         public void Render(MatchView view, PlayerId activePlayer, PlayerId prioritySeat, string rejectionReason)
@@ -43,9 +40,11 @@ namespace Warpaz.Presentation
                 return;
             }
 
+            Cache();
+
             if (_turn != null)
             {
-                _turn.text = "Turn " + view.Turn;
+                _turn.text = "Turno " + view.Turn + " · Prioridad P" + (prioritySeat.Value + 1);
             }
 
             if (_phase != null)
@@ -55,52 +54,154 @@ namespace Warpaz.Presentation
 
             if (_active != null)
             {
+                // Keep compact contract used by PlayMode indicator tests.
                 _active.text = "Activo P" + (activePlayer.Value + 1);
             }
 
             if (_hash != null)
             {
-                _hash.text = view.IsDebug ? "Hash " + Abbrev(view.Hash) : string.Empty;
+                _hash.gameObject.SetActive(false);
+                _hash.text = string.Empty;
             }
 
             if (_rejection != null)
             {
-                _rejection.text = string.IsNullOrEmpty(rejectionReason) ? string.Empty : "Error: " + rejectionReason;
+                _rejection.text = string.IsNullOrEmpty(rejectionReason) ? string.Empty : rejectionReason;
             }
         }
 
-        // Testability: read-only getters for PlayMode tests (no logic, no side-effects).
         internal string GetPhaseText() => _phase != null ? _phase.text : string.Empty;
         internal string GetActivePlayerText() => _active != null ? _active.text : string.Empty;
 
-        private static string Abbrev(string hash)
+        private void Cache()
         {
-            if (string.IsNullOrEmpty(hash))
+            _turn = Find("TurnText");
+            _phase = Find("PhaseText");
+            _active = Find("ActivePlayerText");
+            _hash = Find("HashText");
+            _rejection = Find("RejectionText");
+        }
+
+        private void LayoutCenter()
+        {
+            var host = transform as RectTransform;
+            if (host != null)
             {
-                return string.Empty;
+                BattleLayoutBuilder.StretchFull(host);
             }
 
-            return hash.Substring(0, 8);
+            PlaceInZone(_phase, _phaseZone != null ? _phaseZone : host, 0);
+            PlaceInZone(_turn, _priorityZone != null ? _priorityZone : host, 0);
+            PlaceInZone(_active, _priorityZone != null ? _priorityZone : host, 1);
+            PlaceInZone(_rejection, _messageZone != null ? _messageZone : host, 0);
+
+            Configure(_phase);
+            Configure(_turn);
+            Configure(_active);
+            Configure(_rejection);
+
+            if (_hash != null)
+            {
+                _hash.gameObject.SetActive(false);
+            }
         }
 
-        private TMP_Text Find(string relativePath)
+        private static void PlaceInZone(TMP_Text text, RectTransform zone, int row)
         {
-            var t = transform.Find(relativePath);
-            return t != null ? t.GetComponent<TMP_Text>() : null;
+            if (text == null || zone == null)
+            {
+                return;
+            }
+
+            text.transform.SetParent(zone, false);
+            var rt = text.rectTransform;
+            var yMax = 1f - row * 0.5f;
+            var yMin = yMax - 0.5f;
+            rt.anchorMin = new Vector2(0.02f, Mathf.Max(0f, yMin));
+            rt.anchorMax = new Vector2(0.98f, Mathf.Min(1f, yMax));
+            rt.offsetMin = Vector2.zero;
+            rt.offsetMax = Vector2.zero;
         }
 
-        private static void Set(TMP_Text text, float x, float y)
+        private static void Configure(TMP_Text text)
         {
             if (text == null)
             {
                 return;
             }
 
-            var rt = text.rectTransform;
-            if (rt != null)
+            text.raycastTarget = false;
+            text.enableAutoSizing = true;
+            text.fontSizeMin = 14f;
+            text.fontSizeMax = 28f;
+            text.textWrappingMode = TextWrappingModes.NoWrap;
+            text.overflowMode = TextOverflowModes.Ellipsis;
+            text.alignment = TextAlignmentOptions.Center;
+            text.color = BattleUiColors.CardText;
+
+            var img = text.GetComponentInParent<Image>();
+            // Ensure zone has a subtle panel background once.
+            if (text.transform.parent != null)
             {
-                rt.anchoredPosition = new Vector2(x, y);
+                var parent = text.transform.parent.gameObject;
+                var bg = parent.GetComponent<Image>();
+                if (bg == null)
+                {
+                    bg = parent.AddComponent<Image>();
+                    bg.color = new Color(0.12f, 0.12f, 0.14f, 0.55f);
+                    bg.raycastTarget = false;
+                }
             }
+        }
+
+        private TMP_Text Find(string relativePath)
+        {
+            var t = transform.Find(relativePath);
+            if (t == null)
+            {
+                t = FindDeep(transform, relativePath);
+            }
+
+            if (t == null && _phaseZone != null)
+            {
+                t = FindDeep(_phaseZone, relativePath);
+            }
+
+            if (t == null && _priorityZone != null)
+            {
+                t = FindDeep(_priorityZone, relativePath);
+            }
+
+            if (t == null && _messageZone != null)
+            {
+                t = FindDeep(_messageZone, relativePath);
+            }
+
+            return t != null ? t.GetComponent<TMP_Text>() : null;
+        }
+
+        private static Transform FindDeep(Transform root, string name)
+        {
+            if (root == null)
+            {
+                return null;
+            }
+
+            if (root.name == name)
+            {
+                return root;
+            }
+
+            for (var i = 0; i < root.childCount; i++)
+            {
+                var found = FindDeep(root.GetChild(i), name);
+                if (found != null)
+                {
+                    return found;
+                }
+            }
+
+            return null;
         }
     }
 }

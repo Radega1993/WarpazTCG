@@ -73,6 +73,50 @@ namespace Warpaz.Application
             return Submit(Command.EndTurn(AllocateCommandId(), playerId, CurrentEventIndex()));
         }
 
+        public CommandResult Play(PlayerId playerId, CardInstanceId instanceId, BoardRow row, int slotIndex)
+        {
+            return Submit(Command.Play(AllocateCommandId(), playerId, CurrentEventIndex(), instanceId, row, slotIndex));
+        }
+
+        public CommandResult PlayReplace(PlayerId playerId, CardInstanceId instanceId, CardInstanceId replaceInstanceId)
+        {
+            return Submit(Command.PlayReplace(
+                AllocateCommandId(), playerId, CurrentEventIndex(), instanceId, replaceInstanceId));
+        }
+
+        public CommandResult ReorganizeMove(PlayerId playerId, CardInstanceId instanceId, BoardRow row, int slotIndex)
+        {
+            return Submit(Command.ReorganizeMove(
+                AllocateCommandId(), playerId, CurrentEventIndex(), instanceId, row, slotIndex));
+        }
+
+        public CommandResult ReorganizeSwap(PlayerId playerId, CardInstanceId firstId, CardInstanceId secondId)
+        {
+            return Submit(Command.ReorganizeSwap(
+                AllocateCommandId(), playerId, CurrentEventIndex(), firstId, secondId));
+        }
+
+        public CommandResult Attack(PlayerId playerId, CardInstanceId attackerId, CardInstanceId targetId)
+        {
+            return Submit(Command.Attack(AllocateCommandId(), playerId, CurrentEventIndex(), attackerId, targetId));
+        }
+
+        public CommandResult AttackHero(PlayerId playerId, CardInstanceId attackerId)
+        {
+            return Submit(Command.AttackHero(AllocateCommandId(), playerId, CurrentEventIndex(), attackerId));
+        }
+
+        public CommandResult ChooseInterceptor(PlayerId playerId, CardInstanceId interceptorId)
+        {
+            return Submit(Command.ChooseInterceptor(
+                AllocateCommandId(), playerId, CurrentEventIndex(), interceptorId));
+        }
+
+        public CommandResult DeclineInterception(PlayerId playerId)
+        {
+            return Submit(Command.DeclineInterception(AllocateCommandId(), playerId, CurrentEventIndex()));
+        }
+
         public GameStateView ViewFor(int playerId)
         {
             return ViewFor(PlayerId.FromIndex(playerId));
@@ -95,7 +139,7 @@ namespace Warpaz.Application
 
         public IReadOnlyList<LegalAction> LegalActions()
         {
-            return LegalActionQuery.For(State);
+            return LegalActionQuery.For(this);
         }
 
         internal CommandId AllocateCommandId()

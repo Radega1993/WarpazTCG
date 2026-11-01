@@ -5,7 +5,8 @@
         "Warpaz.Domain",
         "Warpaz.Application",
         "Warpaz.Content",
-        "Warpaz.Infrastructure"
+        "Warpaz.Infrastructure",
+        "Warpaz.Presentation"
     ],
     "includePlatforms": [
         "Editor"

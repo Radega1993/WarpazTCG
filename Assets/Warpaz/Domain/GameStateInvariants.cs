@@ -82,7 +82,13 @@ namespace Warpaz.Domain
                     return "Discard zone invariant failed for player " + p + ".";
                 }
 
-                if (player.Deck.Count + player.Hand.Count + player.Discard.Count != state.Rules.DeckSize)
+                var boardCount = CountBoardOccupants(state, player, out var boardReason);
+                if (boardReason != null)
+                {
+                    return boardReason;
+                }
+
+                if (player.Deck.Count + player.Hand.Count + player.Discard.Count + boardCount != state.Rules.DeckSize)
                 {
                     return "Player " + p + " does not have " + state.Rules.DeckSize + " main-deck instances.";
                 }
@@ -100,7 +106,26 @@ namespace Warpaz.Domain
         private static bool OverlappingZoneLists(PlayerState player)
         {
             var seen = new HashSet<CardInstanceId>();
-            return !AddAll(seen, player.Deck) || !AddAll(seen, player.Hand) || !AddAll(seen, player.Discard);
+            if (!AddAll(seen, player.Deck) || !AddAll(seen, player.Hand) || !AddAll(seen, player.Discard))
+            {
+                return true;
+            }
+
+            for (var i = 0; i < player.BoardSlots.Count; i++)
+            {
+                var occupant = player.BoardSlots[i].Occupant;
+                if (occupant.IsNone)
+                {
+                    continue;
+                }
+
+                if (!seen.Add(occupant))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static bool AddAll(HashSet<CardInstanceId> seen, List<CardInstanceId> ids)
@@ -114,6 +139,74 @@ namespace Warpaz.Domain
             }
 
             return true;
+        }
+
+        private static int CountBoardOccupants(GameState state, PlayerState player, out string reason)
+        {
+            reason = null;
+            var vanguard = 0;
+            var rearguard = 0;
+            var occupants = new HashSet<CardInstanceId>();
+
+            for (var i = 0; i < player.BoardSlots.Count; i++)
+            {
+                var slot = player.BoardSlots[i];
+                if (!slot.IsOccupied)
+                {
+                    continue;
+                }
+
+                if (!occupants.Add(slot.Occupant))
+                {
+                    reason = "Duplicate board occupant " + slot.Occupant + " for player " + player.PlayerId + ".";
+                    return -1;
+                }
+
+                if (!state.Cards.TryGetValue(slot.Occupant, out var card))
+                {
+                    reason = "Board occupant " + slot.Occupant + " missing from Cards.";
+                    return -1;
+                }
+
+                if (card.OwnerId != player.PlayerId || card.ControllerId != player.PlayerId)
+                {
+                    reason = "Board occupant " + slot.Occupant + " has wrong owner/controller.";
+                    return -1;
+                }
+
+                var expectedZone = slot.Row == BoardRow.Vanguard ? CardZone.Vanguard : CardZone.Rearguard;
+                if (card.Zone != expectedZone)
+                {
+                    reason = "Board occupant " + slot.Occupant + " zone mismatch.";
+                    return -1;
+                }
+
+                if (!card.HasBoardSlot
+                    || card.Slot.Row != slot.Row
+                    || card.Slot.Index != slot.Index
+                    || card.Slot.Occupant != slot.Occupant)
+                {
+                    reason = "Board occupant " + slot.Occupant + " slot metadata mismatch.";
+                    return -1;
+                }
+
+                if (slot.IsVanguard)
+                {
+                    vanguard++;
+                }
+                else
+                {
+                    rearguard++;
+                }
+            }
+
+            if (vanguard > BoardSlot.SlotsPerRow || rearguard > BoardSlot.SlotsPerRow)
+            {
+                reason = "Board row occupancy exceeds max 2 for player " + player.PlayerId + ".";
+                return -1;
+            }
+
+            return occupants.Count;
         }
 
         private static int CountZone(

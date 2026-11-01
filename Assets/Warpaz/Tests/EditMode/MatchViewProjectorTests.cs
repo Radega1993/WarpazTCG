@@ -100,6 +100,19 @@ namespace Warpaz.Tests.EditMode
         }
 
         [Test]
+        public void BoardSlots_AreProjectedForBothPlayers()
+        {
+            var session = MatchFixtures.Started(5UL);
+            var view = session.Project(PlayerId.Player0);
+
+            Assert.AreEqual(4, view.Player0.BoardSlots.Count);
+            Assert.AreEqual(4, view.Player1.BoardSlots.Count);
+            Assert.AreEqual(BoardRow.Vanguard, view.Player0.BoardSlots[0].Row);
+            Assert.AreEqual(0, view.Player0.BoardSlots[0].Index);
+            Assert.IsFalse(view.Player0.BoardSlots[0].IsOccupied);
+        }
+
+        [Test]
         public void EventLogProjector_DebugIncludesHiddenDraws()
         {
             var session = MatchFixtures.Started(5UL);

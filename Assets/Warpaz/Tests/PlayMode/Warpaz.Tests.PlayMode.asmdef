@@ -6,7 +6,8 @@
         "Warpaz.Domain",
         "Warpaz.Application",
         "Warpaz.Content",
-        "Warpaz.Infrastructure"
+        "Warpaz.Infrastructure",
+        "UnityEngine.UI"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

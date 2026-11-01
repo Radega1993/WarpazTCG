@@ -144,6 +144,22 @@ namespace Warpaz.Domain
 
         private static void AppendPending(StringBuilder sb, GameState state)
         {
+            var pending = state.PendingDecision;
+            if (pending.Kind == PendingDecisionKind.ChooseInterceptor)
+            {
+                Write(sb, "pendingAttacker", pending.AttackerId.Value);
+                Write(sb, "pendingDeclaredTarget", pending.DeclaredTargetId.Value);
+                Write(sb, "pendingTargetsHero", pending.TargetsHero ? 1 : 0);
+                var interceptorIds = new CardInstanceId[pending.LegalInterceptorIds.Count];
+                for (var i = 0; i < pending.LegalInterceptorIds.Count; i++)
+                {
+                    interceptorIds[i] = pending.LegalInterceptorIds[i];
+                }
+
+                Array.Sort(interceptorIds, CompareInstanceIds);
+                WriteIds(sb, "pendingInterceptors", new List<CardInstanceId>(interceptorIds));
+            }
+
             var effects = new PendingEffect[state.PendingEffects.Count];
             for (var i = 0; i < state.PendingEffects.Count; i++)
             {

@@ -80,7 +80,7 @@ namespace Warpaz.Tests.EditMode
 
             var result = engine.Submit(
                 state,
-                Command.Unsupported("atk", 0, CommandType.Attack, state.EventIndex));
+                Command.Unsupported("atk", 0, CommandType.Equip, state.EventIndex));
 
             Assert.IsFalse(result.Accepted);
             Assert.AreEqual(CommandRejectionCode.CommandNotSupported, result.Code);
