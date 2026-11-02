@@ -1,0 +1,104 @@
+## main...origin/main
+ M Assets/Warpaz/Application/GameSession.cs
+ M Assets/Warpaz/Application/GameStateViewProjector.cs
+ M Assets/Warpaz/Application/LegalActionQuery.cs
+ M Assets/Warpaz/Application/PlayerMatchView.cs
+ M Assets/Warpaz/Content/Runtime/MinimalCatalog.cs
+ M Assets/Warpaz/Domain/CanonicalGameStateSerializer.cs
+ M Assets/Warpaz/Domain/Command.cs
+ M Assets/Warpaz/Domain/CommandProcessor.cs
+ M Assets/Warpaz/Domain/EngineActions.cs
+ M Assets/Warpaz/Domain/GameEventType.cs
+ M Assets/Warpaz/Domain/GameStateInvariants.cs
+ M Assets/Warpaz/Domain/LegalAction.cs
+ M Assets/Warpaz/Domain/LegalActions.cs
+ M Assets/Warpaz/Domain/PendingDecision.cs
+ M Assets/Warpaz/Domain/PendingDecisionKind.cs
+ M Assets/Warpaz/Domain/TurnCycle.cs
+ M Assets/Warpaz/Presentation/Runtime/Battle/BattleCompositionRoot.cs
+ M Assets/Warpaz/Presentation/Runtime/Battle/BattleControlsView.cs
+ M Assets/Warpaz/Presentation/Runtime/Battle/BattlePresenter.cs
+ M Assets/Warpaz/Presentation/Runtime/Battle/BoardSlotsView.cs
+ M Assets/Warpaz/Presentation/Runtime/Battle/CardPlaceholderView.cs
+ M Assets/Warpaz/Presentation/Runtime/Battle/HandView.cs
+ M Assets/Warpaz/Presentation/Runtime/Battle/MatchStatusView.cs
+ M Assets/Warpaz/Presentation/Runtime/Battle/PlayerAreaView.cs
+ M Assets/Warpaz/Presentation/Runtime/MatchDebugHud.cs
+ M Assets/Warpaz/Presentation/Scenes/Battle.unity
+ M Assets/Warpaz/Tests/EditMode/CommandPipelineTests.cs
+ M Assets/Warpaz/Tests/EditMode/LegalActionQueryTests.cs
+ M Assets/Warpaz/Tests/EditMode/MatchViewProjectorTests.cs
+ M Assets/Warpaz/Tests/EditMode/TurnPhaseTests.cs
+ M Assets/Warpaz/Tests/EditMode/Warpaz.Tests.EditMode.asmdef
+ M Assets/Warpaz/Tests/PlayMode/GreyBattleTableFlowTests.cs
+ M Assets/Warpaz/Tests/PlayMode/Sprint1PlayModeTests.cs
+ M ProjectSettings/EditorSettings.asset
+?? Artifacts/
+?? Assets/StreamingAssets/Tests/Sprint2GoldenFixture.json
+?? Assets/StreamingAssets/Tests/Sprint2GoldenFixture.json.meta
+?? Assets/Warpaz/Application/BoardSlotView.cs
+?? Assets/Warpaz/Application/BoardSlotView.cs.meta
+?? Assets/Warpaz/Domain/AttackHandler.cs
+?? Assets/Warpaz/Domain/AttackHandler.cs.meta
+?? Assets/Warpaz/Domain/CharacterPosition.cs
+?? Assets/Warpaz/Domain/CharacterPosition.cs.meta
+?? Assets/Warpaz/Domain/ChooseInterceptorHandler.cs
+?? Assets/Warpaz/Domain/ChooseInterceptorHandler.cs.meta
+?? Assets/Warpaz/Domain/CombatPolicies.cs
+?? Assets/Warpaz/Domain/CombatPolicies.cs.meta
+?? Assets/Warpaz/Domain/CombatResolver.cs
+?? Assets/Warpaz/Domain/CombatResolver.cs.meta
+?? Assets/Warpaz/Domain/DeclineInterceptionHandler.cs
+?? Assets/Warpaz/Domain/DeclineInterceptionHandler.cs.meta
+?? Assets/Warpaz/Domain/PlayCharacterHandler.cs
+?? Assets/Warpaz/Domain/PlayCharacterHandler.cs.meta
+?? Assets/Warpaz/Domain/ReorganizeHandler.cs
+?? Assets/Warpaz/Domain/ReorganizeHandler.cs.meta
+?? Assets/Warpaz/Domain/ReorganizeMode.cs
+?? Assets/Warpaz/Domain/ReorganizeMode.cs.meta
+?? Assets/Warpaz/Presentation/Art/UI.meta
+?? Assets/Warpaz/Presentation/Art/UI/
+?? Assets/Warpaz/Presentation/Captures/GreyBattleTable_Main.png.meta
+?? Assets/Warpaz/Presentation/Captures/GreyBattleTable_Mulligan.png.meta
+?? Assets/Warpaz/Presentation/Captures/PreSprint2.meta
+?? Assets/Warpaz/Presentation/Captures/PreSprint2/
+?? Assets/Warpaz/Presentation/Prefabs/Battle.meta
+?? Assets/Warpaz/Presentation/Prefabs/Battle/
+?? Assets/Warpaz/Presentation/Runtime/Battle/BattleBoardArtBinder.cs
+?? Assets/Warpaz/Presentation/Runtime/Battle/BattleBoardArtBinder.cs.meta
+?? Assets/Warpaz/Presentation/Runtime/Battle/CharacterSlotView.cs
+?? Assets/Warpaz/Presentation/Runtime/Battle/CharacterSlotView.cs.meta
+?? Assets/Warpaz/Tests/EditMode/AttackCombatTests.cs
+?? Assets/Warpaz/Tests/EditMode/AttackCombatTests.cs.meta
+?? Assets/Warpaz/Tests/EditMode/BattleBoardUiIntegrationTests.cs
+?? Assets/Warpaz/Tests/EditMode/BattleBoardUiIntegrationTests.cs.meta
+?? Assets/Warpaz/Tests/EditMode/BoardInvariantTests.cs
+?? Assets/Warpaz/Tests/EditMode/BoardInvariantTests.cs.meta
+?? Assets/Warpaz/Tests/EditMode/CombatCatalog.cs
+?? Assets/Warpaz/Tests/EditMode/CombatCatalog.cs.meta
+?? Assets/Warpaz/Tests/EditMode/CombatTestHelpers.cs
+?? Assets/Warpaz/Tests/EditMode/CombatTestHelpers.cs.meta
+?? Assets/Warpaz/Tests/EditMode/PlayCharacterTests.cs
+?? Assets/Warpaz/Tests/EditMode/PlayCharacterTests.cs.meta
+?? Assets/Warpaz/Tests/EditMode/ReorganizeTests.cs
+?? Assets/Warpaz/Tests/EditMode/ReorganizeTests.cs.meta
+?? Assets/Warpaz/Tests/EditMode/Sprint2GoldenTest.cs
+?? Assets/Warpaz/Tests/EditMode/Sprint2GoldenTest.cs.meta
+?? Assets/Warpaz/Tests/EditMode/Sprint2StressConfig.cs
+?? Assets/Warpaz/Tests/EditMode/Sprint2StressConfig.cs.meta
+?? Assets/Warpaz/Tests/EditMode/Sprint2StressReport.cs
+?? Assets/Warpaz/Tests/EditMode/Sprint2StressReport.cs.meta
+?? Assets/Warpaz/Tests/EditMode/Sprint2StressRunner.cs
+?? Assets/Warpaz/Tests/EditMode/Sprint2StressRunner.cs.meta
+?? Assets/Warpaz/Tests/EditMode/Sprint2StressTests.cs
+?? Assets/Warpaz/Tests/EditMode/Sprint2StressTests.cs.meta
+?? Assets/Warpaz/Tests/PlayMode/Sprint2CombatPlayModeTests.cs
+?? Assets/Warpaz/Tests/PlayMode/Sprint2CombatPlayModeTests.cs.meta
+?? Docs/Sprints/PRE-SPRINT-2-UI-INTEGRATION.md
+?? Docs/Sprints/SPRINT-2-REVIEW.md
+?? Docs/Sprints/SPRINT-2-TEST-REPORT.md
+?? Docs/decisions/0004-sprint2-combat-policies.md
+?? GreyBattleTable_Main.png
+?? GreyBattleTable_Mulligan.png
+490b38ca8aca6e0e916ee4200d52bb037278dd3b
+490b38c feat(domain): enforce atomic command processing

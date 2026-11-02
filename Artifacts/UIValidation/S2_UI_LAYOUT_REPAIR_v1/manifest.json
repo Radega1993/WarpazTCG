@@ -1,0 +1,58 @@
+{
+  "version": "S2_UI_LAYOUT_REPAIR_v1",
+  "repair": "S2-UI-LAYOUT-REPAIR-01",
+  "verdict": "UI_LAYOUT_REPAIR_PASS",
+  "confirmed_root_cause": "BattleCompositionRoot and most HUD hosts were plain Transforms (not RectTransform), so Awake layout casts were null and children collapsed to origin. CardPlaceholderView lacked grey Image chrome. HandView did not paint selection.",
+  "editmode": {
+    "total": 167,
+    "passed": 167,
+    "failed": 0
+  },
+  "playmode": {
+    "total": 13,
+    "passed": 13,
+    "failed": 0
+  },
+  "compilation_errors": 0,
+  "runtime_errors": 0,
+  "missing_scripts": 0,
+  "capture_pixel_size_note": "Editor GameView captured at (1600, 900) for all folders; Screen.SetResolution does not resize GameView in Edit Mode PlayMode tests.",
+  "capture_folders": {
+    "1920x1080": [
+      1600,
+      900
+    ],
+    "1600x900": [
+      1600,
+      900
+    ],
+    "1280x720": [
+      1600,
+      900
+    ]
+  },
+  "duplicate_capture_hashes": false,
+  "pair_hash_ok": true,
+  "domain_modified": false,
+  "application_modified": false,
+  "interception_validated": false,
+  "sprint2_closed": false,
+  "screenshots": [
+    "screenshots/1280x720/01_mulligan.png",
+    "screenshots/1280x720/02_cards_in_play.png",
+    "screenshots/1280x720/03_hand_selected.png",
+    "screenshots/1600x900/01_mulligan.png",
+    "screenshots/1600x900/02_cards_in_play.png",
+    "screenshots/1600x900/03_hand_selected.png",
+    "screenshots/1920x1080/01_mulligan.png",
+    "screenshots/1920x1080/02_main_initial.png",
+    "screenshots/1920x1080/03_cards_in_play.png",
+    "screenshots/1920x1080/04_hand_selected.png",
+    "screenshots/1920x1080/05_legal_targets.png",
+    "screenshots/1920x1080/06_reorganization.png",
+    "screenshots/1920x1080/07_attack_selection.png",
+    "screenshots/1920x1080/08_ko_resolution.png",
+    "screenshots/1920x1080/09_pass_device.png",
+    "screenshots/1920x1080/10_game_over.png"
+  ]
+}

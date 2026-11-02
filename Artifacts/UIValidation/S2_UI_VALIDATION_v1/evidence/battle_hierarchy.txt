@@ -1,0 +1,27 @@
+# Battle scene hierarchy (S2-UI-VALIDATION-01)
+# Scene: Assets/Warpaz/Presentation/Scenes/Battle.unity
+
+Canvas.renderMode=ScreenSpaceOverlay
+Scaler.uiScaleMode=ScaleWithScreenSize
+Scaler.referenceResolution=1920x1080
+Scaler.matchWidthOrHeight=0.5
+MissingScriptsTotal=0
+MatchDebugHudInScene=0 (absent from Battle; SampleScene only)
+Background.sprite=warpaz_battleboard_background
+Background.raycastTarget=False
+BattleBoardArtBinder=True
+EventSystem=True
+
+Canvas
+  Background
+    Panel / Title / Hint / BackButton  (legacy grey stub under Background)
+  BattleCompositionRoot
+    PlayerAreaView (Priority* + Rival* HUD texts, PriorityPanel, RivalPanel)
+    BoardSlotsView (BoardSlot0-7 CharacterSlotView layers)
+    HandView (HandCard0-11)
+    MatchStatusView
+    EventLogView
+    MulliganPanel (KeepHandButton, ReplaceHandButton)
+    PassDeviceOverlay (ConfirmButton)
+    BattleControlsView (EndTurnButton)
+EventSystem

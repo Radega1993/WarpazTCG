@@ -1,0 +1,8 @@
+phase=Main
+active=1
+priority=1
+seed=1
+hash=f753c12481e326718f7b39694d4f9891ab25badd3209dc1d56c077e37d2ee9ad
+pa=1/1
+playCandidate=45
+Play accepted=True reason=

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="9" result="Passed" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-09-28 16:49:56Z" end-time="2026-09-28 16:50:17Z" duration="21.7187467">
+  <test-suite type="TestSuite" id="1028" name="WarpazTCG" fullname="WarpazTCG" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-09-28 16:49:56Z" end-time="2026-09-28 16:50:17Z" duration="21.718747" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1017" name="Warpaz.Tests.PlayMode.dll" fullname="/home/raul/games/WarpazTCG/Library/ScriptAssemblies/Warpaz.Tests.PlayMode.dll" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-09-28 16:49:56Z" end-time="2026-09-28 16:50:17Z" duration="21.603424" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="147348" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1018" name="Warpaz" fullname="Warpaz" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-09-28 16:49:56Z" end-time="2026-09-28 16:50:17Z" duration="21.591204" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1019" name="Tests" fullname="Warpaz.Tests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-09-28 16:49:56Z" end-time="2026-09-28 16:50:17Z" duration="21.580020" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1020" name="PlayMode" fullname="Warpaz.Tests.PlayMode" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-09-28 16:49:56Z" end-time="2026-09-28 16:50:17Z" duration="21.568595" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1004" name="BootstrapFlowTests" fullname="Warpaz.Tests.PlayMode.BootstrapFlowTests" classname="Warpaz.Tests.PlayMode.BootstrapFlowTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-28 16:49:56Z" end-time="2026-09-28 16:49:58Z" duration="1.979079" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1005" name="Bootstrap_OpensMainMenu_With120Cards" fullname="Warpaz.Tests.PlayMode.BootstrapFlowTests.Bootstrap_OpensMainMenu_With120Cards" methodname="Bootstrap_OpensMainMenu_With120Cards" classname="Warpaz.Tests.PlayMode.BootstrapFlowTests" runstate="Runnable" seed="940131514" result="Passed" start-time="2026-09-28 16:49:56Z" end-time="2026-09-28 16:49:58Z" duration="1.945668" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[120/120, 0 errors
+]]></output>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1006" name="FiveTurnSessionTests" fullname="Warpaz.Tests.PlayMode.FiveTurnSessionTests" classname="Warpaz.Tests.PlayMode.FiveTurnSessionTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-28 16:49:58Z" end-time="2026-09-28 16:49:58Z" duration="0.034418" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1007" name="GameSession_CompletesFiveTurnsWithoutHud" fullname="Warpaz.Tests.PlayMode.FiveTurnSessionTests.GameSession_CompletesFiveTurnsWithoutHud" methodname="GameSession_CompletesFiveTurnsWithoutHud" classname="Warpaz.Tests.PlayMode.FiveTurnSessionTests" runstate="Runnable" seed="776106133" result="Passed" start-time="2026-09-28 16:49:58Z" end-time="2026-09-28 16:49:58Z" duration="0.016823" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1008" name="GreyBattleTableFlowTests" fullname="Warpaz.Tests.PlayMode.GreyBattleTableFlowTests" classname="Warpaz.Tests.PlayMode.GreyBattleTableFlowTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-28 16:49:58Z" end-time="2026-09-28 16:50:00Z" duration="2.106463" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1009" name="GreyBattleTable_FullFlowToTurn5" fullname="Warpaz.Tests.PlayMode.GreyBattleTableFlowTests.GreyBattleTable_FullFlowToTurn5" methodname="GreyBattleTable_FullFlowToTurn5" classname="Warpaz.Tests.PlayMode.GreyBattleTableFlowTests" runstate="Runnable" seed="1932538224" result="Passed" start-time="2026-09-28 16:49:58Z" end-time="2026-09-28 16:50:00Z" duration="2.091670" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[120/120, 0 errors
+]]></output>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1010" name="Sprint1PlayModeTests" fullname="Warpaz.Tests.PlayMode.Sprint1PlayModeTests" classname="Warpaz.Tests.PlayMode.Sprint1PlayModeTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-09-28 16:50:00Z" end-time="2026-09-28 16:50:16Z" duration="16.116711" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1013" name="IllegalButtons_AreDisabled_InWrongPhase" fullname="Warpaz.Tests.PlayMode.Sprint1PlayModeTests.IllegalButtons_AreDisabled_InWrongPhase" methodname="IllegalButtons_AreDisabled_InWrongPhase" classname="Warpaz.Tests.PlayMode.Sprint1PlayModeTests" runstate="Runnable" seed="704936931" result="Passed" start-time="2026-09-28 16:50:00Z" end-time="2026-09-28 16:50:12Z" duration="11.619488" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[120/120, 0 errors
+]]></output>
+              </test-case>
+              <test-case id="1012" name="PlayerAndPhaseIndicator_MatchGameState_DuringFiveTurns" fullname="Warpaz.Tests.PlayMode.Sprint1PlayModeTests.PlayerAndPhaseIndicator_MatchGameState_DuringFiveTurns" methodname="PlayerAndPhaseIndicator_MatchGameState_DuringFiveTurns" classname="Warpaz.Tests.PlayMode.Sprint1PlayModeTests" runstate="Runnable" seed="715676353" result="Passed" start-time="2026-09-28 16:50:12Z" end-time="2026-09-28 16:50:13Z" duration="1.586427" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[120/120, 0 errors
+]]></output>
+              </test-case>
+              <test-case id="1011" name="RivalHand_NeverVisible_DuringFullFlow" fullname="Warpaz.Tests.PlayMode.Sprint1PlayModeTests.RivalHand_NeverVisible_DuringFullFlow" methodname="RivalHand_NeverVisible_DuringFullFlow" classname="Warpaz.Tests.PlayMode.Sprint1PlayModeTests" runstate="Runnable" seed="1630902572" result="Passed" start-time="2026-09-28 16:50:13Z" end-time="2026-09-28 16:50:15Z" duration="1.565362" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[120/120, 0 errors
+]]></output>
+              </test-case>
+              <test-case id="1014" name="UI_IsLegible_AtMinimumResolution" fullname="Warpaz.Tests.PlayMode.Sprint1PlayModeTests.UI_IsLegible_AtMinimumResolution" methodname="UI_IsLegible_AtMinimumResolution" classname="Warpaz.Tests.PlayMode.Sprint1PlayModeTests" runstate="Runnable" seed="1931138723" result="Passed" start-time="2026-09-28 16:50:15Z" end-time="2026-09-28 16:50:16Z" duration="1.324088" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[120/120, 0 errors
+]]></output>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1015" name="Sprint2CombatPlayModeTests" fullname="Warpaz.Tests.PlayMode.Sprint2CombatPlayModeTests" classname="Warpaz.Tests.PlayMode.Sprint2CombatPlayModeTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-28 16:50:16Z" end-time="2026-09-28 16:50:17Z" duration="1.319046" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1016" name="Battle_BoardSlots_ProjectFourPerPlayer_AndCombatViaSession" fullname="Warpaz.Tests.PlayMode.Sprint2CombatPlayModeTests.Battle_BoardSlots_ProjectFourPerPlayer_AndCombatViaSession" methodname="Battle_BoardSlots_ProjectFourPerPlayer_AndCombatViaSession" classname="Warpaz.Tests.PlayMode.Sprint2CombatPlayModeTests" runstate="Runnable" seed="352860324" result="Passed" start-time="2026-09-28 16:50:16Z" end-time="2026-09-28 16:50:17Z" duration="1.304718" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[120/120, 0 errors
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1023" name="Warpaz.Tests.PlayMode.UIValidation.dll" fullname="/home/raul/games/WarpazTCG/Library/ScriptAssemblies/Warpaz.Tests.PlayMode.UIValidation.dll" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-28 16:50:17Z" end-time="2026-09-28 16:50:17Z" duration="0.090401" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="147348" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1024" name="Warpaz" fullname="Warpaz" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-28 16:50:17Z" end-time="2026-09-28 16:50:17Z" duration="0.076225" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1025" name="Tests" fullname="Warpaz.Tests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-28 16:50:17Z" end-time="2026-09-28 16:50:17Z" duration="0.066323" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1026" name="PlayMode" fullname="Warpaz.Tests.PlayMode" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-28 16:50:17Z" end-time="2026-09-28 16:50:17Z" duration="0.055054" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1027" name="UIValidation" fullname="Warpaz.Tests.PlayMode.UIValidation" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-28 16:50:17Z" end-time="2026-09-28 16:50:17Z" duration="0.039267" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1021" name="UiValidationBlockedStatesTests" fullname="Warpaz.Tests.PlayMode.UIValidation.UiValidationBlockedStatesTests" classname="Warpaz.Tests.PlayMode.UIValidation.UiValidationBlockedStatesTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-09-28 16:50:17Z" end-time="2026-09-28 16:50:17Z" duration="0.025127" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1022" name="ExpectedBlockedStates_AreDocumented" fullname="Warpaz.Tests.PlayMode.UIValidation.UiValidationBlockedStatesTests.ExpectedBlockedStates_AreDocumented" methodname="ExpectedBlockedStates_AreDocumented" classname="Warpaz.Tests.PlayMode.UIValidation.UiValidationBlockedStatesTests" runstate="Runnable" seed="67458883" result="Passed" start-time="2026-09-28 16:50:17Z" end-time="2026-09-28 16:50:17Z" duration="0.006637" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <reason>
+                    <message><![CDATA[Documented BLOCKED: 02_mulligan_selected_cards, 10_pending_intercept, 11_intercept_declined]]></message>
+                  </reason>
+                  <output><![CDATA[<b><color=#2EA3FF>MCP-FOR-UNITY</color></b>: [TestRunnerNoThrottle] Restored Interaction Mode after test run.
+Saving results to: /home/raul/.config/unity3d/DefaultCompany/WarpazTCG/TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
