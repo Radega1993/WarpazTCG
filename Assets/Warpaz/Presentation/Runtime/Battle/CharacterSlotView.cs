@@ -54,18 +54,18 @@ namespace Warpaz.Presentation
             EnsureWired();
             if (_cardView != null)
             {
-                _cardView.SetFaceUp(row + " " + index, "Vacío", "—", string.Empty);
+                _cardView.SetFaceUp(row + " " + index, "Vacío", "—", string.Empty, null);
                 _cardView.SetSelected(false);
                 _cardView.SetPlayable(false);
             }
         }
 
-        public void SetCard(string name, string type, string cost, string extra = null)
+        public void SetCard(string name, string type, string cost, string extra = null, string cardId = null)
         {
             EnsureWired();
             if (_cardView != null)
             {
-                _cardView.SetFaceUp(name, type, cost, extra);
+                _cardView.SetFaceUp(name, type, cost, extra, cardId);
             }
         }
 

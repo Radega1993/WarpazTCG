@@ -62,11 +62,11 @@ namespace Warpaz.Presentation
                 {
                     var cost = def.CostPa.HasValue ? def.CostPa.Value.ToString() : "—";
                     var power = def.Power.HasValue ? "P" + def.Power.Value : "—";
-                    placeholder.SetFaceUp(def.Name, def.Type.ToString(), "PA " + cost, power);
+                    placeholder.SetFaceUp(def.Name, def.Type.ToString(), "PA " + cost, power, card.CardId.Value);
                 }
                 else
                 {
-                    placeholder.SetFaceUp(card.CardId.Value, "?", "—");
+                    placeholder.SetFaceUp(card.CardId.Value, "?", "—", null, card.CardId.Value);
                 }
 
                 var selected = !selectedHandId.IsNone && selectedHandId == instanceId;

@@ -128,7 +128,7 @@ namespace Warpaz.Presentation
                 }
 
                 var flags = slot.ReadyState + (slot.HasRecent ? " Reciente" : string.Empty);
-                ui.SetCard(name, type, power, flags);
+                ui.SetCard(name, type, power, flags, slot.Occupant.CardId.Value);
                 ui.SetInteractable(interactive);
                 ui.SetSelected(!selectedBoardId.IsNone && selectedBoardId == slot.Occupant.InstanceId);
                 ui.SetLegalTarget(Contains(legalTargetIds, slot.Occupant.InstanceId));

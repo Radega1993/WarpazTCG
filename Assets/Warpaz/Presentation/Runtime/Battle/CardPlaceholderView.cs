@@ -5,7 +5,8 @@ using UnityEngine.UI;
 namespace Warpaz.Presentation
 {
     /// <summary>
-    /// Grey face-up / face-down card chrome. No illustration sprites. Root Button owns clicks.
+    /// Grey face-up / face-down card chrome. Face-up may show WZ1 illustration in content area.
+    /// Root Button owns clicks.
     /// </summary>
     public sealed class CardPlaceholderView : MonoBehaviour
     {
@@ -13,6 +14,7 @@ namespace Warpaz.Presentation
         private Image _border;
         private Image _header;
         private Image _emptyContent;
+        private Image _illustration;
         private Image _rulesPanel;
         private Image _selectedOverlay;
         private Image _legalOverlay;
@@ -52,16 +54,16 @@ namespace Warpaz.Presentation
 
         public void SetBlocked(string label)
         {
-            SetFaceUp(label, string.Empty, string.Empty, string.Empty);
+            SetFaceUp(label, string.Empty, string.Empty, string.Empty, null);
             SetInteractable(false);
         }
 
-        public void SetCard(string name, string type, string cost, string extra = null)
+        public void SetCard(string name, string type, string cost, string extra = null, string cardId = null)
         {
-            SetFaceUp(name, type, cost, extra);
+            SetFaceUp(name, type, cost, extra, cardId);
         }
 
-        public void SetFaceUp(string name, string type, string cost, string extra = null)
+        public void SetFaceUp(string name, string type, string cost, string extra = null, string cardId = null)
         {
             EnsureChrome();
             _faceUp = true;
@@ -90,6 +92,8 @@ namespace Warpaz.Presentation
             {
                 _rulesText.text = string.Empty;
             }
+
+            ApplyIllustration(cardId);
         }
 
         public void SetFaceDown()
@@ -97,6 +101,7 @@ namespace Warpaz.Presentation
             EnsureChrome();
             _faceUp = false;
             ApplyFaceMode(false);
+            ClearIllustration();
             if (_name != null)
             {
                 _name.text = string.Empty;
@@ -169,6 +174,125 @@ namespace Warpaz.Presentation
             return _background != null && _background.sprite == null;
         }
 
+        public bool HasIllustrationSprite()
+        {
+            EnsureChrome();
+            return _illustration != null &&
+                   _illustration.sprite != null &&
+                   _illustration.gameObject.activeSelf;
+        }
+
+        private void ApplyIllustration(string cardId)
+        {
+            EnsureChrome();
+            if (_illustration == null)
+            {
+                return;
+            }
+
+            var sprite = CardIllustrationCatalog.TryGet(cardId);
+            if (sprite == null)
+            {
+                ClearIllustration();
+                return;
+            }
+
+            _illustration.gameObject.SetActive(true);
+            _illustration.enabled = true;
+            _illustration.sprite = sprite;
+            _illustration.color = Color.white;
+            _illustration.type = Image.Type.Simple;
+            _illustration.raycastTarget = false;
+            LayoutIllustrationCover(sprite);
+            if (_emptyContent != null)
+            {
+                _emptyContent.color = new Color(0.10f, 0.10f, 0.12f, 1f);
+            }
+
+            // Prefer art over empty rules box on compact cards.
+            if (_rulesPanel != null)
+            {
+                _rulesPanel.gameObject.SetActive(false);
+            }
+        }
+
+        private void ClearIllustration()
+        {
+            if (_illustration != null)
+            {
+                _illustration.sprite = null;
+                _illustration.enabled = false;
+                _illustration.gameObject.SetActive(false);
+            }
+
+            if (_emptyContent != null)
+            {
+                _emptyContent.color = BattleUiColors.FaceUpEmptyContent;
+            }
+
+            if (_faceUp && _rulesPanel != null)
+            {
+                _rulesPanel.gameObject.SetActive(true);
+            }
+        }
+
+        /// <summary>
+        /// Portrait WZ1 art (≈2:3) must cover the landscape content window; RectMask2D crops overflow.
+        /// </summary>
+        private void LayoutIllustrationCover(Sprite sprite)
+        {
+            if (_illustration == null || _emptyContent == null || sprite == null)
+            {
+                return;
+            }
+
+            var window = _emptyContent.rectTransform;
+            var rt = _illustration.rectTransform;
+            if (rt.parent != window)
+            {
+                rt.SetParent(window, false);
+            }
+
+            if (_emptyContent.GetComponent<RectMask2D>() == null)
+            {
+                _emptyContent.gameObject.AddComponent<RectMask2D>();
+            }
+
+            Canvas.ForceUpdateCanvases();
+            var w = window.rect.width;
+            var h = window.rect.height;
+            if (w < 1f || h < 1f)
+            {
+                // Fallback stretch until layout has real size.
+                LayoutRegion(rt, 0f, 0f, 1f, 1f, 0f);
+                _illustration.preserveAspect = false;
+                return;
+            }
+
+            var spriteAspect = sprite.rect.width / Mathf.Max(1f, sprite.rect.height);
+            var parentAspect = w / h;
+            float drawW;
+            float drawH;
+            if (spriteAspect > parentAspect)
+            {
+                drawH = h;
+                drawW = h * spriteAspect;
+            }
+            else
+            {
+                drawW = w;
+                drawH = w / spriteAspect;
+            }
+
+            rt.anchorMin = new Vector2(0.5f, 0.5f);
+            rt.anchorMax = new Vector2(0.5f, 0.5f);
+            rt.pivot = new Vector2(0.5f, 0.5f);
+            rt.anchoredPosition = Vector2.zero;
+            rt.sizeDelta = new Vector2(drawW, drawH);
+            rt.localScale = Vector3.one;
+            _illustration.preserveAspect = false;
+        }
+
         public string GetVisibleTextSnapshot()
         {
             EnsureChrome();
@@ -195,7 +319,22 @@ namespace Warpaz.Presentation
             _border = EnsureImage("Border", BattleUiColors.CardBorder, false, 1);
             _header = EnsureImage("Header", BattleUiColors.FaceUpHeader, false, 2);
             _emptyContent = EnsureImage("EmptyContentArea", BattleUiColors.FaceUpEmptyContent, false, 3);
-            _rulesPanel = EnsureImage("RulesPanel", BattleUiColors.FaceUpRules, false, 4);
+            // Prefer Illustration already nested under the art window (cover-crop path).
+            if (_emptyContent != null)
+            {
+                var nested = _emptyContent.transform.Find("Illustration");
+                if (nested != null)
+                {
+                    _illustration = nested.GetComponent<Image>() ?? nested.gameObject.AddComponent<Image>();
+                }
+            }
+
+            if (_illustration == null)
+            {
+                _illustration = EnsureImage("Illustration", Color.white, false, 4);
+            }
+
+            _rulesPanel = EnsureImage("RulesPanel", BattleUiColors.FaceUpRules, false, 5);
 
             LayoutRegion(_background.rectTransform, 0f, 0f, 1f, 1f, 2f);
             LayoutRegion(_border.rectTransform, 0f, 0f, 1f, 1f, 0f);
@@ -205,9 +344,32 @@ namespace Warpaz.Presentation
                 BattleUiColors.CardBorder.b,
                 1f);
             // Border as rim: use outline via slightly inset background; keep full plate under border tint.
-            LayoutRegion(_header.rectTransform, 0.04f, 0.78f, 0.96f, 0.96f, 0f);
-            LayoutRegion(_emptyContent.rectTransform, 0.06f, 0.36f, 0.94f, 0.76f, 0f);
-            LayoutRegion(_rulesPanel.rectTransform, 0.06f, 0.06f, 0.94f, 0.34f, 0f);
+            LayoutRegion(_header.rectTransform, 0.04f, 0.86f, 0.96f, 0.98f, 0f);
+            // Large art window (most of the card body).
+            LayoutRegion(_emptyContent.rectTransform, 0.05f, 0.16f, 0.95f, 0.84f, 0f);
+            if (_emptyContent.GetComponent<RectMask2D>() == null)
+            {
+                _emptyContent.gameObject.AddComponent<RectMask2D>();
+            }
+
+            if (_illustration.transform.parent != _emptyContent.transform)
+            {
+                _illustration.transform.SetParent(_emptyContent.transform, false);
+            }
+
+            _illustration.raycastTarget = false;
+            if (_illustration.sprite != null)
+            {
+                LayoutIllustrationCover(_illustration.sprite);
+            }
+            else
+            {
+                LayoutRegion(_illustration.rectTransform, 0f, 0f, 1f, 1f, 0f);
+                _illustration.enabled = false;
+            }
+
+            // Compact rules strip under art (hidden when illustration is present).
+            LayoutRegion(_rulesPanel.rectTransform, 0.06f, 0.02f, 0.94f, 0.14f, 0f);
 
             _name = EnsureTmp("Header/Name", 18f, TextAlignmentOptions.Left);
             _cost = EnsureTmp("Header/Cost", 18f, TextAlignmentOptions.Right);
@@ -216,8 +378,8 @@ namespace Warpaz.Presentation
             _name.transform.SetParent(_header.transform, false);
             _cost.transform.SetParent(_header.transform, false);
 
-            _typeLine = EnsureTmp("TypeLine", 14f, TextAlignmentOptions.Center);
-            LayoutRegion(_typeLine.rectTransform, 0.06f, 0.70f, 0.94f, 0.78f, 0f);
+            _typeLine = EnsureTmp("TypeLine", 12f, TextAlignmentOptions.Center);
+            LayoutRegion(_typeLine.rectTransform, 0.06f, 0.84f, 0.94f, 0.88f, 0f);
 
             _rulesText = EnsureTmp("RulesPanel/RulesText", 12f, TextAlignmentOptions.TopLeft);
             _rulesText.textWrappingMode = TextWrappingModes.Normal;
@@ -276,9 +438,18 @@ namespace Warpaz.Presentation
                 _emptyContent.gameObject.SetActive(faceUp);
             }
 
+            if (_illustration != null && !faceUp)
+            {
+                _illustration.gameObject.SetActive(false);
+            }
+
             if (_rulesPanel != null)
             {
-                _rulesPanel.gameObject.SetActive(faceUp);
+                var showRules = faceUp &&
+                                (_illustration == null ||
+                                 !_illustration.gameObject.activeSelf ||
+                                 _illustration.sprite == null);
+                _rulesPanel.gameObject.SetActive(showRules);
             }
 
             if (_typeLine != null)
@@ -346,8 +517,17 @@ namespace Warpaz.Presentation
                 image = go.AddComponent<Image>();
             }
 
-            image.sprite = null;
-            image.color = color;
+            // Keep assigned illustration sprite; chrome plates stay sprite-less.
+            if (go.name != "Illustration")
+            {
+                image.sprite = null;
+                image.color = color;
+            }
+            else if (image.sprite == null)
+            {
+                image.color = color;
+            }
+
             image.raycastTarget = raycast;
             t.SetSiblingIndex(Mathf.Min(sibling, t.parent.childCount - 1));
             return image;
