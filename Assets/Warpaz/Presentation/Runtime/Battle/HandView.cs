@@ -60,9 +60,15 @@ namespace Warpaz.Presentation
 
                 if (catalog != null && catalog.TryGet(card.CardId, out var def))
                 {
-                    var cost = def.CostPa.HasValue ? def.CostPa.Value.ToString() : "—";
+                    var cost = def.CostPa.HasValue ? "PA " + def.CostPa.Value : "—";
                     var power = def.Power.HasValue ? "P" + def.Power.Value : "—";
-                    placeholder.SetFaceUp(def.Name, def.Type.ToString(), "PA " + cost, power, card.CardId.Value);
+                    placeholder.SetFaceUp(
+                        def.Name,
+                        CardTypeCatalog.ToLabel(def.Type),
+                        cost,
+                        power,
+                        card.CardId.Value,
+                        def.EffectText);
                 }
                 else
                 {
@@ -143,8 +149,7 @@ namespace Warpaz.Presentation
                 rt.anchorMax = new Vector2(x1, 0.95f);
                 rt.offsetMin = Vector2.zero;
                 rt.offsetMax = Vector2.zero;
-                rt.pivot = new Vector2(0.5f, 0.5f);
-                rt.localScale = Vector3.one;
+                // Pivot/scale owned by CardPlaceholderView hover + selection.
             }
         }
 

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Passed" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-02 15:08:51Z" end-time="2026-11-02 15:09:04Z" duration="13.4862847">
+  <test-suite type="TestSuite" id="1035" name="WarpazTCG" fullname="WarpazTCG" runstate="Runnable" testcasecount="14" result="Passed" start-time="2026-11-02 15:08:51Z" end-time="2026-11-02 15:09:04Z" duration="13.486285" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1024" name="Warpaz.Tests.PlayMode.dll" fullname="/home/raul/games/WarpazTCG/Library/ScriptAssemblies/Warpaz.Tests.PlayMode.dll" runstate="Runnable" testcasecount="13" result="Passed" start-time="2026-11-02 15:08:51Z" end-time="2026-11-02 15:09:04Z" duration="13.476570" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="204210" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1025" name="Warpaz" fullname="Warpaz" runstate="Runnable" testcasecount="13" result="Passed" start-time="2026-11-02 15:08:51Z" end-time="2026-11-02 15:09:04Z" duration="13.475137" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1026" name="Tests" fullname="Warpaz.Tests" runstate="Runnable" testcasecount="13" result="Passed" start-time="2026-11-02 15:08:51Z" end-time="2026-11-02 15:09:04Z" duration="13.474697" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1027" name="PlayMode" fullname="Warpaz.Tests.PlayMode" runstate="Runnable" testcasecount="13" result="Passed" start-time="2026-11-02 15:08:51Z" end-time="2026-11-02 15:09:04Z" duration="13.474252" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1022" name="TutorialWalkthroughCaptureTests" fullname="Warpaz.Tests.PlayMode.TutorialWalkthroughCaptureTests" classname="Warpaz.Tests.PlayMode.TutorialWalkthroughCaptureTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-11-02 15:08:51Z" end-time="2026-11-02 15:09:04Z" duration="13.472941" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1023" name="Tutorial_FullWalkthrough_CapturesEachStep" fullname="Warpaz.Tests.PlayMode.TutorialWalkthroughCaptureTests.Tutorial_FullWalkthrough_CapturesEachStep" methodname="Tutorial_FullWalkthrough_CapturesEachStep" classname="Warpaz.Tests.PlayMode.TutorialWalkthroughCaptureTests" runstate="Runnable" seed="1255733824" result="Passed" start-time="2026-11-02 15:08:51Z" end-time="2026-11-02 15:09:04Z" duration="13.461694" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[120/120, 0 errors
+DontDestroyOnLoad only works for root GameObjects or components on root GameObjects.
+
+IgnoreFailingMessages:true
+
+IgnoreFailingMessages:false
+
+IgnoreFailingMessages:true
+
+IgnoreFailingMessages:false
+
+IgnoreFailingMessages:true
+
+IgnoreFailingMessages:false
+
+IgnoreFailingMessages:true
+
+IgnoreFailingMessages:false
+
+IgnoreFailingMessages:true
+
+IgnoreFailingMessages:false
+
+IgnoreFailingMessages:true
+
+IgnoreFailingMessages:false
+
+IgnoreFailingMessages:true
+
+IgnoreFailingMessages:false
+
+IgnoreFailingMessages:true
+
+IgnoreFailingMessages:false
+
+IgnoreFailingMessages:true
+
+IgnoreFailingMessages:false
+
+IgnoreFailingMessages:true
+
+IgnoreFailingMessages:false
+
+IgnoreFailingMessages:true
+
+IgnoreFailingMessages:false
+
+IgnoreFailingMessages:true
+
+IgnoreFailingMessages:false
+<b><color=#2EA3FF>MCP-FOR-UNITY</color></b>: [TestRunnerNoThrottle] Restored Interaction Mode after test run.
+Saving results to: /home/raul/.config/unity3d/DefaultCompany/WarpazTCG/TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

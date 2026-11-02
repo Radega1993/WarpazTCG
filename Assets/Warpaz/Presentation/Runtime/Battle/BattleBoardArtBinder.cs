@@ -70,12 +70,26 @@ namespace Warpaz.Presentation
             var playerArea = GetComponentInChildren<PlayerAreaView>(true);
             playerArea?.ApplyArt(_panelFrameSprite, _paIconSprite, _resolutionIconSprite);
 
-            ApplySlicedPanel(GetComponentInChildren<MatchStatusView>(true), "StatusPanel");
+            // Thin phase / control bars: flat ink plate — ornate frames stretch into floating gems.
+            ApplyFlatPanel(GetComponentInChildren<MatchStatusView>(true), "StatusPanel");
+            ApplyFlatPanel(GetComponentInChildren<BattleControlsView>(true), "ControlsPanelFrame");
             ApplySlicedPanel(GetComponentInChildren<MulliganPanel>(true), "MulliganPanelFrame");
-            ApplySlicedPanel(GetComponentInChildren<BattleControlsView>(true), "ControlsPanelFrame");
             ApplySlicedPanel(GetComponentInChildren<PassDeviceOverlay>(true), "PassOverlayFrame");
-            ApplySlicedPanel(GetComponentInChildren<HandView>(true), "HandPanelFrame");
-            ApplySlicedPanel(GetComponentInChildren<EventLogView>(true), "EventLogPanelFrame");
+            ApplyFlatPanel(GetComponentInChildren<HandView>(true), "HandPanelFrame");
+            ApplyFlatPanel(GetComponentInChildren<EventLogView>(true), "EventLogPanelFrame");
+        }
+
+        private void ApplyFlatPanel(Component host, string childName)
+        {
+            if (host == null)
+            {
+                return;
+            }
+
+            var image = EnsurePanelImage(host, childName, inset: 0f);
+            image.sprite = null;
+            image.type = Image.Type.Simple;
+            image.color = BattleUiColors.HudPanel;
         }
 
         private void ApplySlicedPanel(Component host, string childName)
@@ -85,6 +99,16 @@ namespace Warpaz.Presentation
                 return;
             }
 
+            var image = EnsurePanelImage(host, childName, inset: 12f);
+            image.sprite = _panelFrameSprite;
+            image.type = Image.Type.Sliced;
+            image.fillCenter = true;
+            image.preserveAspect = false;
+            image.color = Color.white;
+        }
+
+        private static Image EnsurePanelImage(Component host, string childName, float inset)
+        {
             var t = host.transform.Find(childName);
             GameObject go;
             if (t == null)
@@ -101,8 +125,8 @@ namespace Warpaz.Presentation
             var rt = go.GetComponent<RectTransform>();
             rt.anchorMin = Vector2.zero;
             rt.anchorMax = Vector2.one;
-            rt.offsetMin = new Vector2(-18f, -18f);
-            rt.offsetMax = new Vector2(18f, 18f);
+            rt.offsetMin = new Vector2(-inset, -inset);
+            rt.offsetMax = new Vector2(inset, inset);
 
             var image = go.GetComponent<Image>();
             if (image == null)
@@ -110,12 +134,8 @@ namespace Warpaz.Presentation
                 image = go.AddComponent<Image>();
             }
 
-            image.sprite = _panelFrameSprite;
-            image.type = Image.Type.Sliced;
-            image.fillCenter = true;
-            image.preserveAspect = false;
             image.raycastTarget = false;
-            image.color = Color.white;
+            return image;
         }
 
 #if UNITY_EDITOR

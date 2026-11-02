@@ -17,8 +17,10 @@ namespace Warpaz.Presentation
             EnsureChrome();
             _deck.SetFaceDown();
             _deck.SetInteractable(false);
+            ForcePileCardBackAspect(_deck.gameObject);
             _discard.SetFaceDown();
             _discard.SetInteractable(false);
+            ForcePileCardBackAspect(_discard.gameObject);
             if (_deckCount != null)
             {
                 _deckCount.text = deckCount.ToString();
@@ -77,29 +79,41 @@ namespace Warpaz.Presentation
 
             view.EnsureChrome();
             view.SetFaceDown();
+            ForcePileCardBackAspect(go);
 
             var countName = name + "Count";
             var ct = go.transform.Find(countName);
             TMP_Text tmp;
             if (ct == null)
             {
-                var cgo = new GameObject(countName, typeof(RectTransform));
+                var cgo = new GameObject(countName, typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
                 cgo.transform.SetParent(go.transform, false);
                 var crt = cgo.GetComponent<RectTransform>();
-                crt.anchorMin = new Vector2(0f, 0f);
-                crt.anchorMax = new Vector2(1f, 0.28f);
+                crt.anchorMin = new Vector2(0.18f, 0.02f);
+                crt.anchorMax = new Vector2(0.82f, 0.26f);
                 crt.offsetMin = Vector2.zero;
                 crt.offsetMax = Vector2.zero;
-                tmp = cgo.AddComponent<TextMeshProUGUI>();
+                var badge = cgo.GetComponent<Image>();
+                badge.color = new Color(0.08f, 0.07f, 0.06f, 0.88f);
+                badge.raycastTarget = false;
+                var labelGo = new GameObject("Text", typeof(RectTransform));
+                labelGo.transform.SetParent(cgo.transform, false);
+                var lrt = labelGo.GetComponent<RectTransform>();
+                lrt.anchorMin = Vector2.zero;
+                lrt.anchorMax = Vector2.one;
+                lrt.offsetMin = Vector2.zero;
+                lrt.offsetMax = Vector2.zero;
+                tmp = labelGo.AddComponent<TextMeshProUGUI>();
                 tmp.alignment = TextAlignmentOptions.Center;
-                tmp.fontSize = 18f;
-                tmp.color = BattleUiColors.CardText;
+                tmp.fontSize = 20f;
+                tmp.fontStyle = FontStyles.Bold;
+                tmp.color = BattleUiColors.HudText;
                 tmp.raycastTarget = false;
                 tmp.textWrappingMode = TextWrappingModes.NoWrap;
             }
             else
             {
-                tmp = ct.GetComponent<TMP_Text>();
+                tmp = ct.GetComponent<TMP_Text>() ?? ct.GetComponentInChildren<TMP_Text>(true);
             }
 
             if (name.StartsWith("Deck"))
@@ -125,12 +139,38 @@ namespace Warpaz.Presentation
                 labelTmp.text = label;
                 labelTmp.alignment = TextAlignmentOptions.Center;
                 labelTmp.fontSize = 14f;
-                labelTmp.color = BattleUiColors.CardText;
+                labelTmp.color = BattleUiColors.HudText;
                 labelTmp.raycastTarget = false;
                 labelTmp.textWrappingMode = TextWrappingModes.NoWrap;
             }
 
             return view;
+        }
+
+        private static void ForcePileCardBackAspect(GameObject pileRoot)
+        {
+            if (pileRoot == null)
+            {
+                return;
+            }
+
+            // Prefer letterboxed card-back art over stretched muddy pixels.
+            var images = pileRoot.GetComponentsInChildren<Image>(true);
+            for (var i = 0; i < images.Length; i++)
+            {
+                var img = images[i];
+                if (img == null || img.sprite == null)
+                {
+                    continue;
+                }
+
+                if (img.gameObject.name.IndexOf("Back", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    img.gameObject.name.IndexOf("Illustration", System.StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    img.preserveAspect = true;
+                    img.type = Image.Type.Simple;
+                }
+            }
         }
     }
 }

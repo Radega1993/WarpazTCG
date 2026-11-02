@@ -137,10 +137,10 @@ namespace Warpaz.Presentation
             text.textWrappingMode = TextWrappingModes.NoWrap;
             text.overflowMode = TextOverflowModes.Ellipsis;
             text.alignment = TextAlignmentOptions.Center;
-            text.color = BattleUiColors.CardText;
+            text.color = BattleUiColors.HudText;
+            text.fontStyle = FontStyles.Bold;
 
-            var img = text.GetComponentInParent<Image>();
-            // Ensure zone has a subtle panel background once.
+            // Ensure zone has a readable panel behind light HUD text.
             if (text.transform.parent != null)
             {
                 var parent = text.transform.parent.gameObject;
@@ -148,9 +148,10 @@ namespace Warpaz.Presentation
                 if (bg == null)
                 {
                     bg = parent.AddComponent<Image>();
-                    bg.color = new Color(0.12f, 0.12f, 0.14f, 0.55f);
-                    bg.raycastTarget = false;
                 }
+
+                bg.color = BattleUiColors.HudPanel;
+                bg.raycastTarget = false;
             }
         }
 

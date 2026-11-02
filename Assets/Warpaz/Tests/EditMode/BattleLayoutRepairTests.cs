@@ -167,8 +167,11 @@ namespace Warpaz.Tests.EditMode
                 Assert.IsNotNull(bg);
                 var image = bg.GetComponent<Image>();
                 Assert.IsNotNull(image);
-                Assert.IsNull(image.sprite, "No illustration sprite");
+                Assert.IsNotNull(image.sprite, "Chrome uses sliced rounded plate");
                 Assert.AreEqual(BattleUiColors.FaceUpBackground, image.color);
+                Assert.IsNotNull(go.transform.Find("CostGem"));
+                Assert.IsNotNull(go.transform.Find("PowerGem"));
+                Assert.IsNotNull(go.transform.Find("TypeBar"));
 
                 var snapshot = view.GetVisibleTextSnapshot();
                 Assert.IsTrue(snapshot.Contains("Alpha"));
@@ -190,8 +193,16 @@ namespace Warpaz.Tests.EditMode
                 view.SetFaceDown();
                 var snap = view.GetVisibleTextSnapshot();
                 Assert.AreEqual("|||", snap);
+                var cardBack = go.transform.Find("CardBack");
+                Assert.IsNotNull(cardBack);
+                var backImg = cardBack.GetComponent<Image>();
+                Assert.IsNotNull(backImg);
+                Assert.AreEqual(backImg.sprite != null, cardBack.gameObject.activeSelf);
                 var bg = go.transform.Find("GrayBackground").GetComponent<Image>();
-                Assert.AreEqual(BattleUiColors.FaceDownBackground, bg.color);
+                if (backImg.sprite == null)
+                {
+                    Assert.AreEqual(BattleUiColors.FaceDownBackground, bg.color);
+                }
             }
             finally
             {
@@ -211,6 +222,28 @@ namespace Warpaz.Tests.EditMode
                 view.SetSelected(true);
                 Assert.Greater(go.transform.localScale.x, 1.01f);
                 Assert.IsTrue(go.transform.Find("SelectedOverlay").gameObject.activeSelf);
+            }
+            finally
+            {
+                Object.DestroyImmediate(go);
+            }
+        }
+
+        [Test]
+        public void Hover_OutsideHand_DoesNotEnlarge()
+        {
+            var go = new GameObject("HoverCard", typeof(RectTransform), typeof(CanvasRenderer));
+            try
+            {
+                var view = go.AddComponent<CardPlaceholderView>();
+                view.EnsureChrome();
+                view.SetFaceUp("Gamma", "Character", "PA 2", "P2");
+                view.SetSelected(true);
+                var selectedScale = go.transform.localScale.x;
+                view.SetHovered(true);
+                // Not under LocalHand → hover ignored so board slots keep receiving clicks.
+                Assert.AreEqual(selectedScale, go.transform.localScale.x, 0.001f);
+                Assert.IsFalse(view.IsHoveredForTests);
             }
             finally
             {

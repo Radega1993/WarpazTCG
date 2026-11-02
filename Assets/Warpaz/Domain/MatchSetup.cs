@@ -11,13 +11,17 @@ namespace Warpaz.Domain
             RuleConfig rules,
             string contentVersion,
             PlayerSetup player0,
-            PlayerSetup player1)
+            PlayerSetup player1,
+            bool preserveMainDeckOrder = false,
+            bool forceFirstPlayer0 = false)
         {
             Seed = seed;
             Rules = rules;
             ContentVersion = contentVersion;
             Player0 = player0;
             Player1 = player1;
+            PreserveMainDeckOrder = preserveMainDeckOrder;
+            ForceFirstPlayer0 = forceFirstPlayer0;
         }
 
         public ulong Seed { get; }
@@ -29,5 +33,13 @@ namespace Warpaz.Domain
         public PlayerSetup Player0 { get; }
 
         public PlayerSetup Player1 { get; }
+
+        /// <summary>
+        /// When true, main decks keep declaration order (no Fisher–Yates). For tutorials/scripted matches.
+        /// </summary>
+        public bool PreserveMainDeckOrder { get; }
+
+        /// <summary>When true, Player0 is always first player (skips RNG seat flip).</summary>
+        public bool ForceFirstPlayer0 { get; }
     }
 }

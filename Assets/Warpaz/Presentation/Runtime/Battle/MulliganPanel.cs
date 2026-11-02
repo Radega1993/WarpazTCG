@@ -40,14 +40,21 @@ namespace Warpaz.Presentation
             }
         }
 
-        public void Render(IReadOnlyList<LegalAction> legalActions, PlayerId prioritySeat, bool busy, bool passOverlayVisible)
+        public void Render(
+            IReadOnlyList<LegalAction> legalActions,
+            PlayerId prioritySeat,
+            bool busy,
+            bool passOverlayVisible,
+            bool allowReplace = true)
         {
             gameObject.SetActive(true);
             LayoutPanel();
 
             if (_onlyOnce != null)
             {
-                _onlyOnce.text = "Solo puede hacerse una vez.";
+                _onlyOnce.text = allowReplace
+                    ? "Solo puede hacerse una vez."
+                    : "Tutorial: Conservar la mano.";
                 ConfigureLabel(_onlyOnce);
             }
 
@@ -70,6 +77,11 @@ namespace Warpaz.Presentation
                 {
                     canReplace = true;
                 }
+            }
+
+            if (!allowReplace)
+            {
+                canReplace = false;
             }
 
             if (_keepButton != null)
@@ -145,7 +157,7 @@ namespace Warpaz.Presentation
             var img = button.GetComponent<Image>();
             if (img != null)
             {
-                img.color = new Color(0.35f, 0.32f, 0.28f, 1f);
+                img.color = BattleUiColors.ActionButton;
             }
 
             var label = button.GetComponentInChildren<TMP_Text>(true);
@@ -174,7 +186,8 @@ namespace Warpaz.Presentation
             text.fontSizeMax = 28f;
             text.textWrappingMode = TextWrappingModes.NoWrap;
             text.overflowMode = TextOverflowModes.Ellipsis;
-            text.color = BattleUiColors.CardText;
+            text.color = BattleUiColors.ActionButtonText;
+            text.fontStyle = FontStyles.Bold;
         }
 
         private Button FindButton(string relativePath)

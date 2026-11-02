@@ -89,7 +89,7 @@ namespace Warpaz.Presentation
                 var img = _endTurnButton.GetComponent<Image>();
                 if (img != null)
                 {
-                    img.color = new Color(0.28f, 0.26f, 0.22f, 1f);
+                    img.color = BattleUiColors.ActionButton;
                 }
             }
 
@@ -99,7 +99,8 @@ namespace Warpaz.Presentation
                 _endTurnText.textWrappingMode = TextWrappingModes.NoWrap;
                 _endTurnText.overflowMode = TextOverflowModes.Ellipsis;
                 _endTurnText.alignment = TextAlignmentOptions.Center;
-                _endTurnText.color = BattleUiColors.CardText;
+                _endTurnText.color = BattleUiColors.ActionButtonText;
+                _endTurnText.fontStyle = FontStyles.Bold;
                 _endTurnText.enableAutoSizing = true;
                 _endTurnText.fontSizeMin = 12f;
                 _endTurnText.fontSizeMax = 22f;

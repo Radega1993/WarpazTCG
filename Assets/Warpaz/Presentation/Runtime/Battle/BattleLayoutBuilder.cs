@@ -78,18 +78,20 @@ namespace Warpaz.Presentation
             var localArea = EnsureChild(safe, LocalAreaName);
             StretchFull(localArea);
 
-            var opponentHud = EnsureZone(opponentArea, OpponentHudName, new Vector2(0.025f, 0.82f), new Vector2(0.19f, 0.97f));
-            var opponentHand = EnsureZone(opponentArea, OpponentHandName, new Vector2(0.28f, 0.84f), new Vector2(0.72f, 0.99f));
-            var opponentBoard = EnsureZone(opponentArea, OpponentBoardName, new Vector2(0.22f, 0.52f), new Vector2(0.76f, 0.82f));
-            var opponentPiles = EnsureZone(opponentArea, OpponentPilesName, new Vector2(0.80f, 0.69f), new Vector2(0.96f, 0.91f));
+            // Stay under AppWindowChrome (ContentTop) so the title bar never clips Tutor HUD/hand.
+            var top = AppWindowChrome.ContentTop;
+            var opponentHud = EnsureZone(opponentArea, OpponentHudName, new Vector2(0.01f, 0.76f), new Vector2(0.26f, top - 0.01f));
+            var opponentHand = EnsureZone(opponentArea, OpponentHandName, new Vector2(0.28f, 0.84f), new Vector2(0.70f, top - 0.01f));
+            var opponentBoard = EnsureZone(opponentArea, OpponentBoardName, new Vector2(0.24f, 0.52f), new Vector2(0.76f, 0.80f));
+            var opponentPiles = EnsureZone(opponentArea, OpponentPilesName, new Vector2(0.80f, 0.68f), new Vector2(0.96f, top - 0.02f));
 
-            var phasePanel = EnsureZone(centerLane, PhasePanelName, new Vector2(0.20f, 0.50f), new Vector2(0.80f, 0.55f));
-            var priorityPanel = EnsureZone(centerLane, PriorityPanelName, new Vector2(0.20f, 0.47f), new Vector2(0.80f, 0.50f));
-            var messagePanel = EnsureZone(centerLane, MessagePanelName, new Vector2(0.20f, 0.45f), new Vector2(0.80f, 0.47f));
+            var phasePanel = EnsureZone(centerLane, PhasePanelName, new Vector2(0.28f, 0.505f), new Vector2(0.72f, 0.545f));
+            var priorityPanel = EnsureZone(centerLane, PriorityPanelName, new Vector2(0.28f, 0.475f), new Vector2(0.72f, 0.505f));
+            var messagePanel = EnsureZone(centerLane, MessagePanelName, new Vector2(0.28f, 0.455f), new Vector2(0.72f, 0.475f));
 
-            var localBoard = EnsureZone(localArea, LocalBoardName, new Vector2(0.22f, 0.19f), new Vector2(0.76f, 0.47f));
-            var localHud = EnsureZone(localArea, LocalHudName, new Vector2(0.025f, 0.03f), new Vector2(0.19f, 0.19f));
-            var localHand = EnsureZone(localArea, LocalHandName, new Vector2(0.25f, 0.00f), new Vector2(0.75f, 0.20f));
+            var localBoard = EnsureZone(localArea, LocalBoardName, new Vector2(0.24f, 0.19f), new Vector2(0.76f, 0.47f));
+            var localHud = EnsureZone(localArea, LocalHudName, new Vector2(0.01f, 0.02f), new Vector2(0.26f, 0.22f));
+            var localHand = EnsureZone(localArea, LocalHandName, new Vector2(0.28f, 0.00f), new Vector2(0.75f, 0.20f));
             var localPiles = EnsureZone(localArea, LocalPilesName, new Vector2(0.80f, 0.14f), new Vector2(0.96f, 0.38f));
             var actionPanel = EnsureZone(localArea, ActionPanelName, new Vector2(0.79f, 0.02f), new Vector2(0.97f, 0.12f));
 

@@ -47,7 +47,8 @@ namespace Warpaz.Presentation
                 _text.textWrappingMode = TextWrappingModes.Normal;
                 _text.overflowMode = TextOverflowModes.Ellipsis;
                 _text.alignment = TextAlignmentOptions.Center;
-                _text.color = BattleUiColors.CardText;
+                _text.color = BattleUiColors.HudText;
+                _text.fontStyle = FontStyles.Bold;
                 _text.raycastTarget = false;
             }
         }
@@ -94,7 +95,14 @@ namespace Warpaz.Presentation
                 var img = _confirmButton.GetComponent<Image>();
                 if (img != null)
                 {
-                    img.color = new Color(0.32f, 0.30f, 0.26f, 1f);
+                    img.color = BattleUiColors.ActionButton;
+                }
+
+                var confirmLabel = _confirmButton.GetComponentInChildren<TMP_Text>(true);
+                if (confirmLabel != null)
+                {
+                    confirmLabel.color = BattleUiColors.ActionButtonText;
+                    confirmLabel.fontStyle = FontStyles.Bold;
                 }
             }
         }

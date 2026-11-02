@@ -57,10 +57,15 @@ namespace Warpaz.Domain
             InstantiatePlayer(catalog, state, PlayerId.Player0, setup.Player0);
             InstantiatePlayer(catalog, state, PlayerId.Player1, setup.Player1);
 
-            ShuffleDeck(state, PlayerId.Player0);
-            ShuffleDeck(state, PlayerId.Player1);
+            if (!setup.PreserveMainDeckOrder)
+            {
+                ShuffleDeck(state, PlayerId.Player0);
+                ShuffleDeck(state, PlayerId.Player1);
+            }
 
-            state.FirstPlayerId = PlayerId.FromIndex(state.Rng.Next(0, 2));
+            state.FirstPlayerId = setup.ForceFirstPlayer0
+                ? PlayerId.Player0
+                : PlayerId.FromIndex(state.Rng.Next(0, 2));
             state.Emit(GameEventType.FirstPlayerChosen, Command.HostActorId, state.FirstPlayerId.ToString());
 
             DrawCards(state, PlayerId.Player0, setup.Rules.InitialHandSize);

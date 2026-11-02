@@ -55,7 +55,7 @@ namespace Warpaz.Presentation
                 return;
             }
 
-            if (_session.State.Phase == MatchPhase.MulliganP0)
+            if (!payload.SkipAutoMulligan && _session.State.Phase == MatchPhase.MulliganP0)
             {
                 var mull = _session.ConfirmMulligan(PlayerId.Player0, payload.InitialMulliganForPlayer0);
                 if (!mull.Accepted)
@@ -70,7 +70,8 @@ namespace Warpaz.Presentation
                 runtime.Catalog,
                 payload.Player1Name,
                 payload.Player2Name,
-                payload.DebugVisibility);
+                payload.DebugVisibility,
+                payload.IsTutorial);
 
             var playerArea = GetComponentInChildren<PlayerAreaView>(true);
             var handView = GetComponentInChildren<HandView>(true);
@@ -143,6 +144,24 @@ namespace Warpaz.Presentation
             binder?.Apply();
 
             _presenter.InitializeFromState();
+
+            if (payload.IsTutorial)
+            {
+                EnsureTutorialDirector(canvas != null ? canvas.transform : transform);
+                TutorialCaptureRunner.TryStart(this);
+            }
+        }
+
+        private void EnsureTutorialDirector(Transform canvasRoot)
+        {
+            var coach = TutorialCoachView.Ensure(canvasRoot);
+            var director = GetComponent<TutorialDirector>();
+            if (director == null)
+            {
+                director = gameObject.AddComponent<TutorialDirector>();
+            }
+
+            director.Bind(_session, _presenter, coach, _flow);
         }
 
         private void EnsureBattleLayout()

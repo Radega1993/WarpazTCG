@@ -13,19 +13,24 @@ namespace Warpaz.Presentation
             MulliganDecision initialMulliganForPlayer0,
             bool debugVisibility,
             string player1Name,
-            string player2Name)
+            string player2Name,
+            bool isTutorial = false,
+            bool skipAutoMulligan = false)
         {
             MatchSetupValue = matchSetup;
             InitialMulliganForPlayer0 = initialMulliganForPlayer0;
             DebugVisibility = debugVisibility;
             Player1Name = player1Name ?? string.Empty;
             Player2Name = player2Name ?? string.Empty;
+            IsTutorial = isTutorial;
+            SkipAutoMulligan = skipAutoMulligan;
         }
 
         public MatchSetup MatchSetupValue { get; }
 
         /// <summary>
-        /// Aplicado automáticamente cuando la fase actual es MulliganP0 (actor seat Player0).
+        /// Aplicado automáticamente cuando la fase actual es MulliganP0 (actor seat Player0),
+        /// unless <see cref="SkipAutoMulligan"/> is set (tutorial teaches the mulligan).
         /// </summary>
         public MulliganDecision InitialMulliganForPlayer0 { get; }
 
@@ -40,5 +45,11 @@ namespace Warpaz.Presentation
         /// Nombre del prompt Player 2, que corresponde al seat Domain `PlayerId.Player1`.
         /// </summary>
         public string Player2Name { get; }
+
+        /// <summary>Guided single-player tutorial (coach + auto tutor seat).</summary>
+        public bool IsTutorial { get; }
+
+        /// <summary>When true, Battle does not auto-confirm Player0 mulligan.</summary>
+        public bool SkipAutoMulligan { get; }
     }
 }

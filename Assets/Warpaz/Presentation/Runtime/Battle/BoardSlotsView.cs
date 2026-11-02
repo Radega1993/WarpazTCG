@@ -55,7 +55,7 @@ namespace Warpaz.Presentation
 
         public void Render(
             MatchView view,
-            PlayerId prioritySeat,
+            PlayerId localSeat,
             ICardCatalog catalog,
             bool interactive,
             CardInstanceId selectedBoardId = default,
@@ -72,15 +72,16 @@ namespace Warpaz.Presentation
                 LayoutSlots();
             }
 
-            var priority = prioritySeat == PlayerId.Player0 ? view.Player0 : view.Player1;
-            var rival = prioritySeat == PlayerId.Player0 ? view.Player1 : view.Player0;
+            // Slots 0-3 = bottom (local), 4-7 = top (opponent). Never derive from priority.
+            var local = localSeat == PlayerId.Player0 ? view.Player0 : view.Player1;
+            var rival = localSeat == PlayerId.Player0 ? view.Player1 : view.Player0;
 
             for (var i = 0; i < _slots.Count; i++)
             {
                 _slots[i].gameObject.SetActive(true);
             }
 
-            RenderBoard(priority, prioritySeat, 0, catalog, interactive, selectedBoardId, legalTargetIds);
+            RenderBoard(local, localSeat, 0, catalog, interactive, selectedBoardId, legalTargetIds);
             RenderBoard(rival, rival.PlayerId, 4, catalog, interactive, selectedBoardId, legalTargetIds);
             LayoutSlots();
         }
@@ -118,17 +119,25 @@ namespace Warpaz.Presentation
 
                 var slot = board[i];
                 var name = slot.Occupant.CardId.Value;
+                var cost = "—";
                 var power = "—";
                 var type = slot.Row.ToString();
+                string rules = null;
                 if (catalog != null && catalog.TryGet(slot.Occupant.CardId, out var def))
                 {
                     name = def.Name;
+                    cost = def.CostPa.HasValue ? "PA " + def.CostPa.Value : "—";
                     power = def.Power.HasValue ? "P" + def.Power.Value : "—";
-                    type = def.Type.ToString();
+                    type = CardTypeCatalog.ToLabel(def.Type);
+                    rules = def.EffectText;
                 }
 
-                var flags = slot.ReadyState + (slot.HasRecent ? " Reciente" : string.Empty);
-                ui.SetCard(name, type, power, flags, slot.Occupant.CardId.Value);
+                if (slot.HasRecent)
+                {
+                    power = power + " ·R";
+                }
+
+                ui.SetCard(name, type, cost, power, slot.Occupant.CardId.Value, rules);
                 ui.SetInteractable(interactive);
                 ui.SetSelected(!selectedBoardId.IsNone && selectedBoardId == slot.Occupant.InstanceId);
                 ui.SetLegalTarget(Contains(legalTargetIds, slot.Occupant.InstanceId));
@@ -181,11 +190,8 @@ namespace Warpaz.Presentation
                 slot.EnsureWired();
                 slot.ApplyFrameSprite(_slotFrameSprite);
 
-                var legacy = t.GetComponent<CardPlaceholderView>();
-                if (legacy != null)
-                {
-                    legacy.enabled = false;
-                }
+                // Root-level CardPlaceholderView chrome (grey plate) used to cover FaceUpCard art.
+                StripLegacyRootCardChrome(t);
 
                 _slots.Add(slot);
             }
@@ -211,6 +217,37 @@ namespace Warpaz.Presentation
             }
 
             return null;
+        }
+
+        private static void StripLegacyRootCardChrome(Transform slotRoot)
+        {
+            if (slotRoot == null)
+            {
+                return;
+            }
+
+            var legacy = slotRoot.GetComponent<CardPlaceholderView>();
+            if (legacy != null)
+            {
+                Object.Destroy(legacy);
+            }
+
+            // Only strip chrome that CardPlaceholderView parents directly under the slot root.
+            // Keep CharacterSlotView children: Frame, CardContainer, Interaction, overlays.
+            string[] chrome =
+            {
+                "GrayBackground", "CardBack", "Border", "InnerRim", "Header", "EmptyContentArea",
+                "ArtLip", "RulesPanel", "StatsPanel", "TypeBar", "CostGem", "PowerGem",
+                "SelectedOverlay", "LegalOverlay", "TypeLine", "Illustration", "Text"
+            };
+            for (var i = 0; i < chrome.Length; i++)
+            {
+                var child = slotRoot.Find(chrome[i]);
+                if (child != null)
+                {
+                    Object.Destroy(child.gameObject);
+                }
+            }
         }
 
         private void LayoutSlots()

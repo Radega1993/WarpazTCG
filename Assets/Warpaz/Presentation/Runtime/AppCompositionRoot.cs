@@ -17,6 +17,7 @@ namespace Warpaz.Presentation
         {
             Runtime = runtime;
             DontDestroyOnLoad(gameObject);
+            AppWindowChrome.Ensure(transform);
             SceneManager.sceneLoaded -= OnSceneLoaded;
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
