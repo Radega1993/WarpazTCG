@@ -16,6 +16,7 @@ ExportedObj/
 .idea/
 *.csproj
 !Tools/BalanceLab/BalanceLab.csproj
+!Tools/DomainTests/DomainTests.csproj
 *.unityproj
 *.sln
 *.slnx

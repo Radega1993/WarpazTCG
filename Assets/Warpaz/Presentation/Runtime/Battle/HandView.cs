@@ -10,6 +10,40 @@ namespace Warpaz.Presentation
     {
         private readonly List<CardPlaceholderView> _placeholders = new List<CardPlaceholderView>();
         private System.Action<CardInstanceId> _onCardClicked;
+        public const int PageSize = 8;
+        public int CurrentPage { get; private set; }
+        private MatchView _view;
+        private ICardCatalog _catalog;
+        private bool _interactive;
+        private CardInstanceId _selected;
+        private IReadOnlyCollection<CardInstanceId> _playable;
+        private GameObject _pager;
+        private TMPro.TMP_Text _pageLabel;
+
+        public void ChangePage(int delta)
+        {
+            if (_view == null) return;
+            CurrentPage = Mathf.Clamp(CurrentPage + delta, 0, Mathf.Max(0, (_view.Viewer.VisibleHand.Count - 1) / PageSize));
+            Render(_view, true, _catalog, _interactive, _selected, _playable);
+        }
+
+        private void EnsurePager()
+        {
+            if (_pager != null) return;
+            _pager = new GameObject("HandPages", typeof(RectTransform)); _pager.transform.SetParent(transform, false);
+            var rect = (RectTransform)_pager.transform; rect.anchorMin = new Vector2(.37f, .87f); rect.anchorMax = new Vector2(.63f, 1); rect.offsetMin = rect.offsetMax = Vector2.zero;
+            for (int i = 0; i < 3; i++)
+            {
+                var go = new GameObject("PageControl", typeof(RectTransform), typeof(Image)); go.transform.SetParent(_pager.transform, false);
+                var r = (RectTransform)go.transform; r.anchorMin = new Vector2(i / 3f, 0); r.anchorMax = new Vector2((i + 1) / 3f, 1); r.offsetMin = r.offsetMax = Vector2.zero;
+                go.GetComponent<Image>().color = new Color(.1f, .15f, .2f, 1);
+                var textGo = new GameObject("Label", typeof(RectTransform), typeof(TMPro.TextMeshProUGUI)); textGo.transform.SetParent(go.transform, false);
+                var tr = (RectTransform)textGo.transform; tr.anchorMin = Vector2.zero; tr.anchorMax = Vector2.one; tr.offsetMin = tr.offsetMax = Vector2.zero;
+                var text = textGo.GetComponent<TMPro.TextMeshProUGUI>(); text.fontSize = 16; text.alignment = TMPro.TextAlignmentOptions.Center; text.raycastTarget = false;
+                if (i == 1) _pageLabel = text;
+                else { var delta = i == 0 ? -1 : 1; text.text = i == 0 ? "‹" : "›"; go.AddComponent<Button>().onClick.AddListener(() => ChangePage(delta)); }
+            }
+        }
 
         private void LateUpdate()
         {
@@ -37,10 +71,16 @@ namespace Warpaz.Presentation
             CardInstanceId selectedHandId = default,
             IReadOnlyCollection<CardInstanceId> playableIds = null)
         {
-            if (view == null)
+            EnsurePager();
+            if (!showHand || view == null)
             {
+                _view = null; _catalog = null; _playable = null; _selected = default; CurrentPage = 0;
+                _pager.SetActive(false); _pageLabel.text = "";
+                foreach (var placeholder in _placeholders) { placeholder.Bind(null); placeholder.SetFaceDown(); placeholder.gameObject.SetActive(false); }
                 return;
             }
+            if (_view != null && _view.Viewer.PlayerId != view.Viewer.PlayerId) CurrentPage = 0;
+            _view = view; _catalog = catalog; _interactive = interactive; _selected = selectedHandId; _playable = playableIds;
 
             if (_placeholders.Count == 0)
             {
@@ -58,11 +98,15 @@ namespace Warpaz.Presentation
             }
 
             var hand = view.Viewer.VisibleHand;
-            var visible = Mathf.Min(hand.Count, _placeholders.Count);
+            CurrentPage = Mathf.Clamp(CurrentPage, 0, Mathf.Max(0, (hand.Count - 1) / PageSize));
+            var offset = CurrentPage * PageSize;
+            var visible = Mathf.Min(hand.Count - offset, PageSize);
+            _pager.SetActive(hand.Count > PageSize);
+            _pageLabel.text = (CurrentPage + 1) + "/" + Mathf.Max(1, (hand.Count + PageSize - 1) / PageSize);
             for (var i = 0; i < visible; i++)
             {
                 var placeholder = _placeholders[i];
-                var card = hand[i];
+                var card = hand[i + offset];
                 var instanceId = card.InstanceId;
 
                 if (catalog != null && catalog.TryGet(card.CardId, out var def))
@@ -145,7 +189,7 @@ namespace Warpaz.Presentation
             var parent = transform as RectTransform;
             if (parent == null || parent.rect.width <= 0f || parent.rect.height <= 0f) return;
             var available = parent.rect.width * 0.98f;
-            var size = CardLayout.Fit(available / count - 8f, parent.rect.height * 0.90f);
+            var size = CardLayout.Fit(available / count - 8f, parent.rect.height * 0.78f);
             var step = size.x + 8f;
             for (var i = 0; i < count; i++)
             {

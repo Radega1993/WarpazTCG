@@ -119,19 +119,19 @@ namespace Warpaz.Domain
             return EngineActions.Snapshot(state, from);
         }
 
-        internal static List<CardInstanceId> CollectInterceptors(GameState state, PlayerState defender)
+        internal List<CardInstanceId> CollectInterceptors(GameState state, PlayerState defender)
         {
             var list = new List<CardInstanceId>();
             for (var i = 0; i < defender.BoardSlots.Count; i++)
             {
                 var slot = defender.BoardSlots[i];
-                if (!slot.IsVanguard || !slot.IsOccupied)
+                if (!slot.IsOccupied)
                 {
                     continue;
                 }
 
                 var card = state.Cards[slot.Occupant];
-                if (CombatPolicies.CanIntercept(card))
+                if (CombatPolicies.CanIntercept(card, _catalog, state.Rules))
                 {
                     list.Add(card.InstanceId);
                 }

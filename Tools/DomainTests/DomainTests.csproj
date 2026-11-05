@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><EnableDefaultCompileItems>false</EnableDefaultCompileItems></PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="../../Assets/Warpaz/Domain/**/*.cs" />
+    <Compile Include="../../Assets/Warpaz/Application/**/*.cs" />
+    <Compile Include="../../Assets/Warpaz/Content/Runtime/**/*.cs" />
+    <Compile Include="../../Assets/Warpaz/Tests/EditMode/*.cs" Exclude="../../Assets/Warpaz/Tests/EditMode/Battle*.cs;../../Assets/Warpaz/Tests/EditMode/HandPaginationTests.cs;../../Assets/Warpaz/Tests/EditMode/ModernCardLayoutTests.cs;../../Assets/Warpaz/Tests/EditMode/Wz1*.cs;../../Assets/Warpaz/Tests/EditMode/TutorialMatchFixtureTests.cs;../../Assets/Warpaz/Tests/EditMode/Sprint1*.cs;../../Assets/Warpaz/Tests/EditMode/DomainAssemblyTests.cs;../../Assets/Warpaz/Tests/EditMode/RuleConfigLoaderTests.cs" />
+    <Reference Include="Newtonsoft.Json"><HintPath>$(MSBuildSDKsPath)/../Newtonsoft.Json.dll</HintPath></Reference>
+    <PackageReference Include="NUnit" Version="3.14.0" />
+    <PackageReference Include="NUnitLite" Version="3.14.0" />
+  </ItemGroup>
+</Project>

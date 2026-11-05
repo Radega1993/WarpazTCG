@@ -171,6 +171,8 @@ namespace Warpaz.Domain
                 targetIndex = command.TargetSlotIndex;
             }
 
+            if (!CombatPolicies.CanPlayUnique(state, definition, command.ActorId, replaceId))
+                return CommandResult.Reject(state, CommandRejectionCode.InvalidPayload, "Ya controlas este personaje Único.");
             var from = state.EventIndex;
             if (cost > 0)
             {

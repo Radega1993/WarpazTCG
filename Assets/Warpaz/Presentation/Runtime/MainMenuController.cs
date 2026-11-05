@@ -60,7 +60,7 @@ namespace Warpaz.Presentation
                 comingSoonText.text = string.Empty;
             }
 
-            Wire(playButton, OnPlay);
+            Wire(playButton, OnStarters);
             Wire(laboratoryButton, OnTutorial);
             Wire(quitButton, OnQuit);
             Wire(decksButton, OnStarters);
@@ -158,12 +158,12 @@ namespace Warpaz.Presentation
                 var decks = StarterDeckCatalog.Load(System.IO.Path.Combine(UnityEngine.Application.streamingAssetsPath, "Data", StarterDeckCatalog.FileName), _runtime.Catalog, _runtime.Rules);
                 var canvas = GetComponentInParent<Canvas>();
                 if (canvas == null) throw new System.InvalidOperationException("Starter picker requires Canvas.");
-                StarterDeckPicker.Show(canvas.transform, decks, (a, b) =>
+                DeckLibraryView.Show(canvas.transform, _runtime.Catalog, RuleConfig.PreviewDefaults(), decks, (a, b) =>
                 {
-                    var setup = new MatchSetup(seed, _runtime.Rules, _runtime.Catalog.ContentVersion,
-                        new PlayerSetup(PlayerId.Player0, decks[a]), new PlayerSetup(PlayerId.Player1, decks[b]));
+                    var setup = new MatchSetup(seed, RuleConfig.PreviewDefaults(), _runtime.Catalog.ContentVersion,
+                        new PlayerSetup(PlayerId.Player0, a), new PlayerSetup(PlayerId.Player1, b));
                     var payload = new BattleStartPayload(setup, mulliganDecision, false,
-                        player1Name + " · " + decks[a].DisplayName, player2Name + " · " + decks[b].DisplayName,
+                        player1Name + " · " + a.DisplayName, player2Name + " · " + b.DisplayName,
                         skipAutoMulligan: true);
                     if (!(_flow is IBattleStartProvider provider)) throw new System.InvalidOperationException("Battle provider unavailable.");
                     provider.SetPendingBattleStart(payload);

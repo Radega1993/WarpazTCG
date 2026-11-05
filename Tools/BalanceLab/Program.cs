@@ -13,7 +13,8 @@ Directory.CreateDirectory(output);
 var loaded = CardCatalogLoader.LoadFromDirectory(Path.Combine(root, "Assets/StreamingAssets/Data"));
 if (!loaded.Success) throw new Exception("Production catalog/manifest validation failed.");
 var catalog = loaded.Catalog;
-var rules = RuleConfig.AlphaDefaults();
+var preview = args.Contains("--preview");
+var rules = preview ? RuleConfig.PreviewDefaults() : RuleConfig.AlphaDefaults();
 var decks = StarterDeckCatalog.Load(Path.Combine(root, "Assets/StreamingAssets/Data", StarterDeckCatalog.FileName), catalog, rules).ToArray();
 foreach (var deck in decks)
 {
@@ -47,8 +48,9 @@ File.WriteAllText(Path.Combine(output, "traces.json"), JsonSerializer.Serialize(
 File.WriteAllLines(Path.Combine(output, "matches.csv"), new[] {"seed,deck0,deck1,firstPlayer,winner,turns,commands,plays,attacks,heroAttacks,reorganizations,rearPlays,interceptions,cause,hash"}.Concat(rows.Select(r =>
     $"{r.Seed},{r.Deck0},{r.Deck1},{r.FirstPlayer},{r.Winner},{r.Turns},{r.Commands},{r.Plays},{r.Attacks},{r.HeroAttacks},{r.Reorganizations},{r.RearPlays},{r.Interceptions},{r.Cause},{r.Hash}")));
 var summary = new {
-    sourceCommit = "610241d5f4df780a76075eb42a2edb28a9ecff84",
-    scope = "Actual production vanilla engine. No printed abilities/keywords. Heuristic bots; not human or full-set balance validation.",
+    sourceCommit = "423121491c30c5f1dd74c491dac796be025e54bb + preview changes",
+    ruleVersion = rules.RuleVersion,
+    scope = "Production engine. Preview enables Unique and rear Guardian only. Heuristic bots; not human or full-set balance validation.",
     completed = rows.Count, repeatedIdentically = rows.Count, rejectedCommands = 0, invariantFailures = 0,
     catalogSha256 = Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(Path.Combine(root,"Assets/StreamingAssets/Data/cards_wz1.v0.1.json")))).ToLowerInvariant(),
     minimumTurns = rows.Min(r => r.Turns), meanTurns = rows.Average(r => r.Turns), maximumTurns = rows.Max(r => r.Turns),
@@ -74,9 +76,20 @@ var fatigue = Simulate(99,cheapDeck,cheapDeck,catalog,rules).Row;
 if(fatigue.FailedDraws==0 || fatigue.FinalBlow!="failed-draw")throw new Exception("Low-power diagnostic did not reach fatigue");
 var deadDeck = new DeckList("DIAG-NONPLAYABLE","Accepted but not playable",decks[0].HeroCardId,decks[0].ClassCardId,catalog.All.Where(c=>c.Type==CardType.Action).Take(14).SelectMany((c,i)=>Enumerable.Repeat(c.CardId,i<12?3:2)).ToArray());
 var deadValidation = DeckValidator.Validate(deadDeck,catalog,rules);
-if(!deadValidation.IsValid)throw new Exception("Diagnostic assumption changed: generic deck validator now restricts unsupported cards");
-var dead = Simulate(100,deadDeck,deadDeck,catalog,rules).Row;
-if(dead.Plays!=0 || dead.FinalBlow!="failed-draw")throw new Exception("Unsupported-card diagnostic changed");
+MatchRow dead = null;
+if (preview)
+{
+    if (deadValidation.IsValid) throw new Exception("Preview accepted unsupported cards");
+    var invalid = new GameSession(catalog);
+    var rejected = invalid.Start(new MatchSetup(100, rules, catalog.ContentVersion, new PlayerSetup(PlayerId.Player0,deadDeck), new PlayerSetup(PlayerId.Player1,deadDeck)));
+    if (rejected.Accepted || invalid.State != null) throw new Exception("Invalid match left partial state");
+}
+else
+{
+    if(!deadValidation.IsValid)throw new Exception("Legacy validator changed");
+    dead = Simulate(100,deadDeck,deadDeck,catalog,rules).Row;
+    if(dead.Plays!=0 || dead.FinalBlow!="failed-draw")throw new Exception("Unsupported-card diagnostic changed");
+}
 var probe = new GameSession(catalog);
 Require(probe.Start(new MatchSetup(42,rules,catalog.ContentVersion,new PlayerSetup(PlayerId.Player0,decks[0]),new PlayerSetup(PlayerId.Player1,decks[1]))));
 Require(probe.ConfirmMulligan(PlayerId.Player0,true)); Require(probe.ConfirmMulligan(PlayerId.Player1,true));
