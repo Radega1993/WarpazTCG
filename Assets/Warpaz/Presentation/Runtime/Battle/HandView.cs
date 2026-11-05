@@ -11,6 +11,13 @@ namespace Warpaz.Presentation
         private readonly List<CardPlaceholderView> _placeholders = new List<CardPlaceholderView>();
         private System.Action<CardInstanceId> _onCardClicked;
 
+        private void LateUpdate()
+        {
+            var visible = 0;
+            foreach (var card in _placeholders) if (card.gameObject.activeSelf) visible++;
+            LayoutVisible(visible);
+        }
+
         private void Awake()
         {
             CollectCards();
@@ -135,6 +142,11 @@ namespace Warpaz.Presentation
                 return;
             }
 
+            var parent = transform as RectTransform;
+            if (parent == null || parent.rect.width <= 0f || parent.rect.height <= 0f) return;
+            var available = parent.rect.width * 0.98f;
+            var size = CardLayout.Fit(available / count - 8f, parent.rect.height * 0.90f);
+            var step = size.x + 8f;
             for (var i = 0; i < count; i++)
             {
                 var rt = _placeholders[i].transform as RectTransform;
@@ -143,12 +155,10 @@ namespace Warpaz.Presentation
                     continue;
                 }
 
-                var x0 = (float)i / count + 0.005f;
-                var x1 = (float)(i + 1) / count - 0.005f;
-                rt.anchorMin = new Vector2(x0, 0.05f);
-                rt.anchorMax = new Vector2(x1, 0.95f);
-                rt.offsetMin = Vector2.zero;
-                rt.offsetMax = Vector2.zero;
+                rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0.05f);
+                rt.pivot = new Vector2(0.5f, 0f);
+                rt.sizeDelta = size;
+                rt.anchoredPosition = new Vector2((i - (count - 1) * 0.5f) * step, 0f);
                 // Pivot/scale owned by CardPlaceholderView hover + selection.
             }
         }

@@ -26,6 +26,12 @@ namespace Warpaz.Presentation
         public RectTransform CardContainer => _cardContainer;
         public CardPlaceholderView CardView => _cardView;
 
+        private void LateUpdate()
+        {
+            if (_cardView != null && _cardView.gameObject.activeSelf)
+                CardLayout.FitInParent(_cardView.transform as RectTransform, _cardContainer);
+        }
+
         private void Awake()
         {
             EnsureWired();

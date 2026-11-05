@@ -15,6 +15,7 @@ ExportedObj/
 .vs/
 .idea/
 *.csproj
+!Tools/BalanceLab/BalanceLab.csproj
 *.unityproj
 *.sln
 *.slnx

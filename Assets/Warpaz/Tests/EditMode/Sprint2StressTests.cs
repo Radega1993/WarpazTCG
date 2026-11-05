@@ -5,6 +5,15 @@ namespace Warpaz.Tests.EditMode
     public sealed class Sprint2StressTests
     {
         [Test]
+        public void TurnLimit_IsFailure_NotCompletedMatch()
+        {
+            var report = new Sprint2StressRunner(new Sprint2StressConfig(matchCount: 1, maxTurns: 0)).Run();
+            Assert.AreEqual(0, report.MatchesCompleted);
+            Assert.AreEqual(1, report.Stalls);
+            StringAssert.Contains("before GameOver", report.FirstFailureReason);
+        }
+
+        [Test]
         public void Stress_50Matches_VanillaActions_Deterministic()
         {
             var config = new Sprint2StressConfig(

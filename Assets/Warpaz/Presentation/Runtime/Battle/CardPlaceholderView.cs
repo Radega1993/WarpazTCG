@@ -42,6 +42,7 @@ namespace Warpaz.Presentation
         private System.Action _onClick;
         private bool _faceUp = true;
         private bool _selected;
+        private bool _playable;
         private bool _hovered;
         private string _cachedName = string.Empty;
         private string _cachedType = string.Empty;
@@ -157,6 +158,14 @@ namespace Warpaz.Presentation
         {
             EnsureChrome();
             _faceUp = false;
+            _hovered = false;
+            _selected = false;
+            _playable = false;
+            _cachedName = _cachedType = _cachedCost = _cachedExtra = _cachedRules = string.Empty;
+            _cachedCardId = null;
+            CardInspectOverlay.Hide(this);
+            _selectedOverlay.gameObject.SetActive(false);
+            _legalOverlay.gameObject.SetActive(false);
             ApplyFaceMode(false);
             ClearIllustration();
             if (_name != null)
@@ -242,6 +251,7 @@ namespace Warpaz.Presentation
 
         public void SetPlayable(bool playable)
         {
+            _playable = playable;
             EnsureChrome();
             if (_legalOverlay != null)
             {
@@ -358,7 +368,7 @@ namespace Warpaz.Presentation
                 _emptyContent.gameObject.AddComponent<RectMask2D>();
             }
 
-            Canvas.ForceUpdateCanvases();
+            // No recursive canvas rebuild from a dimension-change callback.
             var w = window.rect.width;
             var h = window.rect.height;
             if (w < 1f || h < 1f)
@@ -557,12 +567,12 @@ namespace Warpaz.Presentation
 
             _selectedOverlay = EnsureImage("SelectedOverlay", BattleUiColors.SelectionOverlay, false, 8);
             ApplySliced(_selectedOverlay, rounded, BattleUiColors.SelectionOverlay);
-            _selectedOverlay.gameObject.SetActive(false);
+            _selectedOverlay.gameObject.SetActive(_selected && _faceUp);
             LayoutRegion(_selectedOverlay.rectTransform, 0f, 0f, 1f, 1f, 0f);
 
             _legalOverlay = EnsureImage("LegalOverlay", BattleUiColors.LegalOverlay, false, 7);
             ApplySliced(_legalOverlay, rounded, BattleUiColors.LegalOverlay);
-            _legalOverlay.gameObject.SetActive(false);
+            _legalOverlay.gameObject.SetActive(_playable && _faceUp);
             LayoutRegion(_legalOverlay.rectTransform, 0f, 0f, 1f, 1f, 0f);
 
             _button = GetComponent<Button>();
@@ -581,6 +591,7 @@ namespace Warpaz.Presentation
             }
 
             ApplyFaceMode(_faceUp);
+            _border.color = _selected ? BattleUiColors.SelectedBorder : (_playable ? BattleUiColors.PlayableBorder : BattleUiColors.CardBorder);
             EnforceAspect(rootRt);
             ApplyPresentationScale();
         }
@@ -751,7 +762,7 @@ namespace Warpaz.Presentation
         }
 
         /// <summary>
-        /// Art / type / rules / gems sized to content — short rules shrink so art grows.
+        /// Stable modern frame: changing text never changes the illustration crop.
         /// </summary>
         private void ApplyBodyLayout()
         {
@@ -766,32 +777,9 @@ namespace Warpaz.Presentation
                 return;
             }
 
-            var rules = string.IsNullOrWhiteSpace(_cachedRules) ? string.Empty : _cachedRules.Trim();
-            float rulesH;
-            if (rules.Length == 0)
-            {
-                rulesH = 0.07f;
-            }
-            else if (rules.Length < 50)
-            {
-                rulesH = 0.10f;
-            }
-            else if (rules.Length < 110)
-            {
-                rulesH = 0.13f;
-            }
-            else if (rules.Length < 180)
-            {
-                rulesH = 0.16f;
-            }
-            else
-            {
-                rulesH = 0.19f;
-            }
-
-            const float rulesBottom = 0.035f;
-            var rulesTop = rulesBottom + rulesH;
-            const float typeH = 0.038f;
+            const float rulesBottom = 0.115f;
+            const float rulesTop = 0.285f;
+            const float typeH = 0.045f;
             var typeBottom = rulesTop + 0.008f;
             var typeTop = typeBottom + typeH;
             var artBottom = typeTop + 0.012f;
@@ -805,12 +793,10 @@ namespace Warpaz.Presentation
             LayoutRegion(_artLip.rectTransform, 0.045f, artBottom - 0.012f, 0.955f, artTop + 0.01f, 0f);
             LayoutRegion(_emptyContent.rectTransform, 0.06f, artBottom, 0.94f, artTop, 0f);
             LayoutRegion(_typeBar.rectTransform, 0.06f, typeBottom, 0.94f, typeTop, 0f);
-            LayoutRegion(_rulesPanel.rectTransform, 0.06f, rulesBottom, 0.72f, rulesTop, 0f);
+            LayoutRegion(_rulesPanel.rectTransform, 0.06f, rulesBottom, 0.94f, rulesTop, 0f);
 
-            // Power gem sits on the bottom-right corner, sized to the rules band.
-            var gemBottom = Mathf.Max(0.02f, rulesBottom - 0.01f);
-            var gemTop = Mathf.Min(0.24f, rulesTop + 0.02f);
-            LayoutRegion(_powerGem.rectTransform, 0.74f, gemBottom, 0.97f, gemTop, 0f);
+            // Separate footer, not a gem taking one quarter of every rules line.
+            LayoutRegion(_powerGem.rectTransform, 0.77f, 0.012f, 0.95f, 0.105f, 0f);
         }
 
         private void ApplyCostText(string raw)
