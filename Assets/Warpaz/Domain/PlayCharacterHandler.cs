@@ -13,6 +13,8 @@ namespace Warpaz.Domain
 
         public CommandResult Handle(GameState state, Command command)
         {
+            if (state.TryGetCard(command.PrimaryInstanceId, out var source) && _catalog.TryGet(source.DefinitionId, out var def) && def.Type == CardType.Action)
+                return EffectEngine.Play(state, command, _catalog);
             if (state.Phase != MatchPhase.Main)
             {
                 return CommandResult.Reject(

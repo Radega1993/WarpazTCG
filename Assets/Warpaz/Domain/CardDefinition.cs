@@ -54,7 +54,7 @@ namespace Warpaz.Domain
             Canon = canon;
             Complexity = complexity;
             BalanceNotes = balanceNotes;
-            Effects = effects ?? Array.Empty<EffectDefinition>();
+            Effects = effects == null ? Array.Empty<EffectDefinition>() : Array.AsReadOnly(System.Linq.Enumerable.ToArray(effects));
         }
 
         public CardId CardId { get; }

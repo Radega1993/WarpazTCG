@@ -13,8 +13,9 @@ Directory.CreateDirectory(output);
 var loaded = CardCatalogLoader.LoadFromDirectory(Path.Combine(root, "Assets/StreamingAssets/Data"));
 if (!loaded.Success) throw new Exception("Production catalog/manifest validation failed.");
 var catalog = loaded.Catalog;
-var preview = args.Contains("--preview");
-var rules = preview ? RuleConfig.PreviewDefaults() : RuleConfig.AlphaDefaults();
+var effects = args.Contains("--effects");
+var preview = args.Contains("--preview") || effects;
+var rules = effects ? RuleConfig.EffectsDefaults() : preview ? RuleConfig.PreviewDefaults() : RuleConfig.AlphaDefaults();
 var decks = StarterDeckCatalog.Load(Path.Combine(root, "Assets/StreamingAssets/Data", StarterDeckCatalog.FileName), catalog, rules).ToArray();
 foreach (var deck in decks)
 {
@@ -25,6 +26,9 @@ foreach (var deck in decks)
 }
 
 var rows = new List<MatchRow>();
+if (effects)
+    decks = decks.Select(d => new DeckList(d.DeckId + "-FX", d.DisplayName + " FX", d.HeroCardId, d.ClassCardId,
+        d.MainDeckCardIds.Skip(8).Concat(new[] {"WZ1-078", "WZ1-079", "WZ1-082", "WZ1-086"}.SelectMany(id => Enumerable.Repeat(new CardId(id), 2))).ToArray())).ToArray();
 var traces = new List<object>();
 var pairs = new[] { (0, 1), (0, 2), (1, 2) };
 for (var pairIndex = 0; pairIndex < 50; pairIndex++)
@@ -48,15 +52,16 @@ File.WriteAllText(Path.Combine(output, "traces.json"), JsonSerializer.Serialize(
 File.WriteAllLines(Path.Combine(output, "matches.csv"), new[] {"seed,deck0,deck1,firstPlayer,winner,turns,commands,plays,attacks,heroAttacks,reorganizations,rearPlays,interceptions,cause,hash"}.Concat(rows.Select(r =>
     $"{r.Seed},{r.Deck0},{r.Deck1},{r.FirstPlayer},{r.Winner},{r.Turns},{r.Commands},{r.Plays},{r.Attacks},{r.HeroAttacks},{r.Reorganizations},{r.RearPlays},{r.Interceptions},{r.Cause},{r.Hash}")));
 var summary = new {
-    sourceCommit = "423121491c30c5f1dd74c491dac796be025e54bb + preview changes",
+    sourceCommit = "d5548f7d81977c52ff0d5b89f8084406d4dfe579 + effects changes",
     ruleVersion = rules.RuleVersion,
-    scope = "Production engine. Preview enables Unique and rear Guardian only. Heuristic bots; not human or full-set balance validation.",
+    scope = "Production engine; --effects adds 8 supported Actions per deck. Heuristic bots; not full-set balance validation.",
     completed = rows.Count, repeatedIdentically = rows.Count, rejectedCommands = 0, invariantFailures = 0,
     catalogSha256 = Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(Path.Combine(root,"Assets/StreamingAssets/Data/cards_wz1.v0.1.json")))).ToLowerInvariant(),
     minimumTurns = rows.Min(r => r.Turns), meanTurns = rows.Average(r => r.Turns), maximumTurns = rows.Max(r => r.Turns),
     firstPlayerWins = rows.Count(r => r.FirstPlayer == r.Winner),
     commandCount = rows.Sum(r => r.Commands), rearPlays = rows.Sum(r => r.RearPlays), reorganizations = rows.Sum(r => r.Reorganizations),
     interceptions = rows.Sum(r => r.Interceptions), gamesWithFailedDraws = rows.Count(r=>r.FailedDraws>0), failedDraws = rows.Sum(r=>r.FailedDraws),
+    actionsResolved = rows.Sum(r => r.ActionsResolved),
     endCauses = rows.GroupBy(r => r.Cause).ToDictionary(g => g.Key, g => g.Count()),
     finalBlows = rows.GroupBy(r => r.FinalBlow).ToDictionary(g => g.Key, g => g.Count()),
     deckResults = decks.Select(d => new { id = d.DeckId, games = rows.Count(r => r.Deck0 == d.DeckId || r.Deck1 == d.DeckId), wins = rows.Count(r => (r.Winner == 0 ? r.Deck0 : r.Deck1) == d.DeckId), meanCost = d.MainDeckCardIds.Average(id => {catalog.TryGet(id,out var c); return (double)c.CostPa.Value;}) }),
@@ -133,7 +138,7 @@ static (MatchRow Row, List<string> Trace) Simulate(ulong seed, DeckList d0, Deck
         if(action.Type==CommandType.ChooseTargets || action.Type==CommandType.PassPriority)intercepts++;
     }
     if(!session.State.Result.IsFinished || !session.State.Result.HasWinner)throw new Exception("Invalid terminal state");
-    var row=new MatchRow(seed,d0.DeckId,d1.DeckId,session.State.FirstPlayerId.Index,session.State.Result.Winner.Index,session.State.Turn,commands,plays,attacks,heroAttacks,reorgs,rearPlays,intercepts,session.State.EventLog.Count(e=>e.Type==GameEventType.DrawFailed),session.AcceptedCommands.Last().Type==CommandType.EndTurn?"failed-draw":"combat",session.State.Result.Cause.ToString(),GameStateHasher.Hash(session.State));
+    var row=new MatchRow(seed,d0.DeckId,d1.DeckId,session.State.FirstPlayerId.Index,session.State.Result.Winner.Index,session.State.Turn,commands,plays,attacks,heroAttacks,reorgs,rearPlays,intercepts,session.State.EventLog.Count(e=>e.Type==GameEventType.DrawFailed),session.AcceptedCommands.Last().Type==CommandType.EndTurn?"failed-draw":"combat",session.State.Result.Cause.ToString(),GameStateHasher.Hash(session.State),session.State.EventLog.Count(e=>e.Type==GameEventType.ActionPlayed));
     return (row,trace);
 }
 
@@ -146,6 +151,14 @@ static double Score(GameState state, ICardCatalog catalog, LegalAction a)
     if(a.Type==CommandType.Play)
     {
         var c=Definition(state,catalog,a.PrimaryInstanceId); var p=c.Power??0;
+        if (c.Type == CardType.Action)
+        {
+            var target = state.Cards[a.SecondaryInstanceId];
+            // Never inspect hidden cards. Prefer buffs to friendly attackers, debuffs to enemies.
+            var friendly = target.ControllerId == a.ActorId;
+            var delta = c.Effects.Where(e => e.Opcode == EffectOpcode.PowerUntilEndTurn).Sum(e => e.Amount);
+            return (delta > 0 && friendly || delta < 0 && !friendly) ? 85 : -1;
+        }
         if(!a.SecondaryInstanceId.IsNone)
         {
             var old=Definition(state,catalog,a.SecondaryInstanceId).Power??0;
@@ -197,4 +210,4 @@ static CommandResult Submit(GameSession s, LegalAction a)=>a.Type switch
     CommandType.EndTurn=>s.EndTurn(a.ActorId),
     _=>throw new Exception("Unhandled legal action "+a.Type)
 };
-record MatchRow(ulong Seed,string Deck0,string Deck1,int FirstPlayer,int Winner,int Turns,int Commands,int Plays,int Attacks,int HeroAttacks,int Reorganizations,int RearPlays,int Interceptions,int FailedDraws,string FinalBlow,string Cause,string Hash);
+record MatchRow(ulong Seed,string Deck0,string Deck1,int FirstPlayer,int Winner,int Turns,int Commands,int Plays,int Attacks,int HeroAttacks,int Reorganizations,int RearPlays,int Interceptions,int FailedDraws,string FinalBlow,string Cause,string Hash,int ActionsResolved);

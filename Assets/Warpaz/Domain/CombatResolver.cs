@@ -115,7 +115,7 @@ namespace Warpaz.Domain
                 throw new InvariantViolationException("Missing definition " + card.DefinitionId + ".");
             }
 
-            return CombatPolicies.EffectivePower(definition);
+            return EffectEngine.EffectivePower(definition, card);
         }
     }
 }

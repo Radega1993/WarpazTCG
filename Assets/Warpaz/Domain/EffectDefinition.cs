@@ -1,12 +1,16 @@
 namespace Warpaz.Domain
 {
     /// <summary>
-    /// Declarative effect binding. Empty in WZ1-v0.1; natural language is not interpreted.
+    /// Immutable instruction. Natural language is never executed.
     /// </summary>
     public sealed class EffectDefinition
     {
-        public EffectDefinition()
-        {
-        }
+        public EffectDefinition(EffectOpcode opcode, EffectTarget target, int amount = 0)
+        { Opcode = opcode; Target = target; Amount = amount; }
+        public EffectOpcode Opcode { get; }
+        public EffectTarget Target { get; }
+        public int Amount { get; }
     }
+    public enum EffectOpcode { PowerUntilEndTurn, CannotInterceptUntilEndTurn, CannotReadyUntilEndTurn }
+    public enum EffectTarget { AnyCharacter, FriendlyVanguard, EnemyCharacter, EnemyVanguard }
 }
