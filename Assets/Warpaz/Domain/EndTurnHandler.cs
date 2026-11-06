@@ -23,6 +23,7 @@ namespace Warpaz.Domain
             }
 
             var from = state.EventIndex;
+            EffectEngine.Expire(state);
             state.Emit(GameEventType.TurnEnded, command.ActorId, state.ActivePlayerId.ToString());
             EngineActions.SetPhase(state, MatchPhase.Closing);
             TurnCycle.AdvanceUntilDecision(state);

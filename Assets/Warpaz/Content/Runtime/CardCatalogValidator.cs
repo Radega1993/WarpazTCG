@@ -130,12 +130,12 @@ namespace Warpaz.Content
                     errors.Add(new ContentValidationIssue(idText, "setId", "setId is not WZ1."));
                 }
 
-                if (card.Effects != null && card.Effects.Count != 0)
+                if (card.Effects != null && card.Effects.Count != 0 && !EffectEngine.Supports(card))
                 {
                     errors.Add(new ContentValidationIssue(
                         idText,
                         "effects",
-                        "effects must be empty in this phase; effectText is stored but not interpreted."));
+                        "Unsupported compiled effect program."));
                 }
 
                 if (!card.IsIdentity)

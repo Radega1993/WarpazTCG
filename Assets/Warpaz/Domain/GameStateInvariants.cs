@@ -28,6 +28,10 @@ namespace Warpaz.Domain
             var seen = new HashSet<CardInstanceId>();
             foreach (var card in state.Cards.Values)
             {
+                if (card.TurnPowerModifier < -1000 || card.TurnPowerModifier > 1000)
+                    return "Effect power modifier out of bounds.";
+                if ((!state.Rules.EffectsEnabled || !card.HasBoardSlot) && (card.TurnPowerModifier != 0 || card.CannotInterceptThisTurn || card.CannotReadyThisTurn))
+                    return "Effects outside supported rules or board zone.";
                 if (!seen.Add(card.InstanceId))
                 {
                     return "Duplicate instance id " + card.InstanceId + ".";

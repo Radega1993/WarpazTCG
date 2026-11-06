@@ -127,7 +127,7 @@ namespace Warpaz.Presentation
                 {
                     name = def.Name;
                     cost = def.CostPa.HasValue ? "PA " + def.CostPa.Value : "—";
-                    power = def.Power.HasValue ? "P" + def.Power.Value : "—";
+                    power = def.Power.HasValue ? "P" + System.Math.Max(0, def.Power.Value + slot.Occupant.PowerModifier) : "—";
                     type = CardTypeCatalog.ToLabel(def.Type);
                     rules = def.EffectText;
                 }

@@ -292,6 +292,7 @@ namespace Warpaz.Presentation
 
             if (!_selectedHandId.IsNone)
             {
+                if (SelectedAction()) return "Selecciona un Personaje objetivo resaltado para la Acción";
                 return "Selecciona casilla (o unidad a sustituir)";
             }
 
@@ -320,6 +321,8 @@ namespace Warpaz.Presentation
                     continue;
                 }
 
+                if (a.Type == CommandType.Play && a.PrimaryInstanceId == _selectedHandId && !a.SecondaryInstanceId.IsNone)
+                    result.Add(a.SecondaryInstanceId);
                 if (!_selectedBoardId.IsNone)
                 {
                     if (a.Type == CommandType.Attack &&
@@ -478,6 +481,12 @@ namespace Warpaz.Presentation
             Render();
         }
 
+        private bool SelectedAction()
+        {
+            return !_selectedHandId.IsNone && _session.State.TryGetCard(_selectedHandId, out var card)
+                && _catalog.TryGet(card.DefinitionId, out var definition) && definition.Type == CardType.Action;
+        }
+
         private void OnBoardSlotClicked(PlayerId ownerId, int domainSlotIndex)
         {
             if (!CanInteract())
@@ -505,6 +514,11 @@ namespace Warpaz.Presentation
 
             var boardSlot = slot.Value;
             var isOwn = ownerId == _prioritySeat;
+            if (SelectedAction())
+            {
+                if (!boardSlot.Occupant.IsNone) TrySubmit(() => _session.PlayAction(_prioritySeat, _selectedHandId, boardSlot.Occupant));
+                return;
+            }
 
             if (!_selectedHandId.IsNone && isOwn)
             {

@@ -35,6 +35,11 @@ namespace Warpaz.Domain
         }
 
         public CardInstanceId InstanceId { get; }
+        public int TurnPowerModifier { get; internal set; }
+        public bool CannotInterceptThisTurn { get; internal set; }
+        public bool CannotReadyThisTurn { get; internal set; }
+        internal void ClearTurnEffects()
+        { TurnPowerModifier = 0; CannotInterceptThisTurn = false; CannotReadyThisTurn = false; }
         public CardId DefinitionId { get; }
         public PlayerId OwnerId { get; }
         public PlayerId ControllerId { get; internal set; }
@@ -47,6 +52,7 @@ namespace Warpaz.Domain
 
         internal void SetZone(CardZone zone)
         {
+            if (zone != CardZone.Vanguard && zone != CardZone.Rearguard) ClearTurnEffects();
             Zone = zone;
             if (zone != CardZone.Vanguard && zone != CardZone.Rearguard)
             {

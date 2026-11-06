@@ -209,6 +209,9 @@ namespace Warpaz.Domain
             return Play(CommandId.Parse(commandId), actorId, expectedEventIndex, instanceId, targetRow, targetSlotIndex);
         }
 
+        public static Command PlayAction(CommandId commandId, PlayerId actorId, int expectedEventIndex, CardInstanceId actionId, CardInstanceId targetId)
+            => PlayReplace(commandId, actorId, expectedEventIndex, actionId, targetId);
+
         public static Command PlayReplace(
             CommandId commandId,
             PlayerId actorId,

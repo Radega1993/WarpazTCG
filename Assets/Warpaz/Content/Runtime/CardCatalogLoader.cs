@@ -231,7 +231,7 @@ namespace Warpaz.Content
                 dto.Canon,
                 dto.Complexity,
                 dto.BalanceNotes,
-                Array.Empty<EffectDefinition>());
+                Wz1EffectBindings.ForCard(cardId, dto.EffectText));
             return true;
         }
 

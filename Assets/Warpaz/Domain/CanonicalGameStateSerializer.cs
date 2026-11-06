@@ -24,6 +24,9 @@ namespace Warpaz.Domain
             AppendMatch(sb, state);
             AppendPlayers(sb, state);
             AppendCardsSorted(sb, state);
+            if (state.Rules.EffectsEnabled)
+                foreach (var card in System.Linq.Enumerable.OrderBy(state.Cards.Values, c => c.InstanceId.Value))
+                    Write(sb, "effect." + Int(card.InstanceId.Value), Int(card.TurnPowerModifier) + "," + (card.CannotInterceptThisTurn ? "1" : "0") + "," + (card.CannotReadyThisTurn ? "1" : "0"));
             AppendPending(sb, state);
             AppendEvents(sb, state);
             return sb.ToString();

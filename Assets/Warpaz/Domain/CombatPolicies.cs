@@ -7,6 +7,7 @@ namespace Warpaz.Domain
     {
         public static bool CanIntercept(CardInstance card, ICardCatalog catalog, RuleConfig rules)
         {
+            if (card != null && card.CannotInterceptThisTurn) return false;
             if (!rules.IsPreview) return CanIntercept(card);
             if (card == null || card.Zone != CardZone.Rearguard || card.ReadyState != ReadyState.Ready
                 || !catalog.TryGet(card.DefinitionId, out var definition)) return false;
