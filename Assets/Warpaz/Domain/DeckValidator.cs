@@ -95,8 +95,8 @@ namespace Warpaz.Domain
                 }
 
                 copies.TryGetValue(cardId, out var count);
-                if (rules.IsPreview && definition.Type != CardType.Character)
-                    return DeckValidationResult.Fail("Preview: solo Personajes; efectos de " + cardId + " no implementados.");
+                if (rules.IsPreview && definition.Type != CardType.Character && !(rules.EffectsEnabled && EffectEngine.Supports(definition)))
+                    return DeckValidationResult.Fail("Efectos de " + cardId + " no implementados en estas reglas.");
                 count++;
                 if (count > rules.MaxCopiesPerCard)
                 {

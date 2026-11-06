@@ -75,6 +75,14 @@ namespace Warpaz.Domain
             {
                 var instanceId = player.Hand[h];
                 var card = state.Cards[instanceId];
+                if (catalog.TryGet(card.DefinitionId, out var action) && action.Type == CardType.Action)
+                {
+                    if ((action.CostPa ?? 0) >= 0 && player.PaCurrent >= (action.CostPa ?? 0))
+                        foreach (var target in System.Linq.Enumerable.OrderBy(state.Cards.Values, c => c.InstanceId.Value))
+                            if (EffectEngine.CanTarget(state, action, actor, target.InstanceId))
+                                list.Add(LegalAction.PlayReplace(actor, instanceId, target.InstanceId, "PlayAction"));
+                    continue;
+                }
                 if (!catalog.TryGet(card.DefinitionId, out var definition)
                     || definition.Type != CardType.Character
                     || !CharacterPositions.TryParse(definition.Position, out var position))

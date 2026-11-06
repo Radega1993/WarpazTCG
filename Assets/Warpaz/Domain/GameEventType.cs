@@ -34,6 +34,9 @@ namespace Warpaz.Domain
         AttackIntercepted = 28,
         InterceptionDeclined = 29,
         CombatResolved = 30,
-        CharacterKnockedOut = 31
+        CharacterKnockedOut = 31,
+        ActionPlayed = 32,
+        EffectResolved = 33,
+        EffectExpired = 34
     }
 }

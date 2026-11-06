@@ -78,6 +78,9 @@ namespace Warpaz.Application
             return Submit(Command.Play(AllocateCommandId(), playerId, CurrentEventIndex(), instanceId, row, slotIndex));
         }
 
+        public CommandResult PlayAction(PlayerId playerId, CardInstanceId actionId, CardInstanceId targetId)
+            => Submit(Command.PlayAction(AllocateCommandId(), playerId, CurrentEventIndex(), actionId, targetId));
+
         public CommandResult PlayReplace(PlayerId playerId, CardInstanceId instanceId, CardInstanceId replaceInstanceId)
         {
             return Submit(Command.PlayReplace(

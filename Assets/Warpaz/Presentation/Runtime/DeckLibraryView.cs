@@ -59,7 +59,7 @@ namespace Warpaz.Presentation
         }
         private void DrawLibrary()
         {
-            Label("Catálogo desbloqueado para pruebas. Preview: combate + Único + Guardián. Resto de habilidades inactivas.", .03f, .84f, .97f, .91f, 18);
+            Label("Pruebas: combate + Único/Guardián + Acciones 078/079/082/086. Otras habilidades inactivas.", .03f, .84f, .97f, .91f, 18);
             Button("+ Nuevo mazo", .03f, .76f, .32f, .83f, () => {
                 _draft = new DeckDraft(new DeckList(Guid.NewGuid().ToString("N"), "Nuevo mazo",
                     _catalog.All.First(c => c.Type == CardType.Hero).CardId,
@@ -125,7 +125,7 @@ namespace Warpaz.Presentation
                 var cardGo = new GameObject(c.CardId.Value, typeof(RectTransform), typeof(CardPlaceholderView), typeof(DeckCardFit)); cardGo.transform.SetParent(frame.transform, false);
                 var card = cardGo.GetComponent<CardPlaceholderView>(); card.EnsureChrome();
                 card.SetFaceUp(c.Name, CardTypeCatalog.ToLabel(c.Type), "PA " + c.CostPa, "P " + c.Power, c.CardId.Value, c.EffectText);
-                card.Bind(() => Notice(c.CardId + " · " + c.Name + " · " + c.EffectText + " [Solo Único/Guardián activos en preview]")); card.SetInteractable(true);
+                card.Bind(() => Notice(c.CardId + " · " + c.Name + " · " + c.EffectText + (EffectEngine.Supports(c) ? " [Acción implementada]" : " [Solo Único/Guardián; otros efectos pendientes]"))); card.SetInteractable(true);
                 Button("−", x, .23f, x + .043f, .29f, () => { if (_draft.Remove(c.CardId)) Changed(); });
                 Label(_draft.Count(c.CardId) + "/3", x + .045f, .23f, x + .10f, .29f, 20);
                 Button("+", x + .102f, .23f, x + .145f, .29f, () => { if (_draft.Add(c.CardId, _catalog, _rules)) Changed(); else Notice("Máximo 40 cartas y 3 copias por carta."); });
@@ -133,7 +133,7 @@ namespace Warpaz.Presentation
             Pager(cards.Count, 6, .17f);
             var costs = _draft.Cards.Where(id => _catalog.TryGet(id, out _)).Select(id => { _catalog.TryGet(id, out var c); return c; }).ToList();
             var curve = string.Join(" · ", costs.GroupBy(c => c.CostPa ?? 0).OrderBy(g => g.Key).Select(g => g.Key + "PA:" + g.Count()));
-            Label("Curva " + curve + "\n" + (validation.IsValid ? "Efectos impresos inactivos salvo Único/Guardián." : validation.Reason)
+            Label("Curva " + curve + "\n" + (validation.IsValid ? "Activos: Único/Guardián y Acciones 078/079/082/086." : validation.Reason)
                 + (costs.Any(c => c.Power >= 5) ? "" : " · Aviso: sin P≥5 no dañas al héroe sin efectos."), .03f, .075f, .97f, .165f, 16);
         }
         private void CycleIdentity(CardType type)

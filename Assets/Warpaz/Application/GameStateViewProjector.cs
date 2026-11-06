@@ -90,7 +90,7 @@ namespace Warpaz.Application
                 var recent = false;
                 if (!slot.Occupant.IsNone && state.TryGetCard(slot.Occupant, out var card))
                 {
-                    occupant = new CardView(card.InstanceId, card.DefinitionId);
+                    occupant = new CardView(card.InstanceId, card.DefinitionId, card.TurnPowerModifier);
                     ready = card.ReadyState;
                     recent = HasStatus(card, StatusType.Recent);
                 }

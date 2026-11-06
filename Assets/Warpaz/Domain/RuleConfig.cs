@@ -11,11 +11,14 @@ namespace Warpaz.Domain
         public const string SchemaVersion = "0.1";
         public const string AlphaRuleVersion = "0.1.0";
         public const string PreviewRuleVersion = "0.2.0-preview";
-        public bool IsPreview => RuleVersion == PreviewRuleVersion;
-        public static RuleConfig PreviewDefaults()
+        public const string EffectsRuleVersion = "0.3.0-effects";
+        public bool EffectsEnabled => RuleVersion == EffectsRuleVersion;
+        public bool IsPreview => RuleVersion == PreviewRuleVersion || EffectsEnabled;
+        public static RuleConfig EffectsDefaults() => PreviewDefaults(EffectsRuleVersion);
+        public static RuleConfig PreviewDefaults(string version = PreviewRuleVersion)
         {
             var r = AlphaDefaults();
-            return new RuleConfig(PreviewRuleVersion, r.InitialHandSize, r.InitialResolution,
+            return new RuleConfig(version, r.InitialHandSize, r.InitialResolution,
                 r.DeckSize, r.MaxCopiesPerCard, r.InitialPaMax, r.PaIncreasePerTurn, r.PaLimit,
                 r.AscensionRequiredPaMax, r.AscensionCost, r.MaximumEquipmentPerCharacter,
                 r.FreeReorganizationsPerTurn, r.HandLimit, r.FailedDrawResolutionLoss,

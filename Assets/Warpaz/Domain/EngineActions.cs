@@ -170,6 +170,7 @@ namespace Warpaz.Domain
 
         internal static void Ready(GameState state, CardInstance card)
         {
+            if (card.CannotReadyThisTurn) return;
             card.ReadyState = ReadyState.Ready;
             state.Emit(GameEventType.CharacterReadied, card.ControllerId, card.InstanceId.ToString(), card.InstanceId);
         }

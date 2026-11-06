@@ -1,0 +1,74 @@
+{
+  "sourceCommit": "d5548f7d81977c52ff0d5b89f8084406d4dfe579 \u002B effects changes",
+  "ruleVersion": "0.3.0-effects",
+  "scope": "Production engine; --effects adds 8 supported Actions per deck. Heuristic bots; not full-set balance validation.",
+  "completed": 100,
+  "repeatedIdentically": 100,
+  "rejectedCommands": 0,
+  "invariantFailures": 0,
+  "catalogSha256": "12c7ffece2850f50cf8682909ff024b41935219d82c5254d68d93145be135029",
+  "minimumTurns": 17,
+  "meanTurns": 41.46,
+  "maximumTurns": 76,
+  "firstPlayerWins": 51,
+  "commandCount": 13047,
+  "rearPlays": 1244,
+  "reorganizations": 1100,
+  "interceptions": 0,
+  "gamesWithFailedDraws": 9,
+  "failedDraws": 30,
+  "actionsResolved": 1001,
+  "endCauses": {
+    "ResolutionDepleted": 100
+  },
+  "finalBlows": {
+    "combat": 93,
+    "failed-draw": 7
+  },
+  "deckResults": [
+    {
+      "id": "WZ1-A-PRESION-FX",
+      "games": 68,
+      "wins": 43,
+      "meanCost": 2.65
+    },
+    {
+      "id": "WZ1-B-BASTION-FX",
+      "games": 66,
+      "wins": 30,
+      "meanCost": 2.825
+    },
+    {
+      "id": "WZ1-C-RESERVA-FX",
+      "games": 66,
+      "wins": 27,
+      "meanCost": 2.8
+    }
+  ],
+  "matchups": [
+    {
+      "pair": "WZ1-A-PRESION-FX / WZ1-B-BASTION-FX",
+      "games": 34,
+      "wins": {
+        "WZ1-B-BASTION-FX": 12,
+        "WZ1-A-PRESION-FX": 22
+      }
+    },
+    {
+      "pair": "WZ1-A-PRESION-FX / WZ1-C-RESERVA-FX",
+      "games": 34,
+      "wins": {
+        "WZ1-A-PRESION-FX": 21,
+        "WZ1-C-RESERVA-FX": 13
+      }
+    },
+    {
+      "pair": "WZ1-B-BASTION-FX / WZ1-C-RESERVA-FX",
+      "games": 32,
+      "wins": {
+        "WZ1-C-RESERVA-FX": 14,
+        "WZ1-B-BASTION-FX": 18
+      }
+    }
+  ]
+}
