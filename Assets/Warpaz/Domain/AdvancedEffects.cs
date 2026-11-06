@@ -16,20 +16,23 @@ namespace Warpaz.Domain
         public int AttackBonus { get; internal set; }
         public int ConsecutivePasses { get; internal set; }
         public int PendingReactionCount => Stack.Count;
+        internal int CounterPenalty { get; set; }
+        internal List<CardInstanceId> EvadeSources { get; } = new List<CardInstanceId>();
         internal bool[] ResponseUsed { get; } = new bool[2];
         internal bool[] ReactionUsed { get; } = new bool[2];
         internal List<CardInstanceId> Stack { get; } = new List<CardInstanceId>();
     }
 
-    public enum EffectStepKind { Draw, Discard, BottomHand, OrderTop, LookBottom, ReturnCharacter, ReturnEquipment }
+    public enum EffectStepKind { Draw, Discard, BottomHand, OrderTop, LookBottom, ReturnCharacter, ReturnEquipment, EvadeToRear }
     internal sealed class EffectStep
     {
-        internal EffectStep(PlayerId actor, CardInstanceId source, EffectStepKind kind, int amount = 1)
-        { Actor = actor; Source = source; Kind = kind; Amount = amount; }
+        internal EffectStep(PlayerId actor, CardInstanceId source, EffectStepKind kind, int amount = 1, CardInstanceId target = default)
+        { Actor = actor; Source = source; Kind = kind; Amount = amount; Target = target; }
         internal PlayerId Actor { get; }
         internal CardInstanceId Source { get; }
         internal EffectStepKind Kind { get; }
         internal int Amount { get; }
+        internal CardInstanceId Target { get; }
         internal List<CardInstanceId> Remaining { get; } = new List<CardInstanceId>();
         internal List<CardInstanceId> Ordered { get; } = new List<CardInstanceId>();
         internal bool Initialized { get; set; }
@@ -59,7 +62,7 @@ namespace Warpaz.Domain
         {
             if (!s.Rules.AdvancedEnabled || s.Phase != MatchPhase.Main || actor != s.ActivePlayerId
                 || !s.TryGetCard(sourceId, out var source) || source.OwnerId != actor || source.Zone != CardZone.Hand
-                || !catalog.TryGet(source.DefinitionId, out var d) || !Supports(d) || (d.CostPa ?? 0) < 0
+                || !catalog.TryGet(source.DefinitionId, out var d) || !(Supports(d) || s.Rules.ExpandedEnabled && ExpandedEffects.Supports(d)) || (d.CostPa ?? 0) < 0
                 || s.GetPlayer(actor).PaCurrent < (d.CostPa ?? 0)) return false;
             if (d.Type == CardType.Action && d.Effects[0].Opcode == EffectOpcode.OrderDrawBottom) return targetId.IsNone;
             return (d.Type == CardType.Equipment && s.Rules.MaximumEquipmentPerCharacter > 0 || d.Type == CardType.Action)
@@ -165,6 +168,12 @@ namespace Warpaz.Domain
                     case EffectStepKind.ReturnCharacter: case EffectStepKind.ReturnEquipment:
                         choices.AddRange(p.Discard.Where(id => catalog.TryGet(s.Cards[id].DefinitionId, out var d)
                             && d.Type == (step.Kind == EffectStepKind.ReturnCharacter ? CardType.Character : CardType.Equipment) && d.CostPa <= 2)); break;
+                    case EffectStepKind.EvadeToRear:
+                        if (s.TryGetCard(step.Target, out var defender) && defender.Zone == CardZone.Vanguard
+                            && defender.ControllerId == step.Actor && p.BoardSlots.Any(slot => slot.IsRearguard && !slot.IsOccupied)
+                            && ExpandedEffects.CanMoveByEffect(s, catalog, defender, step.Actor))
+                        { choices.Add(step.Target); choices.Add(CardInstanceId.None); }
+                        break;
                 }
                 if (choices.Count == 0) { s.EffectQueue.RemoveAt(0); continue; }
                 s.PendingDecision = PendingDecision.Effect(step.Actor, choices); s.PriorityPlayerId = step.Actor;
@@ -195,6 +204,13 @@ namespace Warpaz.Domain
                     }
                     break;
                 case EffectStepKind.ReturnCharacter: case EffectStepKind.ReturnEquipment: EngineActions.Move(s, p, id, CardZone.Hand); break;
+                case EffectStepKind.EvadeToRear:
+                    if (!id.IsNone)
+                    {
+                        var slot = p.BoardSlots.First(x => x.IsRearguard && !x.IsOccupied);
+                        EngineActions.MoveBoardToEmptySlot(s, p, id, slot.Row, slot.Index);
+                    }
+                    break;
             }
             s.Emit(GameEventType.EffectResolved, step.Actor, step.Kind + ":" + id, step.Source, -1, GameEventVisibility.OwnerOnly);
             if (step.Kind != EffectStepKind.OrderTop || step.Remaining.Count == 0) s.EffectQueue.RemoveAt(0);
@@ -231,9 +247,9 @@ namespace Warpaz.Domain
             if (!s.Rules.AdvancedEnabled || s.Combat == null || s.PendingDecision.Kind != PendingDecisionKind.Reaction || actor != s.PriorityPlayerId
                 || s.Combat.ResponseUsed[actor.Index] || s.Cards[s.Combat.Defender].ControllerId != actor
                 || !s.TryGetCard(id, out var card) || card.OwnerId != actor || card.Zone != CardZone.Hand
-                || !catalog.TryGet(card.DefinitionId, out var d) || d.Type != CardType.Reaction || !Supports(d)
+                || !catalog.TryGet(card.DefinitionId, out var d) || d.Type != CardType.Reaction || !(Supports(d) || s.Rules.ExpandedEnabled && ExpandedEffects.Supports(d))
                 || (d.CostPa ?? 0) < 0 || s.GetPlayer(actor).PaCurrent < (d.CostPa ?? 0)) return false;
-            return !s.Combat.TargetsHero || (d.Effects[0].Opcode != EffectOpcode.ReactionEscape && d.Effects[0].Opcode != EffectOpcode.ReactionKoDraw);
+            return !s.Combat.TargetsHero || (d.Effects[0].Opcode != EffectOpcode.ReactionEscape && d.Effects[0].Opcode != EffectOpcode.ReactionKoDraw && d.Effects[0].Opcode != EffectOpcode.ReactionEvade);
         }
         public static bool CanRespond(GameState s, ICardCatalog catalog, PlayerId actor, CardInstanceId id)
             => s.Rules.AdvancedEnabled && s.Combat != null && s.PendingDecision.Kind == PendingDecisionKind.Reaction
@@ -275,6 +291,8 @@ namespace Warpaz.Domain
             switch (d.Effects[0].Opcode)
             {
                 case EffectOpcode.ReactionDefense: window.DefenseBonus += 2; break;
+                case EffectOpcode.ReactionCounter: window.DefenseBonus += 2; window.CounterPenalty++; break;
+                case EffectOpcode.ReactionEvade: window.DefenseBonus += 2; window.EvadeSources.Add(sourceId); break;
                 case EffectOpcode.ReactionKoDraw: window.DefenseBonus += 2; window.DrawOnDefenderKo++; break;
                 case EffectOpcode.ReactionEquippedDefense: window.DefenseBonus += defender.AttachedEquipmentId.IsNone ? 1 : 3; break;
                 case EffectOpcode.ReactionUnderdog:
@@ -302,10 +320,18 @@ namespace Warpaz.Domain
                 return EngineActions.Snapshot(s, from);
             }
             EngineActions.ClosePendingDecision(s);
+            var attackFailed = Power(s, catalog, attacker, true, window.TargetsHero) < Power(s, catalog, defender, false, window.TargetsHero);
             if (window.TargetsHero) CombatResolver.ResolveHeroCombat(s, catalog, attacker, s.GetPlayer(defender.ControllerId));
             else CombatResolver.ResolveCharacterCombat(s, catalog, attacker, defender);
             s.Combat = null;
             if (!s.Result.IsFinished && defender.Zone == CardZone.Discard && window.DrawOnDefenderKo > 0) Draw(s, defender.ControllerId, window.DrawOnDefenderKo);
+            if (!s.Result.IsFinished && s.Rules.ExpandedEnabled)
+            {
+                if (attackFailed && attacker.HasBoardSlot && window.CounterPenalty > 0)
+                    attacker.TurnPowerModifier -= window.CounterPenalty;
+                foreach (var sourceId in window.EvadeSources)
+                    s.EffectQueue.Add(new EffectStep(defender.ControllerId, sourceId, EffectStepKind.EvadeToRear, 1, defender.InstanceId));
+            }
             Drain(s, catalog); GameStateInvariants.AssertValid(s); return EngineActions.Snapshot(s, from);
         }
         public static int Power(GameState s, ICardCatalog catalog, CardInstance card, bool attacking, bool heroTarget)
@@ -324,6 +350,7 @@ namespace Warpaz.Domain
             }
             if (!attacking && s.Combat != null && s.Combat.Defender == card.InstanceId) power += s.Combat.DefenseBonus;
             if (attacking && s.Combat != null && s.Combat.Attacker == card.InstanceId) power += s.Combat.AttackBonus;
+            power += ExpandedEffects.PowerBonus(s, catalog, card, attacking, heroTarget);
             return Math.Max(0, power);
         }
         private static CommandResult Reject(GameState s) => CommandResult.Reject(s, CommandRejectionCode.InvalidPayload, "Efecto, fase, actor u objetivo ilegal.");

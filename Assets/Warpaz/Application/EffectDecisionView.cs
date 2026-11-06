@@ -29,6 +29,7 @@ namespace Warpaz.Application
             foreach (var action in LegalActions.For(state, catalog))
             {
                 var label = "Mantener arriba";
+                if (state.PendingEffectKind == EffectStepKind.EvadeToRear) label = "No mover al defensor";
                 if (!action.PrimaryInstanceId.IsNone && state.TryGetCard(action.PrimaryInstanceId, out var card) && catalog.TryGet(card.DefinitionId, out var d))
                     label = d.Name + " [" + d.CardId + "]";
                 if (action.Type == CommandType.React) label = "Reacción: " + label;
@@ -48,6 +49,7 @@ namespace Warpaz.Application
                 case EffectStepKind.LookBottom: return "Elige la carta para ponerla debajo, o mantenla arriba";
                 case EffectStepKind.ReturnCharacter: return "Devuelve a tu mano un Personaje de coste 2 o menos";
                 case EffectStepKind.ReturnEquipment: return "Devuelve a tu mano un Equipo de coste 2 o menos";
+                case EffectStepKind.EvadeToRear: return "Puedes mover al defensor superviviente a la primera casilla libre de Retaguardia";
                 default: return "Elige cómo resolver el efecto";
             }
         }

@@ -1,0 +1,79 @@
+{
+  "sourceCommit": "8803f11 \u002B expanded-effects changes",
+  "ruleVersion": "0.5.0-expanded",
+  "scope": "Production engine; --advanced adds 14 and --expanded adds 17 supported non-Characters once per deck. Heuristic bots; not full-set balance validation.",
+  "completed": 100,
+  "repeatedIdentically": 100,
+  "rejectedCommands": 0,
+  "invariantFailures": 0,
+  "catalogSha256": "12c7ffece2850f50cf8682909ff024b41935219d82c5254d68d93145be135029",
+  "minimumTurns": 17,
+  "meanTurns": 31.09,
+  "maximumTurns": 67,
+  "firstPlayerWins": 54,
+  "commandCount": 14415,
+  "rearPlays": 335,
+  "reorganizations": 340,
+  "interceptions": 0,
+  "gamesWithFailedDraws": 1,
+  "failedDraws": 1,
+  "actionsResolved": 436,
+  "reactionsPlayed": 214,
+  "responsesUsed": 1425,
+  "equipmentAttached": 187,
+  "triggeredEffects": 0,
+  "choicesMade": 427,
+  "endCauses": {
+    "ResolutionDepleted": 100
+  },
+  "finalBlows": {
+    "combat": 99,
+    "failed-draw": 1
+  },
+  "deckResults": [
+    {
+      "id": "WZ1-A-PRESION-V05",
+      "games": 68,
+      "wins": 32,
+      "meanCost": 2.825
+    },
+    {
+      "id": "WZ1-B-BASTION-V05",
+      "games": 66,
+      "wins": 40,
+      "meanCost": 2.875
+    },
+    {
+      "id": "WZ1-C-RESERVA-V05",
+      "games": 66,
+      "wins": 28,
+      "meanCost": 2.85
+    }
+  ],
+  "matchups": [
+    {
+      "pair": "WZ1-A-PRESION-V05 / WZ1-B-BASTION-V05",
+      "games": 34,
+      "wins": {
+        "WZ1-B-BASTION-V05": 20,
+        "WZ1-A-PRESION-V05": 14
+      }
+    },
+    {
+      "pair": "WZ1-A-PRESION-V05 / WZ1-C-RESERVA-V05",
+      "games": 34,
+      "wins": {
+        "WZ1-A-PRESION-V05": 18,
+        "WZ1-C-RESERVA-V05": 16
+      }
+    },
+    {
+      "pair": "WZ1-B-BASTION-V05 / WZ1-C-RESERVA-V05",
+      "games": 32,
+      "wins": {
+        "WZ1-B-BASTION-V05": 20,
+        "WZ1-C-RESERVA-V05": 12
+      }
+    }
+  ]
+}
