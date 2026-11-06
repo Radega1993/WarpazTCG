@@ -10,6 +10,23 @@ namespace Warpaz.Content
         {
             switch (id.Value)
             {
+                case "WZ1-019": return Bind(printedText, "Mientras tenga un Equipo, obtiene +1 Poder al defender.", EffectOpcode.DefenseEquipped);
+                case "WZ1-027": return Bind(printedText, "Los efectos enemigos no pueden mover este Personaje de la Vanguardia.", EffectOpcode.ImmovableVanguard);
+                case "WZ1-034": return Bind(printedText, "Mientras controles otro Gnoll en Vanguardia, obtiene +1 Poder.", EffectOpcode.PowerOtherGnollVanguard);
+                case "WZ1-035": return Bind(printedText, "Obtiene +1 Poder al defender contra un atacante con mayor Poder impreso.", EffectOpcode.DefenseAgainstHigherPrinted);
+                case "WZ1-037": return Bind(printedText, "Tus otros Gnoll obtienen +1 Poder durante el turno rival.", EffectOpcode.AuraOtherGnollOpponentTurn);
+                case "WZ1-040": return Bind(printedText, "Mientras esté equipado, obtiene +1 Poder al atacar.", EffectOpcode.AttackEquipped);
+                case "WZ1-045": return Bind(printedText, "Tus otros Personajes de Vanguardia obtienen +1 Poder al defender.", EffectOpcode.AuraOtherVanguardDefense);
+                case "WZ1-050": return Bind(printedText, "Este Personaje no puede interceptar.", EffectOpcode.CannotIntercept);
+                case "WZ1-054": return Bind(printedText, "Mientras sea tu único Personaje de Vanguardia, obtiene +1 Poder.", EffectOpcode.PowerLoneVanguard);
+                case "WZ1-056": return Bind(printedText, "Obtiene +1 Poder cuando ataca a un Personaje de coste impreso 5 o más.", EffectOpcode.AttackCostFive);
+                case "WZ1-058": return Bind(printedText, "Mientras controles un Personaje de coste impreso 5 o más, obtiene +1 Poder.", EffectOpcode.PowerOwnCostFive);
+                case "WZ1-059": return Bind(printedText, "Cuando ataque a un Personaje con menor coste impreso, obtiene +1 Poder durante ese combate.", EffectOpcode.AttackLowerCost);
+                case "WZ1-060": return Bind(printedText, "No puede ser movido por efectos enemigos. Obtiene +1 Poder al defender.", EffectOpcode.DefenseAndImmovable);
+                case "WZ1-073": return Bind(printedText, "Obtiene +2 Poder cuando ataca a un Personaje de coste impreso 6 o más.", EffectOpcode.AttackCostSix);
+                case "WZ1-114": return Bind(printedText, "El portador obtiene +2 Poder al defender y no puede ser movido por efectos enemigos.", EffectOpcode.EquipmentArmor);
+                case "WZ1-099": return Bind(printedText, "Reacción — Tu defensor obtiene +2 Poder durante este combate. Si el ataque falla, el atacante obtiene -1 Poder hasta el final del turno.", EffectOpcode.ReactionCounter);
+                case "WZ1-104": return Bind(printedText, "Reacción — Tu Personaje defensor obtiene +2 Poder durante este combate. Si sobrevive y hay espacio, puedes moverlo a Retaguardia.", EffectOpcode.ReactionEvade);
                 case "WZ1-018": return Bind(printedText, "Despliegue — Mira la primera carta de tu mazo. Puedes colocarla en la parte inferior.", EffectOpcode.DeployLookBottom);
                 case "WZ1-024": return Bind(printedText, "Cuando este Personaje intercepte, obtiene +1 Poder durante ese combate.", EffectOpcode.InterceptPower);
                 case "WZ1-036": return Bind(printedText, "Cuando intercepte, obtiene +1 Poder durante ese combate.", EffectOpcode.InterceptPower);

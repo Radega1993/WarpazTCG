@@ -95,7 +95,8 @@ namespace Warpaz.Domain
             {
                 var instanceId = player.Hand[h];
                 var card = state.Cards[instanceId];
-                if (state.Rules.AdvancedEnabled && catalog.TryGet(card.DefinitionId, out var advanced) && advanced.Type != CardType.Character && AdvancedEffects.Supports(advanced))
+                if (state.Rules.AdvancedEnabled && catalog.TryGet(card.DefinitionId, out var advanced) && advanced.Type != CardType.Character
+                    && (AdvancedEffects.Supports(advanced) || state.Rules.ExpandedEnabled && ExpandedEffects.Supports(advanced)))
                 {
                     var targets = new List<CardInstanceId> { CardInstanceId.None };
                     targets.AddRange(System.Linq.Enumerable.Select(System.Linq.Enumerable.OrderBy(state.Cards.Values, c => c.InstanceId.Value), c => c.InstanceId));

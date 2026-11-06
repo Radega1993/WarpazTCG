@@ -14,6 +14,10 @@ namespace Warpaz.Domain
     public enum EffectOpcode { PowerUntilEndTurn, CannotInterceptUntilEndTurn, CannotReadyUntilEndTurn,
         SacrificeDrawDiscard, OrderDrawBottom, DeployLookBottom, DeployReturnCharacter, DeployReturnEquipment,
         EquipmentDiscardLoot, InterceptPower, EquipmentAttackCharacter, EquipmentDefense, EquipmentHighestCostAttack,
-        ReactionDefense, ReactionEscape, ReactionKoDraw, ReactionEquippedDefense, ReactionUnderdog }
+        ReactionDefense, ReactionEscape, ReactionKoDraw, ReactionEquippedDefense, ReactionUnderdog,
+        DefenseEquipped, ImmovableVanguard, PowerOtherGnollVanguard, DefenseAgainstHigherPrinted,
+        AuraOtherGnollOpponentTurn, AttackEquipped, AuraOtherVanguardDefense, CannotIntercept,
+        PowerLoneVanguard, AttackCostFive, PowerOwnCostFive, AttackLowerCost, DefenseAndImmovable, AttackCostSix,
+        EquipmentArmor, ReactionCounter, ReactionEvade }
     public enum EffectTarget { AnyCharacter, FriendlyVanguard, EnemyCharacter, EnemyVanguard }
 }
