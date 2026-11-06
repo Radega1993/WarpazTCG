@@ -41,12 +41,18 @@ namespace Warpaz.Domain
                     Write(sb, "combat.used", (combat.ResponseUsed[0] ? "1" : "0") + (combat.ResponseUsed[1] ? "1" : "0")
                         + (combat.ReactionUsed[0] ? "1" : "0") + (combat.ReactionUsed[1] ? "1" : "0"));
                     WriteIds(sb, "combat.stack", combat.Stack);
+                    if (state.Rules.ExpandedEnabled)
+                    {
+                        Write(sb, "combat.counter", combat.CounterPenalty);
+                        WriteIds(sb, "combat.evades", combat.EvadeSources);
+                    }
                 }
                 WriteIds(sb, "choices", new List<CardInstanceId>(state.PendingDecision.ChoiceIds));
                 foreach (var step in state.EffectQueue)
                 {
                     Write(sb, "continuation", Int(step.Actor.Value) + "," + Int(step.Source.Value) + "," + step.Kind + "," + Int(step.Amount) + "," + (step.Initialized ? "1" : "0"));
                     WriteIds(sb, "remaining", step.Remaining); WriteIds(sb, "ordered", step.Ordered);
+                    if (state.Rules.ExpandedEnabled) Write(sb, "continuation.target", step.Target.Value);
                 }
             }
             AppendEvents(sb, state);

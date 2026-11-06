@@ -13,10 +13,11 @@ Directory.CreateDirectory(output);
 var loaded = CardCatalogLoader.LoadFromDirectory(Path.Combine(root, "Assets/StreamingAssets/Data"));
 if (!loaded.Success) throw new Exception("Production catalog/manifest validation failed.");
 var catalog = loaded.Catalog;
-var advanced = args.Contains("--advanced");
+var expanded = args.Contains("--expanded");
+var advanced = args.Contains("--advanced") || expanded;
 var effects = args.Contains("--effects") || advanced;
 var preview = args.Contains("--preview") || effects;
-var rules = advanced ? RuleConfig.AdvancedDefaults() : effects ? RuleConfig.EffectsDefaults() : preview ? RuleConfig.PreviewDefaults() : RuleConfig.AlphaDefaults();
+var rules = expanded ? RuleConfig.ExpandedDefaults() : advanced ? RuleConfig.AdvancedDefaults() : effects ? RuleConfig.EffectsDefaults() : preview ? RuleConfig.PreviewDefaults() : RuleConfig.AlphaDefaults();
 var decks = StarterDeckCatalog.Load(Path.Combine(root, "Assets/StreamingAssets/Data", StarterDeckCatalog.FileName), catalog, rules).ToArray();
 foreach (var deck in decks)
 {
@@ -27,7 +28,10 @@ foreach (var deck in decks)
 }
 
 var rows = new List<MatchRow>();
-if (advanced)
+if (expanded)
+    decks = decks.Select(d => new DeckList(d.DeckId + "-V05", d.DisplayName + " v0.5", d.HeroCardId, d.ClassCardId,
+        d.MainDeckCardIds.Skip(17).Concat(catalog.All.Where(c => c.Type != CardType.Character && (EffectEngine.Supports(c) || AdvancedEffects.Supports(c) || ExpandedEffects.Supports(c))).Select(c => c.CardId)).ToArray())).ToArray();
+else if (advanced)
     decks = decks.Select(d => new DeckList(d.DeckId + "-ADV", d.DisplayName + " Advanced", d.HeroCardId, d.ClassCardId,
         d.MainDeckCardIds.Skip(14).Concat(catalog.All.Where(c => c.Type != CardType.Character && (EffectEngine.Supports(c) || AdvancedEffects.Supports(c))).Select(c => c.CardId)).ToArray())).ToArray();
 else if (effects)
@@ -56,9 +60,9 @@ File.WriteAllText(Path.Combine(output, "traces.json"), JsonSerializer.Serialize(
 File.WriteAllLines(Path.Combine(output, "matches.csv"), new[] {"seed,deck0,deck1,firstPlayer,winner,turns,commands,plays,attacks,heroAttacks,reorganizations,rearPlays,interceptions,cause,hash"}.Concat(rows.Select(r =>
     $"{r.Seed},{r.Deck0},{r.Deck1},{r.FirstPlayer},{r.Winner},{r.Turns},{r.Commands},{r.Plays},{r.Attacks},{r.HeroAttacks},{r.Reorganizations},{r.RearPlays},{r.Interceptions},{r.Cause},{r.Hash}")));
 var summary = new {
-    sourceCommit = "b84f73a + advanced-effects changes",
+    sourceCommit = expanded ? "8803f11 + expanded-effects changes" : "b84f73a + advanced-effects changes",
     ruleVersion = rules.RuleVersion,
-    scope = "Production engine; --advanced adds all 14 supported non-Characters once per deck. Heuristic bots; not full-set balance validation.",
+    scope = "Production engine; --advanced adds 14 and --expanded adds 17 supported non-Characters once per deck. Heuristic bots; not full-set balance validation.",
     completed = rows.Count, repeatedIdentically = rows.Count, rejectedCommands = 0, invariantFailures = 0,
     catalogSha256 = Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(Path.Combine(root,"Assets/StreamingAssets/Data/cards_wz1.v0.1.json")))).ToLowerInvariant(),
     minimumTurns = rows.Min(r => r.Turns), meanTurns = rows.Average(r => r.Turns), maximumTurns = rows.Max(r => r.Turns),
@@ -110,8 +114,16 @@ if(probe.EndTurn(wrongActor).Accepted || probe.CurrentHash!=hashBefore)throw new
 File.WriteAllText(Path.Combine(output,"diagnostics.json"),JsonSerializer.Serialize(new {turnCapRegression="PASS", rejectedCommandAtomicity="PASS", legacySoakCompleted=legacy.MatchesCompleted, lowPower=fatigue, unsupportedActions=dead},options));
 var tested = decks.SelectMany(d=>d.MainDeckCardIds).ToHashSet();
 var audit = catalog.All.Select(c=>new {id=c.CardId.ToString(),c.Name,type=c.Type.ToString(),c.CostPa,c.Power,c.Position,c.Unique,keywords=c.Keywords,effectCount=c.Effects.Count,starterIncluded=tested.Contains(c.CardId),
+    textProgram = EffectEngine.Supports(c) ? "v0.3" : AdvancedEffects.Supports(c) ? "v0.4" : ExpandedEffects.Supports(c) ? "v0.5" : "none",
     statDominatedBy=c.Type==CardType.Character?catalog.All.Where(o=>o.Type==CardType.Character && o.CardId!=c.CardId && o.Position==c.Position && o.CostPa<=c.CostPa && o.Power>=c.Power && (o.CostPa<c.CostPa || o.Power>c.Power)).Select(o=>o.CardId.ToString()).ToArray():Array.Empty<string>()});
 File.WriteAllText(Path.Combine(output,"card-audit.json"),JsonSerializer.Serialize(audit,options));
+File.WriteAllLines(Path.Combine(output,"card-coverage.md"), new[] {
+    "# Cobertura del texto de cartas WZ1", "", "Esta tabla comprueba programas compilados, no certifica todas las keywords ni el equilibrio. Los Héroes y Clases tienen identidad/estadísticas, pero no sus pasivas. Solo Guardián y Único están habilitados como reglas generales de keywords.", "",
+    "| ID | Carta | Tipo | Texto de efecto | Keywords impresas |", "| --- | --- | --- | --- | --- |"
+}.Concat(catalog.All.Select(c => "| " + c.CardId + " | " + c.Name + " | " + c.Type + " | "
+    + (EffectEngine.Supports(c) || AdvancedEffects.Supports(c) || ExpandedEffects.Supports(c) ? "Compilado" : c.EffectText == "Sin habilidades." ? "Sin habilidades"
+        : c.CardId.Value == "WZ1-042" && c.EffectText == "Puede interceptar desde Retaguardia." && c.Keywords.Contains("Guardián") ? "Cubierto por Guardián" : "Pendiente")
+    + " | " + string.Join(", ",c.Keywords) + " |")));
 Console.WriteLine("Diagnostics PASS; 50 legacy + 2 adversarial matches are separate from the 100 paired games.");
 
 static (MatchRow Row, List<string> Trace) Simulate(ulong seed, DeckList d0, DeckList d1, CardCatalog catalog, RuleConfig rules)
