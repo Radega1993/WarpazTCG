@@ -130,7 +130,7 @@ namespace Warpaz.Content
                     errors.Add(new ContentValidationIssue(idText, "setId", "setId is not WZ1."));
                 }
 
-                if (card.Effects != null && card.Effects.Count != 0 && !EffectEngine.Supports(card))
+                if (card.Effects != null && card.Effects.Count != 0 && !EffectEngine.Supports(card) && !AdvancedEffects.Supports(card))
                 {
                     errors.Add(new ContentValidationIssue(
                         idText,

@@ -137,6 +137,9 @@ namespace Warpaz.Presentation
                     power = power + " ·R";
                 }
 
+                if (slot.Occupant.EquipmentId.HasValue && catalog.TryGet(slot.Occupant.EquipmentId.Value, out var equipment))
+                    rules = (rules ?? string.Empty) + "\nEquipo: " + equipment.Name + " — " + equipment.EffectText;
+
                 ui.SetCard(name, type, cost, power, slot.Occupant.CardId.Value, rules);
                 ui.SetInteractable(interactive);
                 ui.SetSelected(!selectedBoardId.IsNone && selectedBoardId == slot.Occupant.InstanceId);

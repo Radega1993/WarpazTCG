@@ -11,7 +11,7 @@ namespace Warpaz.Domain
         {
             if (card == null || card.Type != CardType.Action || card.Effects.Count == 0 || card.Effects.Count > MaximumInstructions) return false;
             foreach (var effect in card.Effects)
-                if (effect == null || !Enum.IsDefined(typeof(EffectOpcode), effect.Opcode) || !Enum.IsDefined(typeof(EffectTarget), effect.Target)
+                if (effect == null || effect.Opcode > EffectOpcode.CannotReadyUntilEndTurn || !Enum.IsDefined(typeof(EffectOpcode), effect.Opcode) || !Enum.IsDefined(typeof(EffectTarget), effect.Target)
                     || effect.Amount < -20 || effect.Amount > 20
                     || (effect.Opcode != EffectOpcode.PowerUntilEndTurn && effect.Amount != 0)) return false;
             return true;

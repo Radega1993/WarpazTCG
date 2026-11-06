@@ -11,8 +11,9 @@ namespace Warpaz.Domain
             CardInstance attacker,
             CardInstance defender)
         {
-            var attackerPower = PowerOf(catalog, attacker);
-            var defenderPower = PowerOf(catalog, defender);
+            if (AdvancedEffects.OpenCombat(state, catalog, attacker, defender, false)) return;
+            var attackerPower = AdvancedEffects.Power(state, catalog, attacker, true, false);
+            var defenderPower = AdvancedEffects.Power(state, catalog, defender, false, false);
             var outcome = CombatPolicies.CompareCharacterPower(attackerPower, defenderPower);
 
             state.Emit(
@@ -47,9 +48,10 @@ namespace Warpaz.Domain
             CardInstance attacker,
             PlayerState defender)
         {
-            var attackerPower = PowerOf(catalog, attacker);
             var hero = state.Cards[defender.HeroInstanceId];
-            var heroPower = PowerOf(catalog, hero);
+            if (AdvancedEffects.OpenCombat(state, catalog, attacker, hero, true)) return;
+            var attackerPower = AdvancedEffects.Power(state, catalog, attacker, true, true);
+            var heroPower = AdvancedEffects.Power(state, catalog, hero, false, true);
             var outcome = CombatPolicies.CompareHeroPower(attackerPower, heroPower);
 
             state.Emit(

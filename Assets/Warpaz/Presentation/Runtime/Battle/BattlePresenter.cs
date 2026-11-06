@@ -41,6 +41,7 @@ namespace Warpaz.Presentation
         private OpponentHandView _opponentHand;
         private PileStripView _localPiles;
         private PileStripView _opponentPiles;
+        private EffectDecisionPanel _effectPanel;
 
         public BattlePresenter(
             GameSession session,
@@ -117,6 +118,11 @@ namespace Warpaz.Presentation
             _opponentHand = opponentHand;
             _localPiles = localPiles;
             _opponentPiles = opponentPiles;
+            if (_controls != null && _effectPanel == null)
+            {
+                var canvas = _controls.GetComponentInParent<Canvas>();
+                if (canvas != null) _effectPanel = new EffectDecisionPanel(canvas.transform);
+            }
 
             if (_mulliganPanel != null)
             {
@@ -235,6 +241,8 @@ namespace Warpaz.Presentation
 
             RenderMulliganPanel();
             RenderControls();
+            _effectPanel?.Render(interactive ? EffectDecisionView.Project(state, _catalog, localSeat) : null,
+                state.EventIndex, option => TrySubmit(() => _session.SubmitEffectOption(option.Action)));
         }
 
         private void RenderSideChrome(MatchView view, PlayerId localSeat)
@@ -264,7 +272,7 @@ namespace Warpaz.Presentation
                     continue;
                 }
 
-                if (a.Type == CommandType.Play && !a.PrimaryInstanceId.IsNone)
+                if ((a.Type == CommandType.Play || a.Type == CommandType.Equip) && !a.PrimaryInstanceId.IsNone)
                 {
                     if (_tutorialGate != null && !_tutorialGate.AllowSelectHand(a.PrimaryInstanceId))
                     {
@@ -287,6 +295,8 @@ namespace Warpaz.Presentation
 
             if (_session.State != null && _session.State.Phase == MatchPhase.PendingChoice)
             {
+                if (_session.State.PendingDecision.Kind == PendingDecisionKind.Reaction) return "Combate: prioridad alterna; dos pases resuelven la pila";
+                if (_session.State.PendingDecision.Kind == PendingDecisionKind.EffectChoice) return "Resuelve la elección pendiente para continuar";
                 return "Intercepción: elige interceptor o Declinar";
             }
 
@@ -321,7 +331,7 @@ namespace Warpaz.Presentation
                     continue;
                 }
 
-                if (a.Type == CommandType.Play && a.PrimaryInstanceId == _selectedHandId && !a.SecondaryInstanceId.IsNone)
+                if ((a.Type == CommandType.Play || a.Type == CommandType.Equip) && a.PrimaryInstanceId == _selectedHandId && !a.SecondaryInstanceId.IsNone)
                     result.Add(a.SecondaryInstanceId);
                 if (!_selectedBoardId.IsNone)
                 {
@@ -411,6 +421,7 @@ namespace Warpaz.Presentation
             var state = _session.State;
             if (state.Phase == MatchPhase.PendingChoice)
             {
+                if (state.PendingDecision.Kind != PendingDecisionKind.ChooseInterceptor) { _controls.Hide(); return; }
                 var canDecline = false;
                 var actions = LegalActionQuery.For(_session);
                 for (var i = 0; i < actions.Count; i++)
@@ -467,6 +478,10 @@ namespace Warpaz.Presentation
                 return;
             }
 
+            foreach (var action in LegalActionQuery.For(_session))
+                if (action.Type == CommandType.Play && action.PrimaryInstanceId == instanceId && !action.HasBoardSlotTarget && action.SecondaryInstanceId.IsNone)
+                { TrySubmit(() => _session.PlayAction(_prioritySeat, instanceId, CardInstanceId.None)); return; }
+
             if (_selectedHandId == instanceId)
             {
                 ClearSelection();
@@ -514,6 +529,12 @@ namespace Warpaz.Presentation
 
             var boardSlot = slot.Value;
             var isOwn = ownerId == _prioritySeat;
+            if (!_selectedHandId.IsNone && _session.State.TryGetCard(_selectedHandId, out var equipment)
+                && _catalog.TryGet(equipment.DefinitionId, out var equipmentDefinition) && equipmentDefinition.Type == CardType.Equipment)
+            {
+                if (!boardSlot.Occupant.IsNone) TrySubmit(() => _session.Equip(_prioritySeat, _selectedHandId, boardSlot.Occupant));
+                return;
+            }
             if (SelectedAction())
             {
                 if (!boardSlot.Occupant.IsNone) TrySubmit(() => _session.PlayAction(_prioritySeat, _selectedHandId, boardSlot.Occupant));

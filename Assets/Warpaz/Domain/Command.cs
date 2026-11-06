@@ -7,6 +7,14 @@ namespace Warpaz.Domain
     public sealed class Command
     {
         public static readonly PlayerId HostActorId = PlayerId.Host;
+        public static Command Equip(CommandId id, PlayerId actor, int index, CardInstanceId equipment, CardInstanceId bearer)
+            => CardIntent(id, actor, index, CommandType.Equip, equipment, bearer);
+        public static Command React(CommandId id, PlayerId actor, int index, CardInstanceId reaction)
+            => CardIntent(id, actor, index, CommandType.React, reaction, CardInstanceId.None);
+        public static Command Respond(CommandId id, PlayerId actor, int index, CardInstanceId card)
+            => CardIntent(id, actor, index, CommandType.Respond, card, CardInstanceId.None);
+        private static Command CardIntent(CommandId id, PlayerId actor, int index, CommandType type, CardInstanceId source, CardInstanceId target)
+            => new Command(id, actor, type, index, null, default, source, target, default, 0, false, false, default, false);
 
         private Command(
             CommandId commandId,

@@ -1,0 +1,4 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><TargetFramework>netstandard2.1</TargetFramework><LangVersion>9.0</LangVersion><AssemblyName>Warpaz.Application</AssemblyName><EnableDefaultCompileItems>false</EnableDefaultCompileItems></PropertyGroup>
+  <ItemGroup><ProjectReference Include="../Domain/Domain.csproj" /><Compile Include="../../../Assets/Warpaz/Application/**/*.cs" /></ItemGroup>
+</Project>

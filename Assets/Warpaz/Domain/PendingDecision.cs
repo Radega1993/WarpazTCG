@@ -45,6 +45,12 @@ namespace Warpaz.Domain
         public IReadOnlyList<CardInstanceId> LegalInterceptorIds { get; }
 
         public bool IsPending => Kind != PendingDecisionKind.None;
+        public IReadOnlyList<CardInstanceId> ChoiceIds => LegalInterceptorIds;
+        internal static PendingDecision Effect(PlayerId actor, IReadOnlyList<CardInstanceId> choices)
+            => new PendingDecision(PendingDecisionKind.EffectChoice, actor, CardInstanceId.None,
+                CardInstanceId.None, false, Array.AsReadOnly(new List<CardInstanceId>(choices).ToArray()));
+        internal static PendingDecision Reaction(PlayerId actor, CardInstanceId attacker, CardInstanceId defender, bool hero)
+            => new PendingDecision(PendingDecisionKind.Reaction, actor, attacker, defender, hero, Array.Empty<CardInstanceId>());
 
         public static PendingDecision Intercept(
             PlayerId defenderId,
