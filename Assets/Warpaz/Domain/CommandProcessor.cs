@@ -6,10 +6,12 @@ namespace Warpaz.Domain
     /// </summary>
     public sealed class CommandProcessor
     {
+        private readonly ICardCatalog _catalog;
         private readonly ICommandHandler[] _handlers;
 
         public CommandProcessor(ICardCatalog catalog)
         {
+            _catalog = catalog;
             _handlers = new ICommandHandler[]
             {
                 new CreateMatchHandler(catalog),
@@ -78,6 +80,22 @@ namespace Warpaz.Domain
                     "Unknown player.");
             }
 
+            var from = current.EventIndex;
+            var witnesses = new System.Collections.Generic.HashSet<CardInstanceId>();
+            if (current.Rules.AdvancedEnabled)
+                foreach (var card in current.Cards.Values) if (card.HasBoardSlot) witnesses.Add(card.InstanceId);
+            CommandResult advanced = null;
+            if (current.Rules.AdvancedEnabled)
+            {
+                if (command.Type == CommandType.Equip) advanced = AdvancedEffects.Play(current, command, _catalog);
+                else if (command.Type == CommandType.React) advanced = AdvancedEffects.React(current, command, _catalog);
+                else if (command.Type == CommandType.Respond) advanced = AdvancedEffects.Respond(current, command, _catalog);
+                else if (command.Type == CommandType.ChooseTargets && current.PendingDecision.Kind == PendingDecisionKind.EffectChoice)
+                    advanced = AdvancedEffects.Choose(current, command, _catalog);
+                else if (command.Type == CommandType.PassPriority && current.PendingDecision.Kind == PendingDecisionKind.Reaction)
+                    advanced = AdvancedEffects.Pass(current, command, _catalog);
+            }
+            if (advanced != null) return FinishEffects(current, command, advanced, from, witnesses);
             var handler = FindHandler(command.Type);
             if (handler == null)
             {
@@ -87,7 +105,16 @@ namespace Warpaz.Domain
                     "Command type " + command.Type + " is not available.");
             }
 
-            return Finalize(command, handler.Handle(current, command));
+            return FinishEffects(current, command, handler.Handle(current, command), from, witnesses);
+        }
+
+        private CommandResult FinishEffects(GameState state, Command command, CommandResult result, int from, System.Collections.Generic.HashSet<CardInstanceId> witnesses)
+        {
+            if (!result.Accepted) return result;
+            AdvancedEffects.CollectTriggers(state, _catalog, from, witnesses);
+            AdvancedEffects.Drain(state, _catalog);
+            GameStateInvariants.AssertValid(state);
+            return Finalize(command, EngineActions.Snapshot(state, from));
         }
 
         private CommandResult SubmitCreateMatch(GameState current, Command command)

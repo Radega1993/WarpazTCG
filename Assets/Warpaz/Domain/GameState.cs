@@ -55,6 +55,9 @@ namespace Warpaz.Domain
         public MatchResult Result { get; internal set; }
         public PendingDecision PendingDecision { get; internal set; }
         public int EventIndex => Events.Count;
+        public CombatWindow Combat { get; internal set; }
+        public EffectStepKind? PendingEffectKind => EffectQueue.Count == 0 ? (EffectStepKind?)null : EffectQueue[0].Kind;
+        internal List<EffectStep> EffectQueue { get; } = new List<EffectStep>();
 
         internal IDeterministicRandom Rng { get; }
         internal Dictionary<CardInstanceId, CardInstance> Cards { get; }

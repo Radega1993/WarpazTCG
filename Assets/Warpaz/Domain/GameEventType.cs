@@ -37,6 +37,11 @@ namespace Warpaz.Domain
         CharacterKnockedOut = 31,
         ActionPlayed = 32,
         EffectResolved = 33,
-        EffectExpired = 34
+        EffectExpired = 34,
+        EquipmentAttached = 35,
+        EquipmentDiscarded = 36,
+        TriggerQueued = 37,
+        ReactionPlayed = 38,
+        ResponseUsed = 39
     }
 }

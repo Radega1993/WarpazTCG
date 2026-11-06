@@ -7,6 +7,8 @@ namespace Warpaz.Domain
         ChooseTargets = 1,
         ChooseOption = 2,
         OrderTriggers = 3,
-        ChooseInterceptor = 4
+        ChooseInterceptor = 4,
+        Reaction = 5,
+        EffectChoice = 6
     }
 }

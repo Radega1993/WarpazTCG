@@ -154,6 +154,7 @@ namespace Warpaz.Domain
 
         internal static void TryEndMatch(GameState state, PlayerId winner, MatchEndCause cause)
         {
+            if (state.Rules.AdvancedEnabled) { state.EffectQueue.Clear(); state.Combat = null; state.PendingDecision = PendingDecision.None; }
             state.Result = MatchResult.Ended(winner, cause);
             state.Emit(GameEventType.MatchEnded, Command.HostActorId, state.Result.ToString());
             EngineActions.SetPhase(state, MatchPhase.GameOver);

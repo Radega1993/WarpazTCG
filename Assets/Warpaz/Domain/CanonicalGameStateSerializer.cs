@@ -28,6 +28,27 @@ namespace Warpaz.Domain
                 foreach (var card in System.Linq.Enumerable.OrderBy(state.Cards.Values, c => c.InstanceId.Value))
                     Write(sb, "effect." + Int(card.InstanceId.Value), Int(card.TurnPowerModifier) + "," + (card.CannotInterceptThisTurn ? "1" : "0") + "," + (card.CannotReadyThisTurn ? "1" : "0"));
             AppendPending(sb, state);
+            if (state.Rules.AdvancedEnabled)
+            {
+                foreach (var card in System.Linq.Enumerable.OrderBy(state.Cards.Values, c => c.InstanceId.Value))
+                    Write(sb, "trigger." + Int(card.InstanceId.Value), card.LastTriggerTurn);
+                var combat = state.Combat;
+                Write(sb, "combat", combat == null ? "none" : Int(combat.Attacker.Value) + "," + Int(combat.Defender.Value)
+                    + "," + (combat.TargetsHero ? "1" : "0") + "," + Int(combat.DefenseBonus) + "," + Int(combat.DrawOnDefenderKo));
+                if (combat != null)
+                {
+                    Write(sb, "combat.attack", combat.AttackBonus); Write(sb, "combat.passes", combat.ConsecutivePasses);
+                    Write(sb, "combat.used", (combat.ResponseUsed[0] ? "1" : "0") + (combat.ResponseUsed[1] ? "1" : "0")
+                        + (combat.ReactionUsed[0] ? "1" : "0") + (combat.ReactionUsed[1] ? "1" : "0"));
+                    WriteIds(sb, "combat.stack", combat.Stack);
+                }
+                WriteIds(sb, "choices", new List<CardInstanceId>(state.PendingDecision.ChoiceIds));
+                foreach (var step in state.EffectQueue)
+                {
+                    Write(sb, "continuation", Int(step.Actor.Value) + "," + Int(step.Source.Value) + "," + step.Kind + "," + Int(step.Amount) + "," + (step.Initialized ? "1" : "0"));
+                    WriteIds(sb, "remaining", step.Remaining); WriteIds(sb, "ordered", step.Ordered);
+                }
+            }
             AppendEvents(sb, state);
             return sb.ToString();
         }

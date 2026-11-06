@@ -11,6 +11,9 @@ namespace Warpaz.Domain
         public EffectTarget Target { get; }
         public int Amount { get; }
     }
-    public enum EffectOpcode { PowerUntilEndTurn, CannotInterceptUntilEndTurn, CannotReadyUntilEndTurn }
+    public enum EffectOpcode { PowerUntilEndTurn, CannotInterceptUntilEndTurn, CannotReadyUntilEndTurn,
+        SacrificeDrawDiscard, OrderDrawBottom, DeployLookBottom, DeployReturnCharacter, DeployReturnEquipment,
+        EquipmentDiscardLoot, InterceptPower, EquipmentAttackCharacter, EquipmentDefense, EquipmentHighestCostAttack,
+        ReactionDefense, ReactionEscape, ReactionKoDraw, ReactionEquippedDefense, ReactionUnderdog }
     public enum EffectTarget { AnyCharacter, FriendlyVanguard, EnemyCharacter, EnemyVanguard }
 }

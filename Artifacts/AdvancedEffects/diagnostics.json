@@ -1,0 +1,31 @@
+{
+  "turnCapRegression": "PASS",
+  "rejectedCommandAtomicity": "PASS",
+  "legacySoakCompleted": 50,
+  "lowPower": {
+    "Seed": 99,
+    "Deck0": "DIAG-LOW-POWER",
+    "Deck1": "DIAG-LOW-POWER",
+    "FirstPlayer": 1,
+    "Winner": 0,
+    "Turns": 79,
+    "Commands": 319,
+    "Plays": 41,
+    "Attacks": 37,
+    "HeroAttacks": 0,
+    "Reorganizations": 14,
+    "RearPlays": 14,
+    "Interceptions": 0,
+    "FailedDraws": 9,
+    "FinalBlow": "failed-draw",
+    "Cause": "ResolutionDepleted",
+    "Hash": "ba882163b2c787bc266c1958fade942cda50107a718e1781ee324f1b0cd8b11b",
+    "ActionsResolved": 0,
+    "ReactionsPlayed": 0,
+    "ResponsesUsed": 39,
+    "EquipmentAttached": 0,
+    "TriggeredEffects": 2,
+    "ChoicesMade": 2
+  },
+  "unsupportedActions": null
+}

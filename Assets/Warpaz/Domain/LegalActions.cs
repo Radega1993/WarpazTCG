@@ -29,6 +29,26 @@ namespace Warpaz.Domain
                 case MatchPhase.Main:
                     return MainFor(state, catalog);
                 case MatchPhase.PendingChoice:
+                    if (state.PendingDecision.Kind == PendingDecisionKind.EffectChoice)
+                    {
+                        var choices = new List<LegalAction>();
+                        foreach (var id in state.PendingDecision.ChoiceIds)
+                            choices.Add(LegalAction.ChooseInterceptor(state.PriorityPlayerId, id, "EffectChoice"));
+                        return choices;
+                    }
+                    if (state.PendingDecision.Kind == PendingDecisionKind.Reaction)
+                    {
+                        var reactions = new List<LegalAction> { LegalAction.DeclineInterception(state.PriorityPlayerId, "ResolveCombat") };
+                        if (catalog != null)
+                            foreach (var id in state.GetPlayer(state.PriorityPlayerId).Hand)
+                            {
+                                if (AdvancedEffects.CanReact(state, catalog, state.PriorityPlayerId, id))
+                                    reactions.Add(LegalAction.CardIntent(state.PriorityPlayerId, CommandType.React, id, CardInstanceId.None, "React"));
+                                if (AdvancedEffects.CanRespond(state, catalog, state.PriorityPlayerId, id))
+                                    reactions.Add(LegalAction.CardIntent(state.PriorityPlayerId, CommandType.Respond, id, CardInstanceId.None, "Respond"));
+                            }
+                        return reactions;
+                    }
                     return PendingInterceptFor(state);
                 default:
                     return Array.Empty<LegalAction>();
@@ -75,6 +95,15 @@ namespace Warpaz.Domain
             {
                 var instanceId = player.Hand[h];
                 var card = state.Cards[instanceId];
+                if (state.Rules.AdvancedEnabled && catalog.TryGet(card.DefinitionId, out var advanced) && advanced.Type != CardType.Character && AdvancedEffects.Supports(advanced))
+                {
+                    var targets = new List<CardInstanceId> { CardInstanceId.None };
+                    targets.AddRange(System.Linq.Enumerable.Select(System.Linq.Enumerable.OrderBy(state.Cards.Values, c => c.InstanceId.Value), c => c.InstanceId));
+                    foreach (var target in targets)
+                        if (AdvancedEffects.CanPlay(state, catalog, actor, instanceId, target))
+                            list.Add(LegalAction.CardIntent(actor, advanced.Type == CardType.Equipment ? CommandType.Equip : CommandType.Play, instanceId, target, "AdvancedPlay"));
+                    continue;
+                }
                 if (catalog.TryGet(card.DefinitionId, out var action) && action.Type == CardType.Action)
                 {
                     if ((action.CostPa ?? 0) >= 0 && player.PaCurrent >= (action.CostPa ?? 0))

@@ -17,6 +17,9 @@ ExportedObj/
 *.csproj
 !Tools/BalanceLab/BalanceLab.csproj
 !Tools/DomainTests/DomainTests.csproj
+!Tools/AssemblyCheck/Domain/Domain.csproj
+!Tools/AssemblyCheck/Application/Application.csproj
+Tools/**/bin/
 *.unityproj
 *.sln
 *.slnx

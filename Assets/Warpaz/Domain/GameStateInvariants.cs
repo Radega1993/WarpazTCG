@@ -26,8 +26,16 @@ namespace Warpaz.Domain
             }
 
             var seen = new HashSet<CardInstanceId>();
+            var attached = new HashSet<CardInstanceId>();
             foreach (var card in state.Cards.Values)
             {
+                if (!card.AttachedEquipmentId.IsNone)
+                {
+                    if (!state.Rules.AdvancedEnabled || !card.HasBoardSlot || !attached.Add(card.AttachedEquipmentId)
+                        || !state.TryGetCard(card.AttachedEquipmentId, out var equipment) || equipment.Zone != CardZone.Equipment
+                        || equipment.OwnerId != card.ControllerId || equipment.ControllerId != card.ControllerId)
+                        return "Invalid or multiply attached equipment.";
+                }
                 if (card.TurnPowerModifier < -1000 || card.TurnPowerModifier > 1000)
                     return "Effect power modifier out of bounds.";
                 if ((!state.Rules.EffectsEnabled || !card.HasBoardSlot) && (card.TurnPowerModifier != 0 || card.CannotInterceptThisTurn || card.CannotReadyThisTurn))
@@ -36,6 +44,17 @@ namespace Warpaz.Domain
                 {
                     return "Duplicate instance id " + card.InstanceId + ".";
                 }
+            }
+
+            foreach (var card in state.Cards.Values)
+                if (card.Zone == CardZone.Equipment && !attached.Contains(card.InstanceId)) return "Orphan equipment.";
+            if (state.Rules.AdvancedEnabled)
+            {
+                if (state.PendingDecision.IsPending != (state.Phase == MatchPhase.PendingChoice)) return "Pending phase mismatch.";
+                if (state.PendingDecision.IsPending && state.PriorityPlayerId != state.PendingDecision.ActorId) return "Pending priority mismatch.";
+                if (state.PendingDecision.Kind == PendingDecisionKind.EffectChoice && (state.EffectQueue.Count == 0 || state.PendingDecision.ChoiceIds.Count == 0)) return "Empty effect continuation.";
+                if (state.PendingDecision.Kind == PendingDecisionKind.Reaction && state.Combat == null) return "Missing pending combat.";
+                if (state.Result.IsFinished && (state.Combat != null || state.EffectQueue.Count != 0 || state.PendingDecision.IsPending)) return "Terminal continuation.";
             }
 
             for (var p = 0; p < 2; p++)
@@ -92,7 +111,9 @@ namespace Warpaz.Domain
                     return boardReason;
                 }
 
-                if (player.Deck.Count + player.Hand.Count + player.Discard.Count + boardCount != state.Rules.DeckSize)
+                var equipmentCount = 0;
+                foreach (var id in attached) if (state.Cards[id].OwnerId == player.PlayerId) equipmentCount++;
+                if (player.Deck.Count + player.Hand.Count + player.Discard.Count + boardCount + equipmentCount != state.Rules.DeckSize)
                 {
                     return "Player " + p + " does not have " + state.Rules.DeckSize + " main-deck instances.";
                 }

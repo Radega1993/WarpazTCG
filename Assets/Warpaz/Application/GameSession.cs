@@ -80,6 +80,20 @@ namespace Warpaz.Application
 
         public CommandResult PlayAction(PlayerId playerId, CardInstanceId actionId, CardInstanceId targetId)
             => Submit(Command.PlayAction(AllocateCommandId(), playerId, CurrentEventIndex(), actionId, targetId));
+        public CommandResult Equip(PlayerId actor, CardInstanceId equipment, CardInstanceId bearer)
+            => Submit(Command.Equip(AllocateCommandId(), actor, CurrentEventIndex(), equipment, bearer));
+        public CommandResult SubmitEffectOption(LegalAction action)
+        {
+            var id = AllocateCommandId(); var index = CurrentEventIndex();
+            switch (action.Type)
+            {
+                case CommandType.React: return Submit(Command.React(id, action.ActorId, index, action.PrimaryInstanceId));
+                case CommandType.Respond: return Submit(Command.Respond(id, action.ActorId, index, action.PrimaryInstanceId));
+                case CommandType.ChooseTargets: return Submit(Command.ChooseInterceptor(id, action.ActorId, index, action.PrimaryInstanceId));
+                case CommandType.PassPriority: return Submit(Command.DeclineInterception(id, action.ActorId, index));
+                default: return Submit(Command.Unsupported(id, action.ActorId, action.Type, index));
+            }
+        }
 
         public CommandResult PlayReplace(PlayerId playerId, CardInstanceId instanceId, CardInstanceId replaceInstanceId)
         {

@@ -6,6 +6,8 @@ namespace Warpaz.Domain
     /// </summary>
     public sealed class LegalAction
     {
+        internal static LegalAction CardIntent(PlayerId actor, CommandType type, CardInstanceId source, CardInstanceId target, string reason)
+            => new LegalAction(actor, type, false, default, reason, source, target, default, 0, false, false, default, false);
         private LegalAction(
             PlayerId actorId,
             CommandType type,

@@ -13,6 +13,9 @@ namespace Warpaz.Domain
 
         public CommandResult Handle(GameState state, Command command)
         {
+            if (state.Rules.AdvancedEnabled && state.TryGetCard(command.PrimaryInstanceId, out var advancedSource)
+                && _catalog.TryGet(advancedSource.DefinitionId, out var advancedDefinition) && advancedDefinition.Type == CardType.Action
+                && AdvancedEffects.Supports(advancedDefinition)) return AdvancedEffects.Play(state, command, _catalog);
             if (state.TryGetCard(command.PrimaryInstanceId, out var source) && _catalog.TryGet(source.DefinitionId, out var def) && def.Type == CardType.Action)
                 return EffectEngine.Play(state, command, _catalog);
             if (state.Phase != MatchPhase.Main)

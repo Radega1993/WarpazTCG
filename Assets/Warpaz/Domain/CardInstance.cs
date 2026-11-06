@@ -36,6 +36,7 @@ namespace Warpaz.Domain
 
         public CardInstanceId InstanceId { get; }
         public int TurnPowerModifier { get; internal set; }
+        public int LastTriggerTurn { get; internal set; } = -1;
         public bool CannotInterceptThisTurn { get; internal set; }
         public bool CannotReadyThisTurn { get; internal set; }
         internal void ClearTurnEffects()

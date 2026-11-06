@@ -125,6 +125,7 @@ namespace Warpaz.Domain
             var card = state.Cards[instanceId];
             if (card.HasBoardSlot)
             {
+                AdvancedEffects.Detach(state, card);
                 ClearBoardSlot(state, player, card.Slot);
             }
             else if (card.Zone == CardZone.Hand)
