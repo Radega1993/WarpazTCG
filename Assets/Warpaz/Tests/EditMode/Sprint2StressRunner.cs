@@ -98,9 +98,7 @@ namespace Warpaz.Tests.EditMode
 
             report.CommandsAccepted += 2;
             var commands = 3;
-            var turns = 0;
-
-            while (session.State.Phase != MatchPhase.GameOver && turns < _config.MaxTurns)
+            while (session.State.Phase != MatchPhase.GameOver && session.State.Turn <= _config.MaxTurns)
             {
                 if (commands >= _config.MaxCommandsPerMatch)
                 {
@@ -131,9 +129,13 @@ namespace Warpaz.Tests.EditMode
                     return acted;
                 }
 
-                turns++;
             }
 
+            if (session.State.Phase != MatchPhase.GameOver || !session.State.Result.IsFinished)
+            {
+                report.Stalls++;
+                return "Seed " + seed + ": MaxTurns reached before GameOver";
+            }
             report.AddFinalHash(GameStateHasher.Hash(session.State));
             return null;
         }

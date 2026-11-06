@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="../../Assets/Warpaz/Domain/**/*.cs" />
+    <Compile Include="../../Assets/Warpaz/Application/**/*.cs" />
+    <Compile Include="../../Assets/Warpaz/Content/Runtime/**/*.cs" />
+    <Compile Include="../../Assets/Warpaz/Tests/EditMode/CombatCatalog.cs" />
+    <Compile Include="../../Assets/Warpaz/Tests/EditMode/Sprint2StressRunner.cs" />
+    <Compile Include="../../Assets/Warpaz/Tests/EditMode/Sprint2StressConfig.cs" />
+    <Compile Include="../../Assets/Warpaz/Tests/EditMode/Sprint2StressReport.cs" />
+    <!-- Same Newtonsoft loader as Unity; SDK ships this assembly. No NuGet packages. -->
+    <Reference Include="Newtonsoft.Json"><HintPath>$(MSBuildSDKsPath)/../Newtonsoft.Json.dll</HintPath></Reference>
+  </ItemGroup>
+</Project>

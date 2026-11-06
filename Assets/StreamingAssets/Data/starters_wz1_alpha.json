@@ -1,0 +1,19 @@
+{
+  "version": "WZ1-starters-alpha-1",
+  "contentVersion": "WZ1-v0.1",
+  "scope": "Vanilla combat only. Printed abilities, identity abilities and keywords are NOT executed by the current engine.",
+  "decks": [
+    {
+      "id": "WZ1-A-PRESION", "name": "Presión de primera línea", "hero": "WZ1-009", "class": "WZ1-012",
+      "cards": {"WZ1-018":3,"WZ1-026":3,"WZ1-030":3,"WZ1-042":3,"WZ1-062":3,"WZ1-050":3,"WZ1-027":3,"WZ1-074":3,"WZ1-051":3,"WZ1-059":3,"WZ1-024":3,"WZ1-056":3,"WZ1-053":2,"WZ1-061":2}
+    },
+    {
+      "id": "WZ1-B-BASTION", "name": "Bastión y relevo", "hero": "WZ1-003", "class": "WZ1-012",
+      "cards": {"WZ1-018":3,"WZ1-026":3,"WZ1-042":3,"WZ1-054":3,"WZ1-019":3,"WZ1-027":3,"WZ1-035":3,"WZ1-074":3,"WZ1-055":3,"WZ1-024":3,"WZ1-036":3,"WZ1-056":3,"WZ1-060":2,"WZ1-061":2}
+    },
+    {
+      "id": "WZ1-C-RESERVA", "name": "Reserva móvil", "hero": "WZ1-004", "class": "WZ1-017",
+      "cards": {"WZ1-018":3,"WZ1-030":3,"WZ1-042":3,"WZ1-046":3,"WZ1-039":3,"WZ1-068":3,"WZ1-072":3,"WZ1-074":3,"WZ1-031":3,"WZ1-047":3,"WZ1-020":3,"WZ1-032":3,"WZ1-053":2,"WZ1-061":2}
+    }
+  ]
+}

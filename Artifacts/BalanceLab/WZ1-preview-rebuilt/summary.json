@@ -1,0 +1,73 @@
+{
+  "sourceCommit": "423121491c30c5f1dd74c491dac796be025e54bb \u002B preview changes",
+  "ruleVersion": "0.2.0-preview",
+  "scope": "Production engine. Preview enables Unique and rear Guardian only. Heuristic bots; not human or full-set balance validation.",
+  "completed": 100,
+  "repeatedIdentically": 100,
+  "rejectedCommands": 0,
+  "invariantFailures": 0,
+  "catalogSha256": "12c7ffece2850f50cf8682909ff024b41935219d82c5254d68d93145be135029",
+  "minimumTurns": 21,
+  "meanTurns": 49.07,
+  "maximumTurns": 79,
+  "firstPlayerWins": 50,
+  "commandCount": 16228,
+  "rearPlays": 2008,
+  "reorganizations": 1829,
+  "interceptions": 4,
+  "gamesWithFailedDraws": 24,
+  "failedDraws": 153,
+  "endCauses": {
+    "ResolutionDepleted": 100
+  },
+  "finalBlows": {
+    "combat": 79,
+    "failed-draw": 21
+  },
+  "deckResults": [
+    {
+      "id": "WZ1-A-PRESION",
+      "games": 68,
+      "wins": 41,
+      "meanCost": 2.45
+    },
+    {
+      "id": "WZ1-B-BASTION",
+      "games": 66,
+      "wins": 32,
+      "meanCost": 2.625
+    },
+    {
+      "id": "WZ1-C-RESERVA",
+      "games": 66,
+      "wins": 27,
+      "meanCost": 2.6
+    }
+  ],
+  "matchups": [
+    {
+      "pair": "WZ1-A-PRESION / WZ1-B-BASTION",
+      "games": 34,
+      "wins": {
+        "WZ1-A-PRESION": 19,
+        "WZ1-B-BASTION": 15
+      }
+    },
+    {
+      "pair": "WZ1-A-PRESION / WZ1-C-RESERVA",
+      "games": 34,
+      "wins": {
+        "WZ1-A-PRESION": 22,
+        "WZ1-C-RESERVA": 12
+      }
+    },
+    {
+      "pair": "WZ1-B-BASTION / WZ1-C-RESERVA",
+      "games": 32,
+      "wins": {
+        "WZ1-B-BASTION": 17,
+        "WZ1-C-RESERVA": 15
+      }
+    }
+  ]
+}

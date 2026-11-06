@@ -12,7 +12,7 @@ namespace Warpaz.Presentation
     /// </summary>
     public sealed class CardsBrowserOverlay : MonoBehaviour
     {
-        private const float CardAspect = 5f / 7f;
+        private const float CardAspect = CardLayout.Aspect;
 
         private ICardCatalog _catalog;
         private System.Action _onClose;
@@ -137,6 +137,14 @@ namespace Warpaz.Presentation
 
         private void LateUpdate()
         {
+            if (_content != null && _content.parent is RectTransform viewport)
+            {
+                var grid = _content.GetComponent<GridLayoutGroup>();
+                var columns = Mathf.Clamp(Mathf.FloorToInt((viewport.rect.width - 24f) / 158f), 1, 4);
+                grid.constraintCount = columns;
+                var width = Mathf.Min(148f, Mathf.Max(40f, (viewport.rect.width - 24f - (columns - 1) * 10f) / columns));
+                grid.cellSize = new Vector2(width, width / CardLayout.Aspect);
+            }
             LayoutPreviewCard();
         }
 

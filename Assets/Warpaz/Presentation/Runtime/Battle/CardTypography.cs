@@ -28,7 +28,7 @@ namespace Warpaz.Presentation
             }
 
             text.fontStyle = FontStyles.Bold;
-            text.characterSpacing = 4.5f;
+            text.characterSpacing = 0f;
             text.lineSpacing = -15f;
             text.textWrappingMode = TextWrappingModes.Normal;
             text.overflowMode = TextOverflowModes.Ellipsis;
@@ -50,7 +50,7 @@ namespace Warpaz.Presentation
             }
 
             text.fontStyle = FontStyles.Italic;
-            text.characterSpacing = 12f;
+            text.characterSpacing = 1f;
             text.fontSizeMax = Mathf.Max(text.fontSizeMax, 13f);
             Outline(text, new Color(0f, 0f, 0f, 0.45f), 0.08f);
         }

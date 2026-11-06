@@ -4,7 +4,7 @@ namespace Warpaz.Tests.EditMode
     {
         public const int DefaultMatchCount = 50;
         public const ulong DefaultBaseSeed = 9000UL;
-        public const int DefaultMaxTurns = 40;
+        public const int DefaultMaxTurns = 150;
 
         public Sprint2StressConfig(
             int matchCount = DefaultMatchCount,
@@ -15,7 +15,7 @@ namespace Warpaz.Tests.EditMode
             MatchCount = matchCount;
             BaseSeed = baseSeed;
             MaxTurns = maxTurns;
-            MaxCommandsPerMatch = 400;
+            MaxCommandsPerMatch = 2000;
             AbortOnFirstFailure = abortOnFirstFailure;
         }
 

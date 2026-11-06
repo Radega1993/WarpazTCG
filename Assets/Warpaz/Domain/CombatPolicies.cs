@@ -5,6 +5,23 @@ namespace Warpaz.Domain
     /// </summary>
     public static class CombatPolicies
     {
+        public static bool CanIntercept(CardInstance card, ICardCatalog catalog, RuleConfig rules)
+        {
+            if (!rules.IsPreview) return CanIntercept(card);
+            if (card == null || card.Zone != CardZone.Rearguard || card.ReadyState != ReadyState.Ready
+                || !catalog.TryGet(card.DefinitionId, out var definition)) return false;
+            foreach (var keyword in definition.Keywords) if (keyword == "Guardián") return true;
+            return false;
+        }
+
+        public static bool CanPlayUnique(GameState state, CardDefinition definition, PlayerId actor, CardInstanceId replacement)
+        {
+            if (!state.Rules.IsPreview || !definition.Unique) return true;
+            foreach (var slot in state.GetPlayer(actor).BoardSlots)
+                if (slot.IsOccupied && slot.Occupant != replacement && state.Cards[slot.Occupant].DefinitionId == definition.CardId)
+                    return false;
+            return true;
+        }
         /// <summary>P-HeroReach: Hero is a legal target iff defender has zero Vanguard Characters.</summary>
         public static bool CanTargetHero(PlayerState defender)
         {

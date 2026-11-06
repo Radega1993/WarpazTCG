@@ -10,6 +10,17 @@ namespace Warpaz.Domain
     {
         public const string SchemaVersion = "0.1";
         public const string AlphaRuleVersion = "0.1.0";
+        public const string PreviewRuleVersion = "0.2.0-preview";
+        public bool IsPreview => RuleVersion == PreviewRuleVersion;
+        public static RuleConfig PreviewDefaults()
+        {
+            var r = AlphaDefaults();
+            return new RuleConfig(PreviewRuleVersion, r.InitialHandSize, r.InitialResolution,
+                r.DeckSize, r.MaxCopiesPerCard, r.InitialPaMax, r.PaIncreasePerTurn, r.PaLimit,
+                r.AscensionRequiredPaMax, r.AscensionCost, r.MaximumEquipmentPerCharacter,
+                r.FreeReorganizationsPerTurn, r.HandLimit, r.FailedDrawResolutionLoss,
+                r.MaximumEventsPerTurn, r.MaximumDecisionsPerTurn);
+        }
         public const int DefaultMaximumEventsPerTurn = 256;
         public const int DefaultMaximumDecisionsPerTurn = 64;
 

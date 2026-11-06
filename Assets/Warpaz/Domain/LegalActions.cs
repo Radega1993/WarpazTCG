@@ -98,6 +98,7 @@ namespace Warpaz.Domain
                             continue;
                         }
 
+                        if (!CombatPolicies.CanPlayUnique(state, definition, actor, slot.Occupant)) continue;
                         list.Add(LegalAction.PlayReplace(
                             actor,
                             instanceId,
@@ -107,7 +108,8 @@ namespace Warpaz.Domain
                 }
                 else
                 {
-                    AppendEmptySlotPlays(list, player, actor, instanceId, position);
+                    if (CombatPolicies.CanPlayUnique(state, definition, actor, CardInstanceId.None))
+                        AppendEmptySlotPlays(list, player, actor, instanceId, position);
                 }
             }
         }

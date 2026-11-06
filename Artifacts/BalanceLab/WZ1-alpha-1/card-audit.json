@@ -1,0 +1,1914 @@
+[
+  {
+    "id": "WZ1-001",
+    "Name": "Aedran, Vig\u00EDa Akkedis",
+    "type": "Hero",
+    "CostPa": null,
+    "Power": 5,
+    "Position": "H\u00E9roe",
+    "Unique": true,
+    "keywords": [
+      "Pasiva racial"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-002",
+    "Name": "Draxxis, Acorde \u00CDgneo",
+    "type": "Hero",
+    "CostPa": null,
+    "Power": 5,
+    "Position": "H\u00E9roe",
+    "Unique": true,
+    "keywords": [
+      "Pasiva racial"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-003",
+    "Name": "Brynja, Basti\u00F3n Enano",
+    "type": "Hero",
+    "CostPa": null,
+    "Power": 5,
+    "Position": "H\u00E9roe",
+    "Unique": true,
+    "keywords": [
+      "Pasiva racial"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-004",
+    "Name": "Elaria, Ojo del Bosque",
+    "type": "Hero",
+    "CostPa": null,
+    "Power": 5,
+    "Position": "H\u00E9roe",
+    "Unique": true,
+    "keywords": [
+      "Pasiva racial"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-005",
+    "Name": "Rask, Colmillo de la Manada",
+    "type": "Hero",
+    "CostPa": null,
+    "Power": 5,
+    "Position": "H\u00E9roe",
+    "Unique": true,
+    "keywords": [
+      "Pasiva racial"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-006",
+    "Name": "Grik, Dedos Ligeros",
+    "type": "Hero",
+    "CostPa": null,
+    "Power": 5,
+    "Position": "H\u00E9roe",
+    "Unique": true,
+    "keywords": [
+      "Pasiva racial"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-007",
+    "Name": "Arlen, Capitana Humana",
+    "type": "Hero",
+    "CostPa": null,
+    "Power": 5,
+    "Position": "H\u00E9roe",
+    "Unique": true,
+    "keywords": [
+      "Pasiva racial"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-008",
+    "Name": "Sira, Cazadora Lincer",
+    "type": "Hero",
+    "CostPa": null,
+    "Power": 5,
+    "Position": "H\u00E9roe",
+    "Unique": true,
+    "keywords": [
+      "Detectar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-009",
+    "Name": "Krag, Sed de Sangre",
+    "type": "Hero",
+    "CostPa": null,
+    "Power": 5,
+    "Position": "H\u00E9roe",
+    "Unique": true,
+    "keywords": [
+      "Sed de Sangre"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-010",
+    "Name": "Wolfgark, Guardi\u00E1n Errante",
+    "type": "Hero",
+    "CostPa": null,
+    "Power": 5,
+    "Position": "H\u00E9roe",
+    "Unique": true,
+    "keywords": [
+      "Protecci\u00F3n"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-011",
+    "Name": "Brakka, Coloso Groshak",
+    "type": "Hero",
+    "CostPa": null,
+    "Power": 5,
+    "Position": "H\u00E9roe",
+    "Unique": true,
+    "keywords": [
+      "Rango superior"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-012",
+    "Name": "Guerrero / Se\u00F1or de la Guerra",
+    "type": "ClassPath",
+    "CostPa": null,
+    "Power": null,
+    "Position": "Clase",
+    "Unique": true,
+    "keywords": [
+      "Ascenso"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-013",
+    "Name": "P\u00EDcaro / Maestro de Sombras",
+    "type": "ClassPath",
+    "CostPa": null,
+    "Power": null,
+    "Position": "Clase",
+    "Unique": true,
+    "keywords": [
+      "Ascenso",
+      "Oculto"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-014",
+    "Name": "Mago / Archimago Elemental",
+    "type": "ClassPath",
+    "CostPa": null,
+    "Power": null,
+    "Position": "Clase",
+    "Unique": true,
+    "keywords": [
+      "Ascenso"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-015",
+    "Name": "Cl\u00E9rigo del Dios Bestia / Nigromante Bestial",
+    "type": "ClassPath",
+    "CostPa": null,
+    "Power": null,
+    "Position": "Clase",
+    "Unique": true,
+    "keywords": [
+      "Ascenso",
+      "Sacrificio",
+      "Reanimar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-016",
+    "Name": "Bardo / Maestro del Acorde",
+    "type": "ClassPath",
+    "CostPa": null,
+    "Power": null,
+    "Position": "Clase",
+    "Unique": true,
+    "keywords": [
+      "Ascenso",
+      "Inspirar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-017",
+    "Name": "Explorador / Cazador Alfa",
+    "type": "ClassPath",
+    "CostPa": null,
+    "Power": null,
+    "Position": "Clase",
+    "Unique": true,
+    "keywords": [
+      "Ascenso",
+      "A distancia",
+      "Detectar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-018",
+    "Name": "Iniciado del Cristal",
+    "type": "Character",
+    "CostPa": 1,
+    "Power": 2,
+    "Position": "Cualquiera",
+    "Unique": false,
+    "keywords": [
+      "Despliegue"
+    ],
+    "effectCount": 0,
+    "starterIncluded": true,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-019",
+    "Name": "Custodio de Runas",
+    "type": "Character",
+    "CostPa": 2,
+    "Power": 3,
+    "Position": "Vanguardia",
+    "Unique": false,
+    "keywords": [
+      "Guardi\u00E1n"
+    ],
+    "effectCount": 0,
+    "starterIncluded": true,
+    "statDominatedBy": [
+      "WZ1-027",
+      "WZ1-050"
+    ]
+  },
+  {
+    "id": "WZ1-020",
+    "Name": "Tejedora del Vac\u00EDo",
+    "type": "Character",
+    "CostPa": 4,
+    "Power": 5,
+    "Position": "Retaguardia",
+    "Unique": false,
+    "keywords": [
+      "Control"
+    ],
+    "effectCount": 0,
+    "starterIncluded": true,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-021",
+    "Name": "Or\u00E1culo Akkedis",
+    "type": "Character",
+    "CostPa": 6,
+    "Power": 7,
+    "Position": "Retaguardia",
+    "Unique": true,
+    "keywords": [
+      "Despliegue"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-022",
+    "Name": "M\u00FAsico de Escamas",
+    "type": "Character",
+    "CostPa": 1,
+    "Power": 2,
+    "Position": "Retaguardia",
+    "Unique": false,
+    "keywords": [
+      "Despliegue",
+      "Inspirar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-023",
+    "Name": "Acechafuegos Draxxis",
+    "type": "Character",
+    "CostPa": 3,
+    "Power": 4,
+    "Position": "Retaguardia",
+    "Unique": false,
+    "keywords": [
+      "A distancia",
+      "Cr\u00EDtico"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-024",
+    "Name": "Guardi\u00E1n del Aliento",
+    "type": "Character",
+    "CostPa": 4,
+    "Power": 6,
+    "Position": "Vanguardia",
+    "Unique": false,
+    "keywords": [
+      "Guardi\u00E1n"
+    ],
+    "effectCount": 0,
+    "starterIncluded": true,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-025",
+    "Name": "Draxxis de la Guitarra-Hacha",
+    "type": "Character",
+    "CostPa": 6,
+    "Power": 7,
+    "Position": "Cualquiera",
+    "Unique": true,
+    "keywords": [
+      "Cr\u00EDtico",
+      "Inspirar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-026",
+    "Name": "Aprendiz Forjador",
+    "type": "Character",
+    "CostPa": 1,
+    "Power": 2,
+    "Position": "Cualquiera",
+    "Unique": false,
+    "keywords": [
+      "Forja"
+    ],
+    "effectCount": 0,
+    "starterIncluded": true,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-027",
+    "Name": "Defensor del Basti\u00F3n",
+    "type": "Character",
+    "CostPa": 2,
+    "Power": 4,
+    "Position": "Vanguardia",
+    "Unique": false,
+    "keywords": [
+      "Guardi\u00E1n"
+    ],
+    "effectCount": 0,
+    "starterIncluded": true,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-028",
+    "Name": "Maestra R\u00FAnica Enana",
+    "type": "Character",
+    "CostPa": 4,
+    "Power": 5,
+    "Position": "Retaguardia",
+    "Unique": false,
+    "keywords": [
+      "Despliegue"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-029",
+    "Name": "Se\u00F1or de la Forja",
+    "type": "Character",
+    "CostPa": 6,
+    "Power": 7,
+    "Position": "Vanguardia",
+    "Unique": true,
+    "keywords": [
+      "Forja"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": [
+      "WZ1-053",
+      "WZ1-060"
+    ]
+  },
+  {
+    "id": "WZ1-030",
+    "Name": "Explorador de Lindes",
+    "type": "Character",
+    "CostPa": 1,
+    "Power": 2,
+    "Position": "Cualquiera",
+    "Unique": false,
+    "keywords": [
+      "Explorar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": true,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-031",
+    "Name": "Arquera de Hoja Clara",
+    "type": "Character",
+    "CostPa": 3,
+    "Power": 4,
+    "Position": "Retaguardia",
+    "Unique": false,
+    "keywords": [
+      "A distancia"
+    ],
+    "effectCount": 0,
+    "starterIncluded": true,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-032",
+    "Name": "Tejedora de Ra\u00EDces",
+    "type": "Character",
+    "CostPa": 4,
+    "Power": 5,
+    "Position": "Retaguardia",
+    "Unique": false,
+    "keywords": [
+      "Despliegue"
+    ],
+    "effectCount": 0,
+    "starterIncluded": true,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-033",
+    "Name": "Guardabosques Ancestral",
+    "type": "Character",
+    "CostPa": 6,
+    "Power": 7,
+    "Position": "Retaguardia",
+    "Unique": true,
+    "keywords": [
+      "A distancia"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-034",
+    "Name": "Cachorro de la Manada",
+    "type": "Character",
+    "CostPa": 1,
+    "Power": 2,
+    "Position": "Vanguardia",
+    "Unique": false,
+    "keywords": [
+      "Manada"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": [
+      "WZ1-050"
+    ]
+  },
+  {
+    "id": "WZ1-035",
+    "Name": "Hostigador Gnoll",
+    "type": "Character",
+    "CostPa": 2,
+    "Power": 3,
+    "Position": "Vanguardia",
+    "Unique": false,
+    "keywords": [
+      "Manada"
+    ],
+    "effectCount": 0,
+    "starterIncluded": true,
+    "statDominatedBy": [
+      "WZ1-027",
+      "WZ1-050"
+    ]
+  },
+  {
+    "id": "WZ1-036",
+    "Name": "Guardi\u00E1n del Cubil",
+    "type": "Character",
+    "CostPa": 4,
+    "Power": 6,
+    "Position": "Vanguardia",
+    "Unique": false,
+    "keywords": [
+      "Guardi\u00E1n"
+    ],
+    "effectCount": 0,
+    "starterIncluded": true,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-037",
+    "Name": "Alfa de Colmillo Gris",
+    "type": "Character",
+    "CostPa": 6,
+    "Power": 7,
+    "Position": "Vanguardia",
+    "Unique": true,
+    "keywords": [
+      "Manada"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": [
+      "WZ1-053",
+      "WZ1-060"
+    ]
+  },
+  {
+    "id": "WZ1-038",
+    "Name": "Saqueador de Bolsillos",
+    "type": "Character",
+    "CostPa": 1,
+    "Power": 1,
+    "Position": "Retaguardia",
+    "Unique": false,
+    "keywords": [
+      "Despliegue",
+      "Rapi\u00F1ar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": [
+      "WZ1-022",
+      "WZ1-046",
+      "WZ1-064"
+    ]
+  },
+  {
+    "id": "WZ1-039",
+    "Name": "Mec\u00E1nico de Chatarra",
+    "type": "Character",
+    "CostPa": 2,
+    "Power": 3,
+    "Position": "Retaguardia",
+    "Unique": false,
+    "keywords": [
+      "Reciclar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": true,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-040",
+    "Name": "Artillero Improvisado",
+    "type": "Character",
+    "CostPa": 4,
+    "Power": 5,
+    "Position": "Retaguardia",
+    "Unique": false,
+    "keywords": [
+      "A distancia"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-041",
+    "Name": "Rey de la Chatarra",
+    "type": "Character",
+    "CostPa": 6,
+    "Power": 6,
+    "Position": "Retaguardia",
+    "Unique": true,
+    "keywords": [
+      "Reciclar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": [
+      "WZ1-021",
+      "WZ1-033",
+      "WZ1-049",
+      "WZ1-065",
+      "WZ1-067"
+    ]
+  },
+  {
+    "id": "WZ1-042",
+    "Name": "Recluta de la Guardia",
+    "type": "Character",
+    "CostPa": 1,
+    "Power": 2,
+    "Position": "Cualquiera",
+    "Unique": false,
+    "keywords": [
+      "Guardi\u00E1n"
+    ],
+    "effectCount": 0,
+    "starterIncluded": true,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-043",
+    "Name": "Duelista Vers\u00E1til",
+    "type": "Character",
+    "CostPa": 2,
+    "Power": 3,
+    "Position": "Vanguardia",
+    "Unique": false,
+    "keywords": [
+      "Adaptable"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": [
+      "WZ1-027",
+      "WZ1-050"
+    ]
+  },
+  {
+    "id": "WZ1-044",
+    "Name": "Sanadora de Campa\u00F1a",
+    "type": "Character",
+    "CostPa": 3,
+    "Power": 3,
+    "Position": "Retaguardia",
+    "Unique": false,
+    "keywords": [
+      "Despliegue"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": [
+      "WZ1-023",
+      "WZ1-031",
+      "WZ1-039",
+      "WZ1-047",
+      "WZ1-068",
+      "WZ1-070",
+      "WZ1-072"
+    ]
+  },
+  {
+    "id": "WZ1-045",
+    "Name": "Capit\u00E1n de la Guardia",
+    "type": "Character",
+    "CostPa": 5,
+    "Power": 6,
+    "Position": "Vanguardia",
+    "Unique": true,
+    "keywords": [
+      "Mando"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": [
+      "WZ1-024",
+      "WZ1-036",
+      "WZ1-056",
+      "WZ1-060"
+    ]
+  },
+  {
+    "id": "WZ1-046",
+    "Name": "Ojo Nocturno Lincer",
+    "type": "Character",
+    "CostPa": 1,
+    "Power": 2,
+    "Position": "Retaguardia",
+    "Unique": false,
+    "keywords": [
+      "Despliegue",
+      "Detectar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": true,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-047",
+    "Name": "Tiradora del Desfiladero",
+    "type": "Character",
+    "CostPa": 3,
+    "Power": 4,
+    "Position": "Retaguardia",
+    "Unique": false,
+    "keywords": [
+      "A distancia"
+    ],
+    "effectCount": 0,
+    "starterIncluded": true,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-048",
+    "Name": "Rastreador de Sombras",
+    "type": "Character",
+    "CostPa": 4,
+    "Power": 5,
+    "Position": "Retaguardia",
+    "Unique": false,
+    "keywords": [
+      "Detectar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-049",
+    "Name": "Matriarca Lincer",
+    "type": "Character",
+    "CostPa": 6,
+    "Power": 7,
+    "Position": "Retaguardia",
+    "Unique": true,
+    "keywords": [
+      "A distancia"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-050",
+    "Name": "Bruto de Primera L\u00EDnea",
+    "type": "Character",
+    "CostPa": 1,
+    "Power": 3,
+    "Position": "Vanguardia",
+    "Unique": false,
+    "keywords": [
+      "Agresivo"
+    ],
+    "effectCount": 0,
+    "starterIncluded": true,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-051",
+    "Name": "Berserker Sediento",
+    "type": "Character",
+    "CostPa": 3,
+    "Power": 5,
+    "Position": "Vanguardia",
+    "Unique": false,
+    "keywords": [
+      "Desprotegido 1",
+      "Cr\u00EDtico"
+    ],
+    "effectCount": 0,
+    "starterIncluded": true,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-052",
+    "Name": "Cham\u00E1n de Sangre",
+    "type": "Character",
+    "CostPa": 4,
+    "Power": 4,
+    "Position": "Retaguardia",
+    "Unique": false,
+    "keywords": [
+      "Ritual"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": [
+      "WZ1-020",
+      "WZ1-023",
+      "WZ1-028",
+      "WZ1-031",
+      "WZ1-032",
+      "WZ1-040",
+      "WZ1-047",
+      "WZ1-048"
+    ]
+  },
+  {
+    "id": "WZ1-053",
+    "Name": "Campe\u00F3n del Garrote",
+    "type": "Character",
+    "CostPa": 6,
+    "Power": 8,
+    "Position": "Vanguardia",
+    "Unique": true,
+    "keywords": [
+      "Cr\u00EDtico"
+    ],
+    "effectCount": 0,
+    "starterIncluded": true,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-054",
+    "Name": "Rastreador Wulfgar",
+    "type": "Character",
+    "CostPa": 1,
+    "Power": 2,
+    "Position": "Vanguardia",
+    "Unique": false,
+    "keywords": [
+      "Solitario"
+    ],
+    "effectCount": 0,
+    "starterIncluded": true,
+    "statDominatedBy": [
+      "WZ1-050"
+    ]
+  },
+  {
+    "id": "WZ1-055",
+    "Name": "Guardi\u00E1n de la Manada",
+    "type": "Character",
+    "CostPa": 3,
+    "Power": 4,
+    "Position": "Cualquiera",
+    "Unique": false,
+    "keywords": [
+      "Guardi\u00E1n"
+    ],
+    "effectCount": 0,
+    "starterIncluded": true,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-056",
+    "Name": "Cazador de Bestias",
+    "type": "Character",
+    "CostPa": 4,
+    "Power": 6,
+    "Position": "Vanguardia",
+    "Unique": false,
+    "keywords": [
+      "Cazador"
+    ],
+    "effectCount": 0,
+    "starterIncluded": true,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-057",
+    "Name": "Wolfgark, Coraz\u00F3n Ind\u00F3mito",
+    "type": "Character",
+    "CostPa": 7,
+    "Power": 8,
+    "Position": "Vanguardia",
+    "Unique": true,
+    "keywords": [
+      "Guardi\u00E1n"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": [
+      "WZ1-053",
+      "WZ1-061",
+      "WZ1-076"
+    ]
+  },
+  {
+    "id": "WZ1-058",
+    "Name": "Pe\u00F3n Groshak",
+    "type": "Character",
+    "CostPa": 1,
+    "Power": 2,
+    "Position": "Vanguardia",
+    "Unique": false,
+    "keywords": [
+      "Rango"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": [
+      "WZ1-050"
+    ]
+  },
+  {
+    "id": "WZ1-059",
+    "Name": "Rompel\u00EDneas Groshak",
+    "type": "Character",
+    "CostPa": 3,
+    "Power": 5,
+    "Position": "Vanguardia",
+    "Unique": false,
+    "keywords": [
+      "Rango"
+    ],
+    "effectCount": 0,
+    "starterIncluded": true,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-060",
+    "Name": "Portador del Monolito",
+    "type": "Character",
+    "CostPa": 5,
+    "Power": 7,
+    "Position": "Vanguardia",
+    "Unique": false,
+    "keywords": [
+      "Guardi\u00E1n"
+    ],
+    "effectCount": 0,
+    "starterIncluded": true,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-061",
+    "Name": "Se\u00F1or del Rango Groshak",
+    "type": "Character",
+    "CostPa": 7,
+    "Power": 9,
+    "Position": "Vanguardia",
+    "Unique": true,
+    "keywords": [
+      "Rango superior"
+    ],
+    "effectCount": 0,
+    "starterIncluded": true,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-062",
+    "Name": "Escudero de Guerra",
+    "type": "Character",
+    "CostPa": 1,
+    "Power": 2,
+    "Position": "Vanguardia",
+    "Unique": false,
+    "keywords": [
+      "Disciplina"
+    ],
+    "effectCount": 0,
+    "starterIncluded": true,
+    "statDominatedBy": [
+      "WZ1-050"
+    ]
+  },
+  {
+    "id": "WZ1-063",
+    "Name": "Veterana T\u00E1ctica",
+    "type": "Character",
+    "CostPa": 4,
+    "Power": 5,
+    "Position": "Vanguardia",
+    "Unique": false,
+    "keywords": [
+      "Despliegue"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": [
+      "WZ1-024",
+      "WZ1-036",
+      "WZ1-051",
+      "WZ1-056",
+      "WZ1-059"
+    ]
+  },
+  {
+    "id": "WZ1-064",
+    "Name": "Ratera de Callej\u00F3n",
+    "type": "Character",
+    "CostPa": 1,
+    "Power": 2,
+    "Position": "Retaguardia",
+    "Unique": false,
+    "keywords": [
+      "Oculto"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-065",
+    "Name": "K\u00F3rax, Paso Sombr\u00EDo",
+    "type": "Character",
+    "CostPa": 5,
+    "Power": 6,
+    "Position": "Retaguardia",
+    "Unique": true,
+    "keywords": [
+      "Oculto",
+      "Emboscada 2"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-066",
+    "Name": "Aprendiz Elemental",
+    "type": "Character",
+    "CostPa": 2,
+    "Power": 2,
+    "Position": "Retaguardia",
+    "Unique": false,
+    "keywords": [
+      "Despliegue"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": [
+      "WZ1-022",
+      "WZ1-039",
+      "WZ1-046",
+      "WZ1-064",
+      "WZ1-068",
+      "WZ1-070",
+      "WZ1-072"
+    ]
+  },
+  {
+    "id": "WZ1-067",
+    "Name": "Invocador de Escarcha",
+    "type": "Character",
+    "CostPa": 5,
+    "Power": 6,
+    "Position": "Retaguardia",
+    "Unique": false,
+    "keywords": [
+      "Despliegue",
+      "Congelar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-068",
+    "Name": "Ac\u00F3lita de las Bestias",
+    "type": "Character",
+    "CostPa": 2,
+    "Power": 3,
+    "Position": "Retaguardia",
+    "Unique": false,
+    "keywords": [
+      "\u00DAltimo Aliento"
+    ],
+    "effectCount": 0,
+    "starterIncluded": true,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-069",
+    "Name": "Guardamuertos Errante",
+    "type": "Character",
+    "CostPa": 5,
+    "Power": 5,
+    "Position": "Vanguardia",
+    "Unique": false,
+    "keywords": [
+      "Despliegue"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": [
+      "WZ1-024",
+      "WZ1-036",
+      "WZ1-045",
+      "WZ1-051",
+      "WZ1-056",
+      "WZ1-059",
+      "WZ1-060",
+      "WZ1-063"
+    ]
+  },
+  {
+    "id": "WZ1-070",
+    "Name": "Trovador del Camino",
+    "type": "Character",
+    "CostPa": 2,
+    "Power": 3,
+    "Position": "Retaguardia",
+    "Unique": false,
+    "keywords": [
+      "Inspirar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-071",
+    "Name": "Virtuosa del Acero",
+    "type": "Character",
+    "CostPa": 5,
+    "Power": 6,
+    "Position": "Cualquiera",
+    "Unique": false,
+    "keywords": [
+      "Inspirar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-072",
+    "Name": "Lector de Huellas",
+    "type": "Character",
+    "CostPa": 2,
+    "Power": 3,
+    "Position": "Retaguardia",
+    "Unique": false,
+    "keywords": [
+      "Despliegue",
+      "Detectar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": true,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-073",
+    "Name": "Cazadora de Trofeos",
+    "type": "Character",
+    "CostPa": 5,
+    "Power": 6,
+    "Position": "Cualquiera",
+    "Unique": false,
+    "keywords": [
+      "Cazador"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-074",
+    "Name": "Mercenario de Frontera",
+    "type": "Character",
+    "CostPa": 2,
+    "Power": 3,
+    "Position": "Cualquiera",
+    "Unique": false,
+    "keywords": [
+      "Neutral"
+    ],
+    "effectCount": 0,
+    "starterIncluded": true,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-075",
+    "Name": "Curandera Itinerante",
+    "type": "Character",
+    "CostPa": 3,
+    "Power": 3,
+    "Position": "Retaguardia",
+    "Unique": false,
+    "keywords": [
+      "Despliegue"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": [
+      "WZ1-023",
+      "WZ1-031",
+      "WZ1-039",
+      "WZ1-047",
+      "WZ1-068",
+      "WZ1-070",
+      "WZ1-072"
+    ]
+  },
+  {
+    "id": "WZ1-076",
+    "Name": "Sasha, Jefa Devorada",
+    "type": "Character",
+    "CostPa": 7,
+    "Power": 9,
+    "Position": "Vanguardia",
+    "Unique": true,
+    "keywords": [
+      "\u00DAltimo Aliento"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-077",
+    "Name": "Ratcan, el que Escapa",
+    "type": "Character",
+    "CostPa": 5,
+    "Power": 5,
+    "Position": "Cualquiera",
+    "Unique": true,
+    "keywords": [
+      "Escapar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": [
+      "WZ1-071",
+      "WZ1-073"
+    ]
+  },
+  {
+    "id": "WZ1-078",
+    "Name": "Golpe Coordinado",
+    "type": "Action",
+    "CostPa": 1,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Potenciar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-079",
+    "Name": "Onda de Choque",
+    "type": "Action",
+    "CostPa": 3,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Desprotegido"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-080",
+    "Name": "Paso Sombr\u00EDo",
+    "type": "Action",
+    "CostPa": 2,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Oculto",
+      "R\u00E1pido"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-081",
+    "Name": "Ataque Sigiloso",
+    "type": "Action",
+    "CostPa": 1,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Cr\u00EDtico"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-082",
+    "Name": "Electrocutar",
+    "type": "Action",
+    "CostPa": 3,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Desprotegido"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-083",
+    "Name": "Escarcha",
+    "type": "Action",
+    "CostPa": 2,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Congelar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-084",
+    "Name": "Pacto del Dios Bestia",
+    "type": "Action",
+    "CostPa": 2,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Sacrificio"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-085",
+    "Name": "Levantar a los Ca\u00EDdos",
+    "type": "Action",
+    "CostPa": 4,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Reanimar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-086",
+    "Name": "Acorde Inspirador",
+    "type": "Action",
+    "CostPa": 1,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Inspirar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-087",
+    "Name": "Aliento de Drag\u00F3n",
+    "type": "Action",
+    "CostPa": 4,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "\u00C1rea"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-088",
+    "Name": "Marcar la Presa",
+    "type": "Action",
+    "CostPa": 1,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Detectar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-089",
+    "Name": "Rapi\u00F1ar",
+    "type": "Action",
+    "CostPa": 1,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Rapi\u00F1ar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-090",
+    "Name": "Fortificar Posici\u00F3n",
+    "type": "Action",
+    "CostPa": 2,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Fortificar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-091",
+    "Name": "Sed de Sangre",
+    "type": "Action",
+    "CostPa": 2,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Sed de Sangre"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-092",
+    "Name": "Orden del Capit\u00E1n",
+    "type": "Action",
+    "CostPa": 2,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Reorganizar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-093",
+    "Name": "Ojo del Lincer",
+    "type": "Action",
+    "CostPa": 2,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Detectar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-094",
+    "Name": "Rugido de la Manada",
+    "type": "Action",
+    "CostPa": 3,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Manada"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-095",
+    "Name": "Sobrecarga Groshak",
+    "type": "Action",
+    "CostPa": 2,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Rango superior"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-096",
+    "Name": "Plan Calculado",
+    "type": "Action",
+    "CostPa": 2,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Preparar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-097",
+    "Name": "Reorganizaci\u00F3n de Emergencia",
+    "type": "Action",
+    "CostPa": 1,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Reorganizar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-098",
+    "Name": "Bloqueo Instintivo",
+    "type": "Reaction",
+    "CostPa": 1,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Reacci\u00F3n de combate"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-099",
+    "Name": "Contraataque",
+    "type": "Reaction",
+    "CostPa": 2,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Reacci\u00F3n de combate"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-100",
+    "Name": "Desvanecerse",
+    "type": "Reaction",
+    "CostPa": 2,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Reacci\u00F3n de combate"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-101",
+    "Name": "Barrera Arcana",
+    "type": "Reaction",
+    "CostPa": 2,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Reacci\u00F3n de combate"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-102",
+    "Name": "Intervenci\u00F3n Sagrada",
+    "type": "Reaction",
+    "CostPa": 2,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Reacci\u00F3n de combate"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-103",
+    "Name": "Cambio de Ritmo",
+    "type": "Reaction",
+    "CostPa": 1,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Reacci\u00F3n de combate"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-104",
+    "Name": "Esquiva \u00C9lfica",
+    "type": "Reaction",
+    "CostPa": 1,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Reacci\u00F3n de combate"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-105",
+    "Name": "Trampa Lincer",
+    "type": "Reaction",
+    "CostPa": 2,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Reacci\u00F3n de combate",
+      "Detectar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-106",
+    "Name": "Aguantar el Golpe",
+    "type": "Reaction",
+    "CostPa": 1,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Reacci\u00F3n de combate"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-107",
+    "Name": "Furia Repentina",
+    "type": "Reaction",
+    "CostPa": 1,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Reacci\u00F3n de combate"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-108",
+    "Name": "Espada de Guardia",
+    "type": "Equipment",
+    "CostPa": 1,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Equipar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-109",
+    "Name": "Escudo Reforzado",
+    "type": "Equipment",
+    "CostPa": 2,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Equipar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-110",
+    "Name": "Arco Lincer",
+    "type": "Equipment",
+    "CostPa": 2,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "A distancia"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-111",
+    "Name": "Dagas Gemelas",
+    "type": "Equipment",
+    "CostPa": 2,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Emboscada 1"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-112",
+    "Name": "Bast\u00F3n de Escarcha",
+    "type": "Equipment",
+    "CostPa": 3,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Equipar Mago"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-113",
+    "Name": "Guitarra-Hacha de Draxxis",
+    "type": "Equipment",
+    "CostPa": 4,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": true,
+    "keywords": [
+      "Equipar Bardo o Draxxis",
+      "Cr\u00EDtico"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-114",
+    "Name": "Armadura Enana de Placas",
+    "type": "Equipment",
+    "CostPa": 3,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Equipar"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-115",
+    "Name": "T\u00F3tem de Sangre Orco",
+    "type": "Equipment",
+    "CostPa": 3,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Sed de Sangre"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-116",
+    "Name": "Bolsa sin Fondo Goblin",
+    "type": "Equipment",
+    "CostPa": 2,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Objeto"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-117",
+    "Name": "Amuleto del Dios Bestia",
+    "type": "Equipment",
+    "CostPa": 3,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Sacrificio"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-118",
+    "Name": "Capa de Paso Sombr\u00EDo",
+    "type": "Equipment",
+    "CostPa": 3,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Oculto"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-119",
+    "Name": "Martillo Groshak",
+    "type": "Equipment",
+    "CostPa": 4,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": false,
+    "keywords": [
+      "Rango superior"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  },
+  {
+    "id": "WZ1-120",
+    "Name": "Reliquia Godly Inerte",
+    "type": "Equipment",
+    "CostPa": 5,
+    "Power": null,
+    "Position": "\u2014",
+    "Unique": true,
+    "keywords": [
+      "Cr\u00EDtico",
+      "Ascenso"
+    ],
+    "effectCount": 0,
+    "starterIncluded": false,
+    "statDominatedBy": []
+  }
+]

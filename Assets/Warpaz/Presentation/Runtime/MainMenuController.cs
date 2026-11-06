@@ -60,10 +60,10 @@ namespace Warpaz.Presentation
                 comingSoonText.text = string.Empty;
             }
 
-            Wire(playButton, OnPlay);
+            Wire(playButton, OnStarters);
             Wire(laboratoryButton, OnTutorial);
             Wire(quitButton, OnQuit);
-            Wire(decksButton, OnComingSoon);
+            Wire(decksButton, OnStarters);
             Wire(cardsButton, OnCards);
             Wire(settingsButton, OnComingSoon);
 
@@ -148,6 +148,33 @@ namespace Warpaz.Presentation
                 skipAutoMulligan: true);
             provider?.SetPendingBattleStart(payload);
             _flow.OpenBattle();
+        }
+
+        private void OnStarters()
+        {
+            if (_runtime == null || _flow == null) return;
+            try
+            {
+                var decks = StarterDeckCatalog.Load(System.IO.Path.Combine(UnityEngine.Application.streamingAssetsPath, "Data", StarterDeckCatalog.FileName), _runtime.Catalog, _runtime.Rules);
+                var canvas = GetComponentInParent<Canvas>();
+                if (canvas == null) throw new System.InvalidOperationException("Starter picker requires Canvas.");
+                DeckLibraryView.Show(canvas.transform, _runtime.Catalog, RuleConfig.PreviewDefaults(), decks, (a, b) =>
+                {
+                    var setup = new MatchSetup(seed, RuleConfig.PreviewDefaults(), _runtime.Catalog.ContentVersion,
+                        new PlayerSetup(PlayerId.Player0, a), new PlayerSetup(PlayerId.Player1, b));
+                    var payload = new BattleStartPayload(setup, mulliganDecision, false,
+                        player1Name + " · " + a.DisplayName, player2Name + " · " + b.DisplayName,
+                        skipAutoMulligan: true);
+                    if (!(_flow is IBattleStartProvider provider)) throw new System.InvalidOperationException("Battle provider unavailable.");
+                    provider.SetPendingBattleStart(payload);
+                    _flow.OpenBattle();
+                });
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError("Starter decks: " + ex.Message);
+                if (comingSoonText != null) comingSoonText.text = "No se pudieron cargar los starters: " + ex.Message;
+            }
         }
 
         private void OnCards()

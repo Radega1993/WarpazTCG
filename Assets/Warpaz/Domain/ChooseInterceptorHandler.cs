@@ -48,12 +48,13 @@ namespace Warpaz.Domain
             }
 
             if (!state.TryGetCard(command.PrimaryInstanceId, out var interceptor)
-                || !CombatPolicies.CanIntercept(interceptor))
+                || interceptor.ControllerId != command.ActorId
+                || !CombatPolicies.CanIntercept(interceptor, _catalog, state.Rules))
             {
                 return CommandResult.Reject(
                     state,
                     CommandRejectionCode.InvalidPayload,
-                    "Interceptor must be a Ready Vanguard Character.");
+                    "Interceptor is not eligible under the active rules.");
             }
 
             if (!state.TryGetCard(pending.AttackerId, out var attacker) || !attacker.HasBoardSlot)
