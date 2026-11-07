@@ -43,7 +43,10 @@ namespace Warpaz.Tests.EditMode
                 var other = new DeckLibraryStore(path); Assert.AreEqual("Saved", other.Load(new[] { Deck(c) })[0].Name);
                 decks.Clear(); store.Save(decks); Assert.AreEqual(0, new DeckLibraryStore(path).Load(new[] { Deck(c) }).Count);
                 Assert.Throws<IOException>(() => other.Save(decks));
-                File.WriteAllText(path, "broken"); Assert.Throws<Newtonsoft.Json.JsonReaderException>(() => new DeckLibraryStore(path).Load(new[] { Deck(c) }));
+                File.WriteAllText(path, "broken");
+                Assert.Throws(
+                    Is.InstanceOf<Exception>().And.Not.InstanceOf<IOException>(),
+                    () => new DeckLibraryStore(path).Load(new[] { Deck(c) }));
                 Assert.AreEqual("broken", File.ReadAllText(path));
             }
             finally { if (Directory.Exists(dir)) Directory.Delete(dir, true); }

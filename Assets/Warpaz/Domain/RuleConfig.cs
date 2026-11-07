@@ -14,9 +14,12 @@ namespace Warpaz.Domain
         public const string EffectsRuleVersion = "0.3.0-effects";
         public const string AdvancedRuleVersion = "0.4.0-advanced";
         public const string ExpandedRuleVersion = "0.5.0-expanded";
-        public bool ExpandedEnabled => RuleVersion == ExpandedRuleVersion;
+        public const string TacticalRuleVersion = "0.6.0-tactical";
+        public bool TacticalEnabled => RuleVersion == TacticalRuleVersion;
+        public bool ExpandedEnabled => RuleVersion == ExpandedRuleVersion || TacticalEnabled;
         public bool AdvancedEnabled => RuleVersion == AdvancedRuleVersion || ExpandedEnabled;
         public static RuleConfig ExpandedDefaults() => PreviewDefaults(ExpandedRuleVersion);
+        public static RuleConfig TacticalDefaults() => PreviewDefaults(TacticalRuleVersion);
         public bool EffectsEnabled => RuleVersion == EffectsRuleVersion || AdvancedEnabled;
         public static RuleConfig AdvancedDefaults() => PreviewDefaults(AdvancedRuleVersion);
         public bool IsPreview => RuleVersion == PreviewRuleVersion || EffectsEnabled;

@@ -6,7 +6,8 @@
         "Warpaz.Application",
         "Warpaz.Content",
         "Warpaz.Infrastructure",
-        "Warpaz.Presentation"
+        "Warpaz.Presentation",
+        "Newtonsoft.Json"
     ],
     "includePlatforms": [
         "Editor"

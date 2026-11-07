@@ -50,6 +50,14 @@ namespace Warpaz.Domain
                     "Reorganize requires a board Character you control.");
             }
 
+            if (state.Rules.TacticalEnabled && !TacticalEffects.CanReorganize(first))
+            {
+                return CommandResult.Reject(
+                    state,
+                    CommandRejectionCode.InvalidPayload,
+                    "Frozen or Immobilized Characters cannot reorganize.");
+            }
+
             var from = state.EventIndex;
             if (command.ReorganizeMode == ReorganizeMode.MoveToEmptyOtherRow)
             {
@@ -104,6 +112,14 @@ namespace Warpaz.Domain
                         state,
                         CommandRejectionCode.InvalidPayload,
                         "Swap reorganization requires two board Characters you control.");
+                }
+
+                if (state.Rules.TacticalEnabled && !TacticalEffects.CanReorganize(second))
+                {
+                    return CommandResult.Reject(
+                        state,
+                        CommandRejectionCode.InvalidPayload,
+                        "Frozen or Immobilized Characters cannot reorganize.");
                 }
 
                 if (first.Slot.Row == second.Slot.Row)

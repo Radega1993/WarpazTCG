@@ -22,6 +22,8 @@ namespace Warpaz.Domain
         public static bool CanMoveByEffect(GameState state, ICardCatalog catalog, CardInstance card, PlayerId effectController)
         {
             if (card == null || !card.HasBoardSlot || !effectController.IsSeated) return false;
+            if (state.Rules.TacticalEnabled && (TacticalEffects.HasStatus(card, StatusType.Immobilized) || TacticalEffects.HasStatus(card, StatusType.Frozen)))
+                return false;
             if (!state.Rules.ExpandedEnabled || effectController == card.ControllerId) return true;
             var op = Program(catalog, card);
             return op != EffectOpcode.DefenseAndImmovable

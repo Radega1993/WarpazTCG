@@ -38,9 +38,9 @@ escenario alcanzable, salvo que se documente explícitamente como preparación d
 
 ## 2. P0 — Completar capacidades del motor
 
-- [ ] A distancia y matriz de objetivos Vanguardia/Retaguardia.
-- [ ] Oculto, Detectado/Detectar, Emboscada, Desprotegido y Rápido según reglamento.
-- [ ] Congelado e Inmovilizado: aplicación, prohibiciones, eliminación y expiración.
+- [x] A distancia y matriz de objetivos Vanguardia/Retaguardia (mínimo v0.6; ver ADR 0009).
+- [x] Oculto, Detectado/Detectar, Emboscada, Desprotegido (mínimo v0.6; Rápido pendiente).
+- [x] Congelado e Inmovilizado: aplicación, prohibiciones, eliminación y expiración (v0.6).
 - [ ] Crítico y disparadores posteriores al combate; prevenir Crítico.
 - [ ] Habilidades activadas: coste, agotamiento, objetivos y límites por turno.
 - [ ] Ascenso: requisitos, coste, transformación/mejora y pasivas de Clase.

@@ -92,6 +92,16 @@ namespace Warpaz.Presentation
         {
             EnsureChrome();
             _onClick = onClick;
+            if (_button != null)
+            {
+                _button.onClick.RemoveAllListeners();
+                _button.onClick.AddListener(() =>
+                {
+                    SetHovered(false);
+                    CardInspectOverlay.HideAll();
+                    _onClick?.Invoke();
+                });
+            }
         }
 
         public void SetInteractable(bool interactable)

@@ -41,12 +41,15 @@ namespace Warpaz.Domain
                     "Attack requires an attacker you control.");
             }
 
-            if (!CombatPolicies.CanDeclareAttack(attacker))
+            var canDeclare = state.Rules.TacticalEnabled
+                ? TacticalEffects.CanDeclareAttack(state, _catalog, attacker)
+                : CombatPolicies.CanDeclareAttack(attacker);
+            if (!canDeclare)
             {
                 return CommandResult.Reject(
                     state,
                     CommandRejectionCode.InvalidPayload,
-                    "Attacker must be a Ready Vanguard Character without Recent.");
+                    "Attacker must be Ready, without Recent/Frozen, and in a legal attack row.");
             }
 
             var defender = state.GetPlayer(command.ActorId.Opponent);
@@ -74,7 +77,25 @@ namespace Warpaz.Domain
                 if (command.SecondaryInstanceId.IsNone
                     || !state.TryGetCard(command.SecondaryInstanceId, out targetCharacter)
                     || targetCharacter.ControllerId != defender.PlayerId
-                    || targetCharacter.Zone != CardZone.Vanguard)
+                    || !targetCharacter.HasBoardSlot)
+                {
+                    return CommandResult.Reject(
+                        state,
+                        CommandRejectionCode.InvalidPayload,
+                        "Attack target must be an enemy board Character.");
+                }
+
+                if (state.Rules.TacticalEnabled)
+                {
+                    if (!TacticalEffects.CanAttackCharacter(state, _catalog, attacker, targetCharacter))
+                    {
+                        return CommandResult.Reject(
+                            state,
+                            CommandRejectionCode.InvalidPayload,
+                            "Attacker cannot reach that row without A distancia.");
+                    }
+                }
+                else if (targetCharacter.Zone != CardZone.Vanguard)
                 {
                     return CommandResult.Reject(
                         state,
@@ -100,7 +121,9 @@ namespace Warpaz.Domain
                 return EngineActions.Snapshot(state, from);
             }
 
-            var interceptors = CollectInterceptors(state, defender);
+            var interceptors = TacticalEffects.IsAmbushAttack(state, _catalog, attacker)
+                ? new List<CardInstanceId>()
+                : CollectInterceptors(state, defender);
             if (interceptors.Count > 0)
             {
                 EngineActions.OpenInterceptDecision(

@@ -78,7 +78,7 @@ namespace Warpaz.Domain
             }
 
             AppendReorganizations(list, state, actor);
-            AppendAttacks(list, state, actor);
+            AppendAttacks(list, state, catalog, actor);
             return list;
         }
 
@@ -95,8 +95,17 @@ namespace Warpaz.Domain
             {
                 var instanceId = player.Hand[h];
                 var card = state.Cards[instanceId];
+                if (state.Rules.TacticalEnabled && catalog.TryGet(card.DefinitionId, out var tactical) && tactical.Type == CardType.Action
+                    && TacticalEffects.Supports(tactical))
+                {
+                    foreach (var target in System.Linq.Enumerable.OrderBy(state.Cards.Values, c => c.InstanceId.Value))
+                        if (TacticalEffects.CanPlay(state, catalog, actor, instanceId, target.InstanceId))
+                            list.Add(LegalAction.PlayReplace(actor, instanceId, target.InstanceId, "TacticalPlay"));
+                    continue;
+                }
                 if (state.Rules.AdvancedEnabled && catalog.TryGet(card.DefinitionId, out var advanced) && advanced.Type != CardType.Character
-                    && (AdvancedEffects.Supports(advanced) || state.Rules.ExpandedEnabled && ExpandedEffects.Supports(advanced)))
+                    && (AdvancedEffects.Supports(advanced) || state.Rules.ExpandedEnabled && ExpandedEffects.Supports(advanced)
+                        || state.Rules.TacticalEnabled && TacticalEffects.Supports(advanced)))
                 {
                     var targets = new List<CardInstanceId> { CardInstanceId.None };
                     targets.AddRange(System.Linq.Enumerable.Select(System.Linq.Enumerable.OrderBy(state.Cards.Values, c => c.InstanceId.Value), c => c.InstanceId));
@@ -187,6 +196,11 @@ namespace Warpaz.Domain
                     continue;
                 }
 
+                if (state.Rules.TacticalEnabled && !TacticalEffects.CanReorganize(state.Cards[slot.Occupant]))
+                {
+                    continue;
+                }
+
                 var otherRow = slot.Row == BoardRow.Vanguard ? BoardRow.Rearguard : BoardRow.Vanguard;
                 for (var index = 0; index < BoardSlot.SlotsPerRow; index++)
                 {
@@ -214,6 +228,11 @@ namespace Warpaz.Domain
 
         private static void AppendAttacks(List<LegalAction> list, GameState state, PlayerId actor)
         {
+            AppendAttacks(list, state, null, actor);
+        }
+
+        private static void AppendAttacks(List<LegalAction> list, GameState state, ICardCatalog catalog, PlayerId actor)
+        {
             var attackerPlayer = state.GetPlayer(actor);
             var defender = state.GetPlayer(actor.Opponent);
 
@@ -226,7 +245,10 @@ namespace Warpaz.Domain
                 }
 
                 var attacker = state.Cards[slot.Occupant];
-                if (!CombatPolicies.CanDeclareAttack(attacker))
+                var canDeclare = state.Rules.TacticalEnabled && catalog != null
+                    ? TacticalEffects.CanDeclareAttack(state, catalog, attacker)
+                    : CombatPolicies.CanDeclareAttack(attacker);
+                if (!canDeclare)
                 {
                     continue;
                 }
@@ -234,14 +256,18 @@ namespace Warpaz.Domain
                 for (var t = 0; t < defender.BoardSlots.Count; t++)
                 {
                     var targetSlot = defender.BoardSlots[t];
-                    if (targetSlot.IsVanguard && targetSlot.IsOccupied)
+                    if (!targetSlot.IsOccupied) continue;
+                    var target = state.Cards[targetSlot.Occupant];
+                    if (state.Rules.TacticalEnabled && catalog != null)
                     {
-                        list.Add(LegalAction.Attack(
-                            actor,
-                            attacker.InstanceId,
-                            targetSlot.Occupant,
-                            "Attack"));
+                        if (!TacticalEffects.CanAttackCharacter(state, catalog, attacker, target)) continue;
                     }
+                    else if (!targetSlot.IsVanguard)
+                    {
+                        continue;
+                    }
+
+                    list.Add(LegalAction.Attack(actor, attacker.InstanceId, target.InstanceId, "Attack"));
                 }
 
                 if (CombatPolicies.CanTargetHero(defender))

@@ -101,8 +101,17 @@ namespace Warpaz.Presentation
                 var confirmLabel = _confirmButton.GetComponentInChildren<TMP_Text>(true);
                 if (confirmLabel != null)
                 {
+                    var labelRt = confirmLabel.rectTransform;
+                    labelRt.anchorMin = Vector2.zero;
+                    labelRt.anchorMax = Vector2.one;
+                    labelRt.offsetMin = Vector2.zero;
+                    labelRt.offsetMax = Vector2.zero;
+                    confirmLabel.text = "Listo";
                     confirmLabel.color = BattleUiColors.ActionButtonText;
                     confirmLabel.fontStyle = FontStyles.Bold;
+                    confirmLabel.alignment = TextAlignmentOptions.Center;
+                    confirmLabel.fontSize = 28f;
+                    confirmLabel.raycastTarget = false;
                 }
             }
         }

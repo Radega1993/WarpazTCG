@@ -13,6 +13,9 @@ namespace Warpaz.Domain
 
         public CommandResult Handle(GameState state, Command command)
         {
+            if (state.Rules.TacticalEnabled && state.TryGetCard(command.PrimaryInstanceId, out var tacticalSource)
+                && _catalog.TryGet(tacticalSource.DefinitionId, out var tacticalDefinition) && tacticalDefinition.Type == CardType.Action
+                && TacticalEffects.Supports(tacticalDefinition)) return TacticalEffects.Play(state, command, _catalog);
             if (state.Rules.AdvancedEnabled && state.TryGetCard(command.PrimaryInstanceId, out var advancedSource)
                 && _catalog.TryGet(advancedSource.DefinitionId, out var advancedDefinition) && advancedDefinition.Type == CardType.Action
                 && AdvancedEffects.Supports(advancedDefinition)) return AdvancedEffects.Play(state, command, _catalog);

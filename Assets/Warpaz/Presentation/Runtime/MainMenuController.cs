@@ -158,9 +158,9 @@ namespace Warpaz.Presentation
                 var decks = StarterDeckCatalog.Load(System.IO.Path.Combine(UnityEngine.Application.streamingAssetsPath, "Data", StarterDeckCatalog.FileName), _runtime.Catalog, _runtime.Rules);
                 var canvas = GetComponentInParent<Canvas>();
                 if (canvas == null) throw new System.InvalidOperationException("Starter picker requires Canvas.");
-                DeckLibraryView.Show(canvas.transform, _runtime.Catalog, RuleConfig.ExpandedDefaults(), decks, (a, b) =>
+                DeckLibraryView.Show(canvas.transform, _runtime.Catalog, RuleConfig.TacticalDefaults(), decks, (a, b) =>
                 {
-                    var setup = new MatchSetup(seed, RuleConfig.ExpandedDefaults(), _runtime.Catalog.ContentVersion,
+                    var setup = new MatchSetup(seed, RuleConfig.TacticalDefaults(), _runtime.Catalog.ContentVersion,
                         new PlayerSetup(PlayerId.Player0, a), new PlayerSetup(PlayerId.Player1, b));
                     var payload = new BattleStartPayload(setup, mulliganDecision, false,
                         player1Name + " · " + a.DisplayName, player2Name + " · " + b.DisplayName,

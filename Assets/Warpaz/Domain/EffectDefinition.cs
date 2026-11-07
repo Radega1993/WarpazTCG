@@ -18,6 +18,8 @@ namespace Warpaz.Domain
         DefenseEquipped, ImmovableVanguard, PowerOtherGnollVanguard, DefenseAgainstHigherPrinted,
         AuraOtherGnollOpponentTurn, AttackEquipped, AuraOtherVanguardDefense, CannotIntercept,
         PowerLoneVanguard, AttackCostFive, PowerOwnCostFive, AttackLowerCost, DefenseAndImmovable, AttackCostSix,
-        EquipmentArmor, ReactionCounter, ReactionEvade }
+        EquipmentArmor, ReactionCounter, ReactionEvade,
+        FreezeExhaust, DeployFreeze, DeployClearCrowdControl, EquipmentAttackRearguard,
+        DetectEnemy, DeployDetect }
     public enum EffectTarget { AnyCharacter, FriendlyVanguard, EnemyCharacter, EnemyVanguard }
 }

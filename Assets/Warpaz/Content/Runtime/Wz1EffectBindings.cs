@@ -27,6 +27,12 @@ namespace Warpaz.Content
                 case "WZ1-114": return Bind(printedText, "El portador obtiene +2 Poder al defender y no puede ser movido por efectos enemigos.", EffectOpcode.EquipmentArmor);
                 case "WZ1-099": return Bind(printedText, "Reacción — Tu defensor obtiene +2 Poder durante este combate. Si el ataque falla, el atacante obtiene -1 Poder hasta el final del turno.", EffectOpcode.ReactionCounter);
                 case "WZ1-104": return Bind(printedText, "Reacción — Tu Personaje defensor obtiene +2 Poder durante este combate. Si sobrevive y hay espacio, puedes moverlo a Retaguardia.", EffectOpcode.ReactionEvade);
+                case "WZ1-083": return Bind(printedText, "Agota un Personaje enemigo de Poder impreso 4 o menos. Si ya estaba agotado, Congélalo.", EffectOpcode.FreezeExhaust);
+                case "WZ1-067": return Bind(printedText, "Despliegue — Congela un Personaje enemigo de Poder impreso 3 o menos.", EffectOpcode.DeployFreeze);
+                case "WZ1-075": return Bind(printedText, "Despliegue — Elimina Congelado o Inmovilizado de uno de tus Personajes.", EffectOpcode.DeployClearCrowdControl);
+                case "WZ1-110": return Bind(printedText, "El portador obtiene A distancia y +1 Poder cuando ataca a un Personaje de Retaguardia.", EffectOpcode.EquipmentAttackRearguard);
+                case "WZ1-093": return Bind(printedText, "Detecta un Personaje enemigo. Roba una carta y después coloca una carta de tu mano en la parte inferior de tu mazo.", EffectOpcode.DetectEnemy);
+                case "WZ1-046": return Bind(printedText, "Despliegue — Detecta un Personaje enemigo. Si no hay objetivos Ocultos, mira la primera carta del mazo; puedes colocarla debajo.", EffectOpcode.DeployDetect);
                 case "WZ1-018": return Bind(printedText, "Despliegue — Mira la primera carta de tu mazo. Puedes colocarla en la parte inferior.", EffectOpcode.DeployLookBottom);
                 case "WZ1-024": return Bind(printedText, "Cuando este Personaje intercepte, obtiene +1 Poder durante ese combate.", EffectOpcode.InterceptPower);
                 case "WZ1-036": return Bind(printedText, "Cuando intercepte, obtiene +1 Poder durante ese combate.", EffectOpcode.InterceptPower);

@@ -97,7 +97,8 @@ namespace Warpaz.Domain
                 copies.TryGetValue(cardId, out var count);
                 if (rules.IsPreview && definition.Type != CardType.Character && !(rules.EffectsEnabled && EffectEngine.Supports(definition))
                     && !(rules.AdvancedEnabled && AdvancedEffects.Supports(definition))
-                    && !(rules.ExpandedEnabled && ExpandedEffects.Supports(definition)))
+                    && !(rules.ExpandedEnabled && ExpandedEffects.Supports(definition))
+                    && !(rules.TacticalEnabled && TacticalEffects.Supports(definition)))
                     return DeckValidationResult.Fail("Efectos de " + cardId + " no implementados en estas reglas.");
                 count++;
                 if (count > rules.MaxCopiesPerCard)

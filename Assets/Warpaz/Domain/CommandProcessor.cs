@@ -112,6 +112,7 @@ namespace Warpaz.Domain
         {
             if (!result.Accepted) return result;
             AdvancedEffects.CollectTriggers(state, _catalog, from, witnesses);
+            TacticalEffects.CollectTriggers(state, _catalog, from);
             AdvancedEffects.Drain(state, _catalog);
             GameStateInvariants.AssertValid(state);
             return Finalize(command, EngineActions.Snapshot(state, from));

@@ -23,7 +23,7 @@ namespace Warpaz.Domain
         internal List<CardInstanceId> Stack { get; } = new List<CardInstanceId>();
     }
 
-    public enum EffectStepKind { Draw, Discard, BottomHand, OrderTop, LookBottom, ReturnCharacter, ReturnEquipment, EvadeToRear }
+    public enum EffectStepKind { Draw, Discard, BottomHand, OrderTop, LookBottom, ReturnCharacter, ReturnEquipment, EvadeToRear, FreezeTarget, ClearCrowdControl, DetectTarget }
     internal sealed class EffectStep
     {
         internal EffectStep(PlayerId actor, CardInstanceId source, EffectStepKind kind, int amount = 1, CardInstanceId target = default)
@@ -62,9 +62,13 @@ namespace Warpaz.Domain
         {
             if (!s.Rules.AdvancedEnabled || s.Phase != MatchPhase.Main || actor != s.ActivePlayerId
                 || !s.TryGetCard(sourceId, out var source) || source.OwnerId != actor || source.Zone != CardZone.Hand
-                || !catalog.TryGet(source.DefinitionId, out var d) || !(Supports(d) || s.Rules.ExpandedEnabled && ExpandedEffects.Supports(d)) || (d.CostPa ?? 0) < 0
+                || !catalog.TryGet(source.DefinitionId, out var d)
+                || !(Supports(d) || s.Rules.ExpandedEnabled && ExpandedEffects.Supports(d) || s.Rules.TacticalEnabled && TacticalEffects.Supports(d))
+                || (d.CostPa ?? 0) < 0
                 || s.GetPlayer(actor).PaCurrent < (d.CostPa ?? 0)) return false;
             if (d.Type == CardType.Action && d.Effects[0].Opcode == EffectOpcode.OrderDrawBottom) return targetId.IsNone;
+            if (s.Rules.TacticalEnabled && d.Type == CardType.Action && TacticalEffects.Supports(d))
+                return TacticalEffects.CanPlay(s, catalog, actor, sourceId, targetId);
             return (d.Type == CardType.Equipment && s.Rules.MaximumEquipmentPerCharacter > 0 || d.Type == CardType.Action)
                 && s.TryGetCard(targetId, out var target) && target.HasBoardSlot && target.ControllerId == actor;
         }
@@ -174,6 +178,30 @@ namespace Warpaz.Domain
                             && ExpandedEffects.CanMoveByEffect(s, catalog, defender, step.Actor))
                         { choices.Add(step.Target); choices.Add(CardInstanceId.None); }
                         break;
+                    case EffectStepKind.FreezeTarget:
+                        choices.AddRange(s.Cards.Values.Where(c => c.HasBoardSlot && c.ControllerId != step.Actor
+                            && catalog.TryGet(c.DefinitionId, out var frozenDef)
+                            && CombatPolicies.EffectivePower(frozenDef) <= step.Amount)
+                            .OrderBy(c => c.InstanceId.Value).Select(c => c.InstanceId));
+                        break;
+                    case EffectStepKind.ClearCrowdControl:
+                        choices.AddRange(s.Cards.Values.Where(c => c.HasBoardSlot && c.ControllerId == step.Actor
+                            && (TacticalEffects.HasStatus(c, StatusType.Frozen) || TacticalEffects.HasStatus(c, StatusType.Immobilized)))
+                            .OrderBy(c => c.InstanceId.Value).Select(c => c.InstanceId));
+                        break;
+                    case EffectStepKind.DetectTarget:
+                        choices.AddRange(s.Cards.Values.Where(c => c.HasBoardSlot && c.ControllerId != step.Actor
+                            && TacticalEffects.HasStatus(c, StatusType.Hidden))
+                            .OrderBy(c => c.InstanceId.Value).Select(c => c.InstanceId));
+                        if (choices.Count == 0)
+                        {
+                            s.EffectQueue.RemoveAt(0);
+                            if (catalog.TryGet(s.Cards[step.Source].DefinitionId, out var detectSource)
+                                && TacticalEffects.Program(catalog, s.Cards[step.Source]) == EffectOpcode.DeployDetect)
+                                s.EffectQueue.Insert(0, new EffectStep(step.Actor, step.Source, EffectStepKind.LookBottom));
+                            continue;
+                        }
+                        break;
                 }
                 if (choices.Count == 0) { s.EffectQueue.RemoveAt(0); continue; }
                 s.PendingDecision = PendingDecision.Effect(step.Actor, choices); s.PriorityPlayerId = step.Actor;
@@ -210,6 +238,15 @@ namespace Warpaz.Domain
                         var slot = p.BoardSlots.First(x => x.IsRearguard && !x.IsOccupied);
                         EngineActions.MoveBoardToEmptySlot(s, p, id, slot.Row, slot.Index);
                     }
+                    break;
+                case EffectStepKind.FreezeTarget:
+                    TacticalEffects.ApplyFreeze(s, s.Cards[id]);
+                    break;
+                case EffectStepKind.ClearCrowdControl:
+                    TacticalEffects.ClearCrowdControl(s, s.Cards[id]);
+                    break;
+                case EffectStepKind.DetectTarget:
+                    TacticalEffects.ApplyDetect(s, s.Cards[id]);
                     break;
             }
             s.Emit(GameEventType.EffectResolved, step.Actor, step.Kind + ":" + id, step.Source, -1, GameEventVisibility.OwnerOnly);
@@ -351,6 +388,7 @@ namespace Warpaz.Domain
             if (!attacking && s.Combat != null && s.Combat.Defender == card.InstanceId) power += s.Combat.DefenseBonus;
             if (attacking && s.Combat != null && s.Combat.Attacker == card.InstanceId) power += s.Combat.AttackBonus;
             power += ExpandedEffects.PowerBonus(s, catalog, card, attacking, heroTarget);
+            power += TacticalEffects.PowerBonus(s, catalog, card, attacking, heroTarget);
             return Math.Max(0, power);
         }
         private static CommandResult Reject(GameState s) => CommandResult.Reject(s, CommandRejectionCode.InvalidPayload, "Efecto, fase, actor u objetivo ilegal.");

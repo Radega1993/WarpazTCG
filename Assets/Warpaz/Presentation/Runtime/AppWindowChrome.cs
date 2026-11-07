@@ -27,12 +27,17 @@ namespace Warpaz.Presentation
             }
 
             var go = new GameObject("AppWindowChrome");
+            // Parent under the composition root (already DontDestroyOnLoad). Calling
+            // DontDestroyOnLoad on a child is illegal and spam the console.
             if (host != null)
             {
                 go.transform.SetParent(host, false);
             }
+            else
+            {
+                DontDestroyOnLoad(go);
+            }
 
-            DontDestroyOnLoad(go);
             _instance = go.AddComponent<AppWindowChrome>();
             _instance.Build();
         }
